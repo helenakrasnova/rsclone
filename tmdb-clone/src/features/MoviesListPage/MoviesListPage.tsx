@@ -1,5 +1,4 @@
-import { Component } from "react";
-import React from "react";
+import React, { Component } from "react";
 type MoviesListPageProps = {
 
 }
@@ -10,7 +9,7 @@ class MoviesListPage extends Component<MoviesListPageProps, {}>{
   render = () => {
     return (
       <React.Fragment>
-      MoviesListPage
+        MoviesListPage
       </React.Fragment>
     )
   }

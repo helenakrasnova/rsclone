@@ -8,6 +8,7 @@ import {
   Redirect,
   Route,
 } from "react-router-dom";
+import Login from './features/Login';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         {/* <Header /> */}
         <Switch>
           <Route exact path="/" component={MoviesListPage} />
+          <Route exact path="/login" component={Login} />
           {/* <Route path="*" component={NotFound} /> */}
         </Switch>
       </Router>
