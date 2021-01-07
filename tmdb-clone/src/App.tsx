@@ -9,6 +9,7 @@ import {
   Route,
 } from "react-router-dom";
 import Login from './features/Login';
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
   return (

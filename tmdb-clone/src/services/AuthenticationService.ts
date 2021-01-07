@@ -18,8 +18,7 @@ class AuthenticationService extends TmdbBaseService {
     if (this.token) {
       return this.token;
     }
-    debugger
-    let url: string = `${this.baseUrl}/authentication/token/new?api_key=${this.apiKey}`;
+    let url: string = this.addApiKey(`${this.baseUrl}/authentication/token/new`);
     let response: AxiosResponse<TokenResponse> = await axios.get<TokenResponse>(url);
     return response.data.request_token;
   }
@@ -27,7 +26,7 @@ class AuthenticationService extends TmdbBaseService {
     if (this.sessionId) {
       return this.sessionId;
     }
-    let url: string = `${this.baseUrl}/authentication/token/validate_with_login?api_key=${this.apiKey}`;
+    let url: string = this.addApiKey(`${this.baseUrl}/authentication/token/validate_with_login`);
     let currentToken: string = await this.getToken();
     let requestBody: object = {
       username: username,
@@ -42,7 +41,8 @@ class AuthenticationService extends TmdbBaseService {
       });
       return response.data.request_token;
     } catch (error) {
-      debugger
+      console.log(error);
+      throw error;
     }
   }
   login = async (username: string, password: string) => {
