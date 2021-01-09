@@ -1,21 +1,34 @@
 import { Component } from "react";
-import { Accordion, AccordionTitleProps, Checkbox, CheckboxProps, Dropdown, DropdownProps, Icon } from "semantic-ui-react";
+import { Accordion, AccordionTitleProps, Button, Checkbox, CheckboxProps, Dropdown, DropdownProps, Icon } from "semantic-ui-react";
 import './searchMovies.css';
 import { genres } from './../../../configuration/genres';
 import { ReleaseTypes } from './../../../models/ReleaseTypes';
 import { countries } from './../../../configuration/countries';
 import { certification } from './../../../configuration/certification';
 import { CertificationModel } from './../../../models/CertificationModel';
-type SearchMoviesState = {
+import { languages } from './../../../configuration/languages';
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
+export type SearchMoviesState = {
   activeIndex: number | string | undefined;
   isAllReleases: boolean;
   releaseTypes: Set<ReleaseTypes>;
   isAllCountries: boolean;
   releaseCountry: string | null;
   certification: Set<string>;
+  selectedLanguage: string | null;
+  voteAverageMin: number;
+  voteAverageMax: number;
+  voteCountMin: number;
+  movieDurationMin: number;
+  movieDurationMax: number;
+  releaseDateFrom: string;
+  releaseDateTo: string;
+  genres: Set<string>;
 }
 type SearchMoviesProps = {
-
+  onSearchClicked: (state: SearchMoviesState) => void;
 }
 class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
   constructor(props: SearchMoviesProps) {
@@ -27,6 +40,15 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
       isAllCountries: true,
       releaseCountry: null,
       certification: new Set([]),
+      selectedLanguage: null,
+      voteAverageMin: 0,
+      voteAverageMax: 10,
+      voteCountMin: 0,
+      movieDurationMin: 0,
+      movieDurationMax: 400,
+      releaseDateFrom: '',
+      releaseDateTo: '',
+      genres: new Set([]),
     }
   }
 
@@ -37,7 +59,15 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
   }
 
   handleGenreChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
+    const copyGenres = new Set(this.state.genres);
+    if (event.target.checked) {
+      copyGenres.add(event.target.value);
+    } else {
+      copyGenres.delete(event.target.value);
+    }
+    this.setState({
+      genres: copyGenres,
+    });
   }
 
   handleAllReleasesChanged = (event: React.FormEvent<HTMLInputElement>) => {
@@ -82,6 +112,48 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     });
   }
 
+  handleLanguageChanged = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+    this.setState({
+      selectedLanguage: data.value as string,
+    });
+  }
+
+  handleUserScoreChanged = (values: number[]) => {
+    this.setState({
+      voteAverageMin: values[0],
+      voteAverageMax: values[1],
+    });
+  }
+
+  handleUserVotesChanged = (value: number) => {
+    this.setState({
+      voteCountMin: value,
+    });
+  }
+
+  handleRuntimeChanged = (values: number[]) => {
+    this.setState({
+      movieDurationMin: values[0],
+      movieDurationMax: values[1],
+    });
+  }
+
+  handleSearchClicked = () => {
+    this.props.onSearchClicked(this.state);
+  }
+
+  handleReleaseDateFrom = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      releaseDateFrom: event.target.value
+    });
+  }
+
+  handleReleaseDateTo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      releaseDateTo: event.target.value
+    });
+  }
+
   render = () => {
     const { activeIndex } = this.state;
     return (
@@ -102,7 +174,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                 <label className="checkbox-btn" key={genre.id}>
                   <input
                     type="checkbox"
-                    data-id={genre.id}
+                    value={genre.id}
                     onChange={this.handleGenreChanged} />
                   <span>{genre.name}</span>
                 </label>
@@ -172,13 +244,15 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
               <label>
                 From
                 <input type="date" id="from" name="from"
-                // min="2018-01-01" max="2018-12-31"
+                  onChange={this.handleReleaseDateFrom}
+                  min="1900-01-01" max="2099-12-31"
                 />
               </label>
               <label>
                 To
                 <input type="date" id="to" name="to"
-                // min="2018-01-01" max="2018-12-31"
+                  onChange={this.handleReleaseDateTo}
+                  min="1900-01-01" max="2099-12-31"
                 />
               </label>
             </div>
@@ -200,11 +274,65 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
+          <Accordion.Content active={activeIndex === 1}>
+            <div>
+              <p>Language</p>
+              <Dropdown
+                placeholder='Select language'
+                fluid
+                selection
+                search
+                options={languages}
+                onChange={this.handleLanguageChanged}
+              />
+            </div>
+          </Accordion.Content>
 
 
+          <Accordion.Content active={activeIndex === 1}>
+            <div>
+              <p>User Score</p>
+              <Range
+              value={[this.state.voteAverageMin, this.state.voteAverageMax]}
+                min={0}
+                max={10}
+                step={1}
+                onChange={this.handleUserScoreChanged}
+                marks={{ 0: 0, 5: 5, 10: 10 }}
+              />
+            </div>
+          </Accordion.Content>
 
+          <Accordion.Content active={activeIndex === 1}>
+            <div>
+              <p>Minimum User Votes</p>
+              <Slider
+
+                min={0}
+                max={500}
+                step={50}
+                onChange={this.handleUserVotesChanged}
+                marks={{ 0: 0, 100: 100, 200: 200, 300: 300, 400: 400, 500: 500 }} />
+            </div>
+          </Accordion.Content>
+
+          <Accordion.Content active={activeIndex === 1}>
+            <div>
+              <p>Runtime</p>
+              <Range
+              value={[this.state.movieDurationMin, this.state.movieDurationMax]}
+                min={0}
+                max={400}
+                step={15}
+                onChange={this.handleRuntimeChanged}
+                marks={{ 0: 0, 120: 120, 240: 240, 360: 360 }} />
+            </div>
+          </Accordion.Content>
         </Accordion>
-
+        <Button
+          primary
+          onClick={this.handleSearchClicked}
+        >Search</Button>
       </div >
     );
   }

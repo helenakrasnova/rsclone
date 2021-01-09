@@ -1,5 +1,5 @@
 export interface DropDownViewModel {
-  key: string;
+  key?: string;
   text: string;
   value: string;
 }
