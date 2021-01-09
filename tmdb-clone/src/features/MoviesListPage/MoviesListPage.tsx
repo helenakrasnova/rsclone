@@ -3,7 +3,11 @@ import DiscoverMoviesService from './../../services/DiscoverMoviesService';
 import { MovieDiscoverDto } from './../../models/MovieDiscoverDto';
 // import SearchMovies from './SearchMovies';
 // import MoviesOrdering from './MoviesOrdering';
-import MoviesList from './MoviesList';
+import MoviesList from './MoviesList/MoviesList';
+import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
+import SearchMovies from './SearchMovies/SearchMovies';
+import { Container, Grid } from 'semantic-ui-react';
+
 
 type MoviesListPageProps = {
 
@@ -39,14 +43,24 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
   render = () => {
     return (
       <React.Fragment>
-        {/* <SearchMovies
-          onSearchClicked={this.handleSearchClicked} />
-        <MoviesOrdering
-          total={this.state.total}
-          onSortByChanged={this.handleSortByChanged}
-          onSortOrderChanged={this.handleSortOrderChanged} /> */}
-        <MoviesList
-          movies={this.state.movies} />
+        <Container>
+        <Grid columns={2}>
+          <Grid.Column width={4}>
+            <MoviesOrdering
+            // total={this.state.total}
+            // onSortByChanged={this.handleSortByChanged}
+            // onSortOrderChanged={this.handleSortOrderChanged}
+            />
+            <SearchMovies
+            //  onSearchClicked={this.handleSearchClicked}
+            />
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <MoviesList
+              movies={this.state.movies} />
+          </Grid.Column>
+        </Grid>
+        </Container>
       </React.Fragment>
     );
   }

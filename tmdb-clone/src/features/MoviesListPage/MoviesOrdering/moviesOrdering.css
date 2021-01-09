@@ -1,0 +1,16 @@
+.moviesOrdering {
+  width: 260px;
+  border: 1px solid #e3e3e3;
+  border-radius: var(--imageBorderRadius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: .28571429rem;
+}
+
+.moviesOrdering-heading {
+  font-weight: bold;
+  margin: 0;
+  padding: 10px 0 10px 10px;
+  border-radius: .28571429rem;
+}
+
+

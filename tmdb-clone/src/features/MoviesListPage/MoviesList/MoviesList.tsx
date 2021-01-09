@@ -1,13 +1,13 @@
-import { MovieDiscoverDto } from './../../models/MovieDiscoverDto';
 import React from "react";
 import { Grid } from 'semantic-ui-react';
-import { posterUrl } from './../../configuration';
 import './moviesList.css';
-
+import { MovieDiscoverDto } from './../../../models/MovieDiscoverDto';
+import { posterUrl } from '../../../configuration/configuration';
 
 type MoviesListProps = {
   movies: Array<MovieDiscoverDto>
 }
+
 export default function MoviesList(props: MoviesListProps) {
   return (
     <div className="moviesList">
@@ -27,4 +27,3 @@ export default function MoviesList(props: MoviesListProps) {
     </div>
   );
 }
-
