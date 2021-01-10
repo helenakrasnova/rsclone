@@ -29,27 +29,12 @@ export type SearchMoviesState = {
 }
 type SearchMoviesProps = {
   onSearchClicked: (state: SearchMoviesState) => void;
+  initialFilter: SearchMoviesState;
 }
 class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
   constructor(props: SearchMoviesProps) {
     super(props);
-    this.state = {
-      activeIndex: 0,
-      isAllReleases: true,
-      releaseTypes: new Set([1, 2, 3, 4, 5, 6]),
-      isAllCountries: true,
-      releaseCountry: null,
-      certification: new Set([]),
-      selectedLanguage: null,
-      voteAverageMin: 0,
-      voteAverageMax: 10,
-      voteCountMin: 0,
-      movieDurationMin: 0,
-      movieDurationMax: 400,
-      releaseDateFrom: '',
-      releaseDateTo: '',
-      genres: new Set([]),
-    }
+    this.state = props.initialFilter;
   }
 
   handleAccordionClicked = (e: React.MouseEvent<HTMLDivElement>, titleProps: AccordionTitleProps) => {
@@ -331,6 +316,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
         </Accordion>
         <Button
           primary
+          className="search-button"
           onClick={this.handleSearchClicked}
         >Search</Button>
       </div >

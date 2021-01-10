@@ -8,23 +8,23 @@ class DiscoverMoviesService extends TmdbBaseService {
   constructor() {
     super();
   }
-  findMovies = async (filter: SearchMoviesState | null): Promise<DiscoverResponseDto> => {
+  findMovies = async (filter: SearchMoviesState | null, orderBy: string, page: number): Promise<DiscoverResponseDto> => {
     let url: string = this.addApiKey(`${this.baseUrl}/discover/movie`);
-    const request: DiscoverMoviesFilterRequestDto | null = this.createRequest(filter);
+    const request: DiscoverMoviesFilterRequestDto | null = this.createRequest(filter, orderBy, page);
     if (request) {
-      let requestString = queryString.stringify(request, { skipNull: true , skipEmptyString: true});
+      let requestString = queryString.stringify(request, { skipNull: true, skipEmptyString: true });
       url += `&${requestString}`;
     }
     let response: AxiosResponse<DiscoverResponseDto> = await axios.get<DiscoverResponseDto>(url);
     return response.data;
   }
-  createRequest = (filter: SearchMoviesState | null): DiscoverMoviesFilterRequestDto | null => {
+  createRequest = (filter: SearchMoviesState | null, orderBy: string, page: number): DiscoverMoviesFilterRequestDto | null => {
     if (!filter) {
       return null;
     }
     const request: DiscoverMoviesFilterRequestDto = {
-      page: 1,
-      sort_by: 'popularity.asc',
+      page: page,
+      sort_by: orderBy,
       "release_date.gte": filter.releaseDateFrom,
       "release_date.lte": filter.releaseDateFrom,
       with_release_type: Array.from(filter.releaseTypes).join('|'),

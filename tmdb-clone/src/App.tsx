@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Login from './features/Login';
 import 'semantic-ui-css/semantic.min.css'
+import MovieDetails from './features/MovieDetails/MovieDetails';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         {/* <Header /> */}
         <Switch>
           <Route exact path="/" component={MoviesListPage} />
+          <Route exact path="/movies/:id" component={MovieDetails} />
           <Route exact path="/login" component={Login} />
           {/* <Route path="*" component={NotFound} /> */}
         </Switch>

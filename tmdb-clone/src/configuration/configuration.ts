@@ -15,12 +15,12 @@ export const sortOptions: DropDownViewModel[] = [
   {
     key: 'Rating Descending',
     text: 'Rating Descending',
-    value: 'rating.desc',
+    value: 'vote_average.desc',
   },
   {
     key: 'Rating Ascending',
     text: 'Rating Ascending',
-    value: 'rating.asc',
+    value: 'vote_average.asc',
   },
   {
     key: 'Release Date Descending',
@@ -35,11 +35,11 @@ export const sortOptions: DropDownViewModel[] = [
   {
     key: 'Title Descending',
     text: 'Title Descending',
-    value: 'title.desc',
+    value: 'original_title.desc',
   },
   {
     key: 'Title Ascending',
     text: 'Title Ascending',
-    value: 'title.asc',
+    value: 'original_title.asc',
   },
 ];

@@ -6,7 +6,7 @@ import { MovieDiscoverDto } from './../../models/MovieDiscoverDto';
 import MoviesList from './MoviesList/MoviesList';
 import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
 import SearchMovies, { SearchMoviesState } from './SearchMovies/SearchMovies';
-import { Container, Grid } from 'semantic-ui-react';
+import { Button, Container, Grid } from 'semantic-ui-react';
 
 
 type MoviesListPageProps = {
@@ -15,7 +15,9 @@ type MoviesListPageProps = {
 type MoviesListPageState = {
   movies: Array<MovieDiscoverDto>;
   total: number;
-  filter: SearchMoviesState | null;
+  filter: SearchMoviesState;
+  orderBy: string;
+  page: number;
 }
 class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>{
   discoverMoviesService: DiscoverMoviesService;
@@ -25,26 +27,59 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
     this.state = {
       movies: [],
       total: 0,
-      filter: null,
+      filter: {
+        activeIndex: 0,
+        isAllReleases: true,
+        releaseTypes: new Set([1, 2, 3, 4, 5, 6]),
+        isAllCountries: true,
+        releaseCountry: null,
+        certification: new Set([]),
+        selectedLanguage: null,
+        voteAverageMin: 0,
+        voteAverageMax: 10,
+        voteCountMin: 0,
+        movieDurationMin: 0,
+        movieDurationMax: 400,
+        releaseDateFrom: '',
+        releaseDateTo: '',
+        genres: new Set([]),
+      },
+      orderBy: 'popularity.desc',
+      page: 1,
     };
   }
 
   async componentDidMount() {
-    await this.updateMovies();
+    await this.updateMovies(this.state.filter);
   }
 
-  updateMovies = async () => {
-    let searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter);
+  updateMovies = async (filter: SearchMoviesState) => {
+    let searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter, this.state.orderBy, this.state.page);
     this.setState({
       movies: searchingMovies.results,
       total: searchingMovies.total_results,
+      filter: filter,
+      page: 1,
     });
   }
-  handleSearchClicked = async (state: SearchMoviesState) => {
+  handleSearchClicked = async (filter: SearchMoviesState) => {
+    await this.updateMovies(filter);
+  }
+  handleOrderChanged = (value: string) => {
     this.setState({
-      filter: state
+      orderBy: value,
     });
-    await this.updateMovies();
+  }
+  handleLoadMoreClicked = async () => {
+    const nextPage = this.state.page + 1;
+    debugger
+    const searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter, this.state.orderBy, nextPage);
+    const allMovies = this.state.movies.concat(searchingMovies.results);
+    this.setState({
+      page: nextPage,
+      movies: allMovies,
+      total: searchingMovies.total_results,
+    });
   }
   render = () => {
     return (
@@ -53,18 +88,27 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
           <Grid columns={2}>
             <Grid.Column width={4}>
               <MoviesOrdering
-              // total={this.state.total}
+                onOrderChanged={this.handleOrderChanged}
+                selectedValue={this.state.orderBy}
               // onSortByChanged={this.handleSortByChanged}
               // onSortOrderChanged={this.handleSortOrderChanged}
               />
               <SearchMovies
                 onSearchClicked={this.handleSearchClicked}
+                initialFilter={this.state.filter}
               />
             </Grid.Column>
             <Grid.Column width={12}>
               <MoviesList
                 movies={this.state.movies} />
+              <Button
+                className='load-more'
+                secondary
+                fluid
+                onClick={this.handleLoadMoreClicked}
+              >Load more</Button>
             </Grid.Column>
+
           </Grid>
         </Container>
       </React.Fragment>

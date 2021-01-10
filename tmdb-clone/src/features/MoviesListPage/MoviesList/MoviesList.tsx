@@ -2,8 +2,8 @@ import React from "react";
 import { Grid } from 'semantic-ui-react';
 import './moviesList.css';
 import { MovieDiscoverDto } from './../../../models/MovieDiscoverDto';
-import { posterUrl } from '../../../configuration/configuration';
-import defaultMovie from '../../../assets/img/glyphicons-basic-38-picture-grey.svg';
+
+import MoviesCard from "../MoviesCard/MoviesCard";
 
 type MoviesListProps = {
   movies: Array<MovieDiscoverDto>
@@ -16,17 +16,7 @@ export default function MoviesList(props: MoviesListProps) {
         <Grid columns={4} container>
           {props.movies.map((movie) => (
             <Grid.Column>
-              <div className="film-container" key={movie.id}>
-                <img
-                  src={`${posterUrl}/w185/${movie.poster_path}`}
-                  onError={(e: any) => {
-                    if (e.target.src !== defaultMovie) {
-                        e.target.src = defaultMovie;
-                    }
-                }}
-                  alt="movieImage" />
-                {movie.title}
-              </div>
+              <MoviesCard movie={movie}/>
             </Grid.Column>
           ))}
         </Grid>
