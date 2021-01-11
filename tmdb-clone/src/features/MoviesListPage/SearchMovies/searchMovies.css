@@ -58,10 +58,40 @@
   background-size: contain;
 }
 
-.search-button {
-  width: 100%;
-}
-
 .ui.accordion {
   margin-bottom: 3rem;
+}
+.accordion{
+  width: 260px;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: .28571429rem;
+
+}
+.accordion-title{
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+  border-top-left-radius: .28571429rem;
+  border-top-right-radius: .28571429rem;
+  border-bottom: 1px solid #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+.filters-heading{
+  padding-left: 14px;
+}
+.accordion-content{
+  border-bottom: 1px solid #e3e3e3;
+}
+.accordion-genres, .releaseDates, .accordion-certification, .accordion-language,.accordion-userScore, .accordion-userVotes{
+  padding: 14px 16px;
+}
+.accordion-runtime{
+  padding: 14px 16px 35px 16px;
+}
+.searchMovies{
+  width: 260px;
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import MovieDetailsService from './../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from './../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 type MovieDetailsProps = {
@@ -13,22 +13,26 @@ class MovieDetails extends Component<MovieDetailsProps, MovieDetailsViewModel> {
   id: string;
   constructor({ match }: RouteComponentProps<MovieDetailsProps>) {
     super(match.params);
-
     this.id = match.params.id;
     this.movieDetailsService = new MovieDetailsService();
     this.state = {
-
     }
   }
   componentDidMount = async () => {
-    let film = await this.movieDetailsService.getMovie(this.id);
-    this.setState(film);
+    const movie = await this.movieDetailsService.getMovie(this.id);
+    this.setState(movie);
 
   }
   render = () => {
     return (
       <React.Fragment>
         {this.state.title}
+        {this.state.runtime}
+        {this.state.overview}
+        {this.state.cast?.map((person) => (<>
+          <Link to={`/person/${person.id}`}>
+            {person.name}
+        </Link></>))}
       </React.Fragment>
     )
   }

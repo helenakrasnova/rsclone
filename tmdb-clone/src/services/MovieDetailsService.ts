@@ -1,7 +1,7 @@
 import TmdbBaseService from './TmdbBaseService';
 import { MovieDetailsViewModel } from '../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import axios, { AxiosResponse } from 'axios';
-import { MovieDetailsDto } from '../models/MovieDetails/Dtos/MovieDetailsDto';
+import { MovieDetailsResponseDto } from '../models/MovieDetails/Dtos/MovieDetailsResponseDto';
 import { MovieCastViewModel } from './../models/MovieDetails/ViewModels/MovieCastViewModel';
 import { MovieCastResponseDto } from './../models/MovieDetails/Dtos/MovieCastResponseDto';
 import { MovieReviewResponseDto } from './../models/MovieDetails/Dtos/MovieReviewResponseDto';
@@ -34,7 +34,7 @@ class MovieDetailsService extends TmdbBaseService {
 
   private getDetails = async (id: string): Promise<MovieDetailsViewModel> => {
     const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}`);
-    const detailsResponse: AxiosResponse<MovieDetailsDto> = await axios.get<MovieDetailsDto>(url);
+    const detailsResponse: AxiosResponse<MovieDetailsResponseDto> = await axios.get<MovieDetailsResponseDto>(url);
     let result: MovieDetailsViewModel = {
       backdrop_path: detailsResponse.data.backdrop_path,
       budget: detailsResponse.data.budget,

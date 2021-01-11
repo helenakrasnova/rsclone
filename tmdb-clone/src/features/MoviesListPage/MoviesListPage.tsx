@@ -7,6 +7,7 @@ import MoviesList from './MoviesList/MoviesList';
 import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
 import SearchMovies, { SearchMoviesState } from './SearchMovies/SearchMovies';
 import { Button, Container, Grid } from 'semantic-ui-react';
+import './moviesListPage.css';
 
 
 type MoviesListPageProps = {
@@ -84,7 +85,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
   render = () => {
     return (
       <React.Fragment>
-        <Container>
+        <div className="container">
           <Grid columns={2}>
             <Grid.Column width={4}>
               <MoviesOrdering
@@ -110,7 +111,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
             </Grid.Column>
 
           </Grid>
-        </Container>
+        </div>
       </React.Fragment>
     );
   }

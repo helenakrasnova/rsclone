@@ -143,17 +143,20 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     const { activeIndex } = this.state;
     return (
       <div className="searchMovies" >
-        <Accordion>
+        <Accordion className={"accordion"}>
           <Accordion.Title
+            className={"accordion-title"}
             active={activeIndex === 1}
             index={1}
             onClick={this.handleAccordionClicked}
           >
+            <div className="filters-heading">Filters</div>
             <Icon name='dropdown' />
-              Filters
-        </Accordion.Title>
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          </Accordion.Title>
+          <Accordion.Content className={"accordion-content"}
+            active={activeIndex === 1}
+          >
+            <div className="accordion-genres">
               <p>Genres</p>
               {genres.map((genre) => (
                 <label className="checkbox-btn" key={genre.id}>
@@ -166,7 +169,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
               ))}
             </div>
           </Accordion.Content>
-          <Accordion.Content active={activeIndex === 1}>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
             <div className="releaseDates">
               <p>Release Dates</p>
               <Checkbox label='Search all releases?' checked={this.state.isAllReleases} onChange={this.handleAllReleasesChanged} />
@@ -243,8 +246,8 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+            <div className="accordion-certification">
               <p>Certification</p>
               {certification.US.sort((a: CertificationModel, b: CertificationModel) => a.order - b.order).map((item: CertificationModel) => (
                 <label className="checkbox-btn" key={item.certification}>
@@ -259,8 +262,8 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+            <div className="accordion-language">
               <p>Language</p>
               <Dropdown
                 placeholder='Select language'
@@ -274,11 +277,11 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
           </Accordion.Content>
 
 
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+            <div className="accordion-userScore">
               <p>User Score</p>
               <Range
-              value={[this.state.voteAverageMin, this.state.voteAverageMax]}
+                value={[this.state.voteAverageMin, this.state.voteAverageMax]}
                 min={0}
                 max={10}
                 step={1}
@@ -288,8 +291,8 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+            <div className="accordion-userVotes">
               <p>Minimum User Votes</p>
               <Slider
 
@@ -301,11 +304,11 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1}>
-            <div>
+          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+            <div className="accordion-runtime">
               <p>Runtime</p>
               <Range
-              value={[this.state.movieDurationMin, this.state.movieDurationMax]}
+                value={[this.state.movieDurationMin, this.state.movieDurationMax]}
                 min={0}
                 max={400}
                 step={15}
@@ -315,6 +318,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
           </Accordion.Content>
         </Accordion>
         <Button
+          fluid
           primary
           className="search-button"
           onClick={this.handleSearchClicked}

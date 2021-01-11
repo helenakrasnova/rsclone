@@ -1,4 +1,4 @@
-import { Genre } from "../Dtos/MovieDetailsDto";
+import { Genre } from "../Dtos/MovieDetailsResponseDto";
 import { MovieCastViewModel } from './MovieCastViewModel';
 import { MovieReviewResponseDto } from './../Dtos/MovieReviewResponseDto';
 import { MovieRecommendationsViewModel } from "./MovieRecommendationsViewModel";
