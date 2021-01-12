@@ -88,7 +88,7 @@ class MovieDetailsService extends TmdbBaseService {
         poster_path: item.poster_path,
         title: item.title,
         id: item.id,
-        vote_count: item.vote_count,
+        vote_average: item.vote_average,
       }
     });
     return result;

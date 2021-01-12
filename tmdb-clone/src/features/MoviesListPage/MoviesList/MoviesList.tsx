@@ -16,7 +16,7 @@ export default function MoviesList(props: MoviesListProps) {
         <Grid columns={4} container>
           {props.movies.map((movie) => (
             <Grid.Column>
-              <MoviesCard movie={movie}/>
+              <MoviesCard key={movie.id} movie={movie}/>
             </Grid.Column>
           ))}
         </Grid>

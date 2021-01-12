@@ -1,0 +1,168 @@
+.movie-bg {
+  height: 570px;
+  border-bottom: 1px solid black;
+  background-position: right -200px top;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.movie-bg__filter {
+  background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: inherit;
+  color: #fff;
+  padding: 30px 40px;
+}
+
+.movie-poster {
+  width: 300px;
+  height: 450px;
+  border-radius: 8px;
+}
+
+.movie_inform__column {
+  padding-left: 40px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 950px;
+}
+
+.movie-content__wrapper {
+  padding: 30px 40px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movieActors {
+  background-color: #fff;
+  max-width: 960px;
+  width: calc(100vw - 80px - 260px);
+  display: flex;
+  height: 292px;
+  flex: 0 1 auto;
+  padding-right: 30px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.movie-cast-scroller {
+  list-style-type: none;
+  list-style-position: inside;
+  width: 100%;
+  height: 292px;
+}
+
+.list-scroller {
+  display: flex;
+  flex-direction: row;
+  height: 292px;
+}
+
+.person-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 4px;
+  border: 1px solid rgba(227, 227, 227, 1);
+  padding-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 140px;
+  width: 140px;
+  background-color: #fff;
+  margin-right: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.person-image-container {
+  height: 185px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.white__column {
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grey__column {
+  padding-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 300px;
+}
+
+.reviews-container {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid rgba(227, 227, 227, 1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  height: 220px;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.review-user__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.trailers {
+  width: 100%;
+  display: block;
+  padding: 30px 0;
+  border-top: 1px solid #d7d7d7;
+}
+
+.movieRecommendations {
+  background-color: #fff;
+  max-width: 960px;
+  width: calc(100vw - 80px - 260px);
+  display: flex;
+  height: 292px;
+  flex: 0 1 auto;
+  padding-right: 30px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.recommendation {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 4px;
+  border: 1px solid rgba(227, 227, 227, 1);
+  padding-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 140px;
+  width: 140px;
+  background-color: #fff;
+  margin-right: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-inform {
+  height: 185px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}

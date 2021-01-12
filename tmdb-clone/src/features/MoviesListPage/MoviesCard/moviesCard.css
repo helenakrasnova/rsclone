@@ -4,12 +4,13 @@
   justify-content: space-between;
   flex-direction: column;
   width: 206px;
-  height: 410px;
+  height: 390px;
   border-radius: 8px;
   border: 1px solid #e3e3e3;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
-  font-size: 1.2em;
+  font-weight: 700;
+  font-size: 1em;
+  color: black;
   /* margin: 30px 0 0 30px; */
 }
 
@@ -24,8 +25,59 @@
 .film-heading {
   width: 90%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
   height: 98px;
   background-color: white;
+}
 
+.percent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.film-voting {
+  width: 34px;
+  height: 34px;
+  border-radius: 75%;
+  background-color: #081c22;
+  color: #e5e7e8;
+  border: 2px solid;
+  font-size: 13px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 5.5rem;
+  left: 2rem;
+}
+
+.percent {
+  font-size: 7px;
+  align-self: baseline;
+  padding-top: 4px;
+}
+
+.film-release {
+  color: #b4b4b4;
+  font-weight: lighter;
+  width: 90%;
+}
+
+.movieCard-watchList, .movieCard-like {
+  position: absolute;
+}
+.movieCard-watchList{
+  top: 20px;
+  left: 20px;
+}
+.movieCard-like{
+  top: 20px;
+  right: 20px;
+}
+.movieCard-watchList:hover, .movieCard-like:hover{
+  cursor: pointer;
+  filter: invert(100%);
 }
