@@ -47,6 +47,7 @@ class PersonPageService extends TmdbBaseService {
         title: item.title,
         release_date: item.release_date,
         vote_average: item.vote_average,
+        character: item.character,
       })),
       crew: detailsResponse.data.crew.map((item) => ({
         id: item.id,

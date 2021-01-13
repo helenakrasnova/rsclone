@@ -118,8 +118,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                 <Embed
                   key={video.id}
                   id={video.key}
-                  source='youtube'
-                />))}
+                  source='youtube' />))}
             </section>
             <h3>Recommendations</h3>
             <section className="movieRecommendations">

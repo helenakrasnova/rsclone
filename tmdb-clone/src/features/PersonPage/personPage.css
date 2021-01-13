@@ -1,0 +1,44 @@
+.personInform-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.personInform-firstColumn {
+  min-width: 300px;
+  width: 300px;
+}
+
+.personInform-secondColumn {
+  max-width: 920px;
+  width: calc(100vw - 80px - 300px);
+  padding-right: 0;
+  padding-left: 30px;
+  background-color: #fff;
+  max-width: 960px;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+}
+
+.personInform-poster {
+  display: block;
+  min-width: 300px;
+  width: 300px;
+  height: 450px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.personInform-knownFor {
+  margin-top: 30px;
+  width: 100%;
+}
