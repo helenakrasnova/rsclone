@@ -14,6 +14,7 @@ import MovieDetails from './features/MovieDetails/MovieDetails';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import PersonPage from './features/PersonPage/PersonPage';
+import PopularPeoplePage from './features/PopularPeoplePage';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/movies/:id" component={MovieDetails} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/person/:id" component={PersonPage} />
+          <Route exact path="/person/" component={PopularPeoplePage} />
           {/* <Route path="*" component={NotFound} /> */}
         </Switch>
       </Router>

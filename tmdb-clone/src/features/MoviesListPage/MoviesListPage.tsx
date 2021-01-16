@@ -6,9 +6,8 @@ import { MovieDiscoverDto } from './../../models/MovieDiscoverDto';
 import MoviesList from './MoviesList/MoviesList';
 import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
 import SearchMovies, { SearchMoviesState } from './SearchMovies/SearchMovies';
-import { Button, Container, Grid } from 'semantic-ui-react';
+import { Button, Grid } from 'semantic-ui-react';
 import './moviesListPage.css';
-
 
 type MoviesListPageProps = {
 
@@ -63,17 +62,19 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
       page: 1,
     });
   }
+
   handleSearchClicked = async (filter: SearchMoviesState) => {
     await this.updateMovies(filter);
   }
+
   handleOrderChanged = (value: string) => {
     this.setState({
       orderBy: value,
     });
   }
+
   handleLoadMoreClicked = async () => {
     const nextPage = this.state.page + 1;
-    debugger
     const searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter, this.state.orderBy, nextPage);
     const allMovies = this.state.movies.concat(searchingMovies.results);
     this.setState({
@@ -82,9 +83,10 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
       total: searchingMovies.total_results,
     });
   }
+
   render = () => {
     return (
-      <React.Fragment>
+      <>
         <div className="container">
           <Grid columns={2}>
             <Grid.Column width={4}>
@@ -112,7 +114,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
 
           </Grid>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
