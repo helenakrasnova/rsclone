@@ -12,8 +12,8 @@ export default function MoviesCard(props: MoviesCardProps) {
   const { movie } = props;
   return (
     <>
-      <Icon name='heart' color='red' className='movieCard-like' />
-      <Icon name="bookmark outline" color='orange' className='movieCard-watchList' />
+      <Icon name='heart' color='red' size='large' link  className='movieCard-like' />
+      <Icon name="bookmark" color='red' size='large' link className='movieCard-watchList' />
       <Link to={`/movies/${movie.id}`}>
         <div className="film-container" key={movie.id}>
           <img

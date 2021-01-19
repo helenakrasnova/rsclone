@@ -14,6 +14,7 @@ class AuthenticationService extends TmdbBaseService {
     this.token = null;
     this.sessionId = null;
   }
+
   getToken = async (): Promise<string> => {
     if (this.token) {
       return this.token;
@@ -22,6 +23,7 @@ class AuthenticationService extends TmdbBaseService {
     let response: AxiosResponse<TokenResponse> = await axios.get<TokenResponse>(url);
     return response.data.request_token;
   }
+
   getSessionId = async (username: string, password: string) => {
     if (this.sessionId) {
       return this.sessionId;
@@ -45,6 +47,7 @@ class AuthenticationService extends TmdbBaseService {
       throw error;
     }
   }
+
   login = async (username: string, password: string) => {
     let sessionId: string | undefined = await this.getSessionId(username, password);
     if (sessionId) {
@@ -53,7 +56,12 @@ class AuthenticationService extends TmdbBaseService {
     else {
       console.error('unable to get sessionId');
     }
-
   }
+
+  getCurrentSessionId = () => {
+    const sessionId = localStorage.getItem('sessionId');
+    return sessionId ? sessionId : null;
+  }
+  
 }
 export default AuthenticationService;

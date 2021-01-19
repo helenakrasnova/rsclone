@@ -19,6 +19,30 @@
   padding: 30px 40px;
 }
 
+.movie-title {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.facts {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.actions {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.movie-year {
+  opacity: 0.8;
+  font-weight: normal;
+}
+
+.overview {
+  font-size: 16px;
+}
+
 .movie-poster {
   width: 300px;
   height: 450px;
@@ -30,9 +54,23 @@
   height: 450px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   max-width: 950px;
+}
+
+.movie_inform-voting {
+  width: 60px;
+  height: 60px;
+  border-radius: 75%;
+  background-color: #081c22;
+  color: #e5e7e8;
+  border: 5px solid;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 2rem;
 }
 
 .movie-content__wrapper {
@@ -51,6 +89,7 @@
   padding-right: 30px;
   overflow-y: hidden;
   overflow-x: scroll;
+  color: #000;
 }
 
 .movie-cast-scroller {
@@ -60,10 +99,55 @@
   height: 292px;
 }
 
+.movie_inform-like:hover, .movie_inform-mark:hover, .movie_inform-star:hover {
+  cursor: pointer;
+  filter: invert(100%);
+}
+
+.user-score {
+  display: flex;
+  flex-direction: row;
+  width: 110px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.movie_inform-vote {
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .list-scroller {
   display: flex;
   flex-direction: row;
   height: 292px;
+}
+
+.movieInform-name {
+  padding: 10px 10px 0 10px;
+  font-weight: bold;
+  color: #000;
+  font-size: 15px;
+}
+
+.movieInform-character {
+  padding: 0px 10px;
+  color: #000;
+  font-size: 14px;
+}
+
+.tagline {
+  margin-bottom: 0;
+  font-size: 1.1em;
+  font-weight: 400;
+  font-style: italic;
+  opacity: 0.7;
+  width: 100%;
+  margin: 0 0 8px 0;
 }
 
 .person-card {

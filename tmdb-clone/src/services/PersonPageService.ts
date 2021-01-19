@@ -35,6 +35,7 @@ class PersonPageService extends TmdbBaseService {
       place_of_birth: detailsResponse.data.place_of_birth,
       profile_path: detailsResponse.data.profile_path,
       deathday: detailsResponse.data.deathday,
+      imdb_id: detailsResponse.data.imdb_id
     }
     return result;
   }

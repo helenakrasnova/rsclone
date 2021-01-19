@@ -61,38 +61,23 @@ class Header extends Component<HeaderProps, HeaderState> {
       <>
         <div className="header" >
           <div className="header-container">
-            <img src={logo} className="header-logo" alt="logo" />
-            <Link to="/">Movies</Link>
-            <Link to="/person">People</Link>
-            <div
-              onClick={this.handleSearchClicked}
-              className="header-search__button">
-              <Icon
-                link
-                size='large'
-                color='blue'
-                name={this.state.isSearchOn ? 'close' : 'search'} />
+            <nav className="navigation">
+              <img src={logo} className="header-logo" alt="logo" />
+              <Link to="/"><span className="navigation-link">Movies</span></Link>
+              <Link to="/person"><span className="navigation-link">People</span></Link>
+            </nav>
+            <div className="nav-account">
+              <div
+                onClick={this.handleSearchClicked}
+                className="header-search__button">
+                <Icon
+                  link
+                  size='large'
+                  color='blue'
+                  name={this.state.isSearchOn ? 'close' : 'search'} />
+              </div>
             </div>
           </div>
-          {/* <div className="App-header headerLogin">
-        {isAuthenticated ?
-          (<>
-            <div className="hello">
-              Hello, {authService.userName} !
-                        </div>
-            <button
-              className="logout"
-              onClick={() => {
-                authService.logOut();
-                props.history.push('/login');
-              }}>
-              logOut
-                        </button>
-          </>)
-          : (<Link to="/login">
-            <button className="login">login</button>
-          </Link>)}
-      </div> */}
         </div>
         {this.state.isSearchOn ?
           <Search
@@ -111,6 +96,25 @@ class Header extends Component<HeaderProps, HeaderState> {
           // results={results}
           // value={value}
           /> : ''}
+        {/* <div className="App-header headerLogin">
+        {isAuthenticated ?
+          (<>
+            <div className="hello">
+              Hello, {authService.userName} !
+                        </div>
+            <button
+              className="logout"
+              onClick={() => {
+                authService.logOut();
+                props.history.push('/login');
+              }}>
+              logOut
+                        </button>
+          </>)
+          : (<Link to="/login">
+            <button className="login">login</button>
+          </Link>)}
+      </div> */}
       </>
     );
   }

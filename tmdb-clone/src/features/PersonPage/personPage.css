@@ -37,8 +37,22 @@
   overflow: hidden;
   border-radius: 8px;
 }
-
+.personInform-title{
+  margin-bottom: 35px;
+}
+.personInform-biographyText{
+  font-size: 1.1em;
+  line-height: 1.4em;
+}
 .personInform-knownFor {
   margin-top: 30px;
   width: 100%;
+}
+
+.personInform-name {
+  font-size: 35px;
+  font-weight: bold;
+}
+.personInform-table{
+  color: #000;
 }

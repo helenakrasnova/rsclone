@@ -14,4 +14,5 @@ export interface PersonDetailsViewModel {
   profile_path?: string;
   credits?: PersonCreditsViewModel;
   images?: PersonImagesResponseDto;
+  imdb_id?: string;
 }

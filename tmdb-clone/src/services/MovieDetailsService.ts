@@ -69,6 +69,7 @@ class MovieDetailsService extends TmdbBaseService {
         cast_id: item.cast_id,
         character: item.character,
         order: item.order,
+        
       }
     });
     return result;

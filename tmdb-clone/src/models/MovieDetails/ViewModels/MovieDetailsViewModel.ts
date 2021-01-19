@@ -22,7 +22,7 @@ export interface MovieDetailsViewModel {
   tagline?: string;
   title?: string;
   video?: boolean;
-  vote_average?: number;
+  vote_average: number;
   vote_count?: number;
   cast?: Array<MovieCastViewModel>;
   reviews?: MovieReviewResponseDto;
