@@ -4,7 +4,7 @@ import MovieDetailsService from './../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from './../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
-import { Icon, Button, Embed } from 'semantic-ui-react';
+import { Icon, Button, Embed, Table, Header, Image, Modal } from 'semantic-ui-react';
 
 type MovieDetailsProps = {
   id: string
@@ -47,6 +47,17 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       return `https://www.themoviedb.org/t/p/w154${url}`;
     }
     return url;
+  }
+
+  getUserImageUrl = (url: string): string | null => {
+    if (!url) {
+      return null;
+    } else if (url.includes('tmdb')) {
+      return url;
+    } else if (url.includes('gravatar')) {
+      return url.slice(1);
+    }
+    return `https://www.themoviedb.org/t/p/w185${url}`;
   }
 
   render = () => {
@@ -94,10 +105,22 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                   <Icon name='heart' color='red' link size='large' className='movie_inform-like' />
                   <Icon name="bookmark" link color='red' size='large' className='movie_inform-mark' />
                   <Icon name="star" link color='red' size='large' className='movie_inform-star' />
-                  <Button compact={true} color='youtube'>
-                    <Icon name='youtube play' />
-                  Play trailer
-                  </Button>
+
+                  <Modal
+                    closeIcon={true}
+                    trigger={
+                      <Button compact={true} color='youtube'>
+                        <Icon name='youtube play' />
+                            Play trailer
+                      </Button>}>
+                    <Modal.Content>
+                      <Embed
+                        key={this.state.videos?.results[0].id}
+                        id={this.state.videos?.results[0].key}
+                        placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
+                        source='youtube' />
+                    </Modal.Content>
+                  </Modal>
                 </div>
               </div>
 
@@ -111,6 +134,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
         </div>
         <div className="movie-content__wrapper">
           <div className="white__column">
+
             <h3>Top Billed Cast</h3>
             <section className="movieActors">
               {this.state.cast?.map((person) => (
@@ -129,12 +153,22 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                   </Link>
                 </div>))}
             </section>
+
             <h3>Social</h3>
             {(this.state.reviews?.results && this.state.reviews?.results.length > 0) ? <section>
               <div className="reviews-container">
                 {this.state.reviews?.results?.map((review) => (
                   <div key={review.id}>
-                    <div className="review-user__avatar" style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w185${review.author_details.avatar_path})` }}></div>
+                    <div
+                      className="review-user__avatar"
+                      style={{
+                        backgroundImage:review.author_details.avatar_path?
+                        `url(${this.getUserImageUrl(review.author_details.avatar_path)})`:
+                        `url(${defaultMovie})`
+                          // `url(https://www.themoviedb.org/t/p/w185${review.author_details.avatar_path})` ||
+                          // `url(${review.author_details.avatar_path?.slice(1)})` ||
+                          // `url(${defaultMovie})`
+                      }}></div>
                     <div>A review by <strong>{review.author_details.username}</strong></div>
                     <div>Written by <strong>{review.author_details.username}</strong> on {review.created_at}</div>
                     {review.content}
@@ -147,8 +181,10 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               <Embed
                 key={this.state.videos?.results[0].id}
                 id={this.state.videos?.results[0].key}
+                placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
                 source='youtube' />
             </section> : `We don't have any trailers for this movie`}
+
             <h3>Recommendations</h3>
             <section className="movieRecommendations">
               {this.state.recommendations?.map((recommendation) => (
@@ -156,7 +192,11 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                   <Link to={`/movies/${recommendation.id}`}>
                     <div
                       className='recommendation-inform'
-                      style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w342${recommendation.poster_path})` }}>
+                      style={{
+                        backgroundImage: recommendation.poster_path ?
+                          `url(https://www.themoviedb.org/t/p/w342${recommendation.poster_path})` :
+                          `url(${defaultMovie})`
+                      }}>
                     </div>
                     <div className="movieInform-name">{recommendation.title}</div>
                     <div className="movieInform-character" >{recommendation.vote_average * 10}%</div>
@@ -184,6 +224,10 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               </p>
               <p>
                 <strong>Keywords </strong><br />
+                {this.state?.keywords?.keywords.map((keyword) =>
+                  <Button compact size='mini'>
+                    {keyword.name}
+                  </Button>)}
               </p>
             </section>
           </div>

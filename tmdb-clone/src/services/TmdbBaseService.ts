@@ -4,7 +4,7 @@ class TmdbBaseService {
   protected token: string | null;
   constructor() {
     this.baseUrl = 'https://api.themoviedb.org/3';
-    this.apiKey = 'ba0b8e9ed78729e1cfe4267f114108cd';
+    this.apiKey = '8d398210b8b32a20a13eede1a83dee17';
     this.token = null;
   }
   protected addApiKey = (url: string): string => {

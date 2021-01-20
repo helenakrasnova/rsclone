@@ -132,12 +132,15 @@
   font-weight: bold;
   color: #000;
   font-size: 15px;
+  text-overflow: unset;
+  word-break: break-all;
+  width: 138px;
 }
 
 .movieInform-character {
   padding: 0px 10px;
   color: #000;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .tagline {

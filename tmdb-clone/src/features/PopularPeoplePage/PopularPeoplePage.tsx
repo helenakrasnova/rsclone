@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import './popularPeoplePage.css';
 import PopularPeopleService from './../../services/PopularPeopleService';
-
 import { Grid, Button } from 'semantic-ui-react';
-
-
 import { PopularPeoplePageDto } from './../../models/PopularPeople/PopularPeoplePageResponseDto';
 import { Link } from 'react-router-dom';
 type PopularPeoplePageProps = {
