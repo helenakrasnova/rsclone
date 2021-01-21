@@ -54,6 +54,7 @@ class AuthenticationService extends TmdbBaseService {
     }
   }
 
+  
   private getToken = async (): Promise<string> => {
     if (this.token) {
       return this.token;
