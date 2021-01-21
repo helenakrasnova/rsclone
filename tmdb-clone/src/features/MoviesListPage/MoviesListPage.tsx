@@ -89,7 +89,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
       <>
         <div className="container">
           <Grid largeScreen={2} widescreen={1}>
-            <Grid.Column width={4}>
+            <Grid.Column mobile={16} tablet={4} computer={4}>
               <MoviesOrdering
                 onOrderChanged={this.handleOrderChanged}
                 selectedValue={this.state.orderBy}
@@ -101,7 +101,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
                 initialFilter={this.state.filter}
               />
             </Grid.Column>
-            <Grid.Column mobile={16} tablet={2} computer={12}>
+            <Grid.Column mobile={16} tablet={12} computer={12}>
               <MoviesList
                 movies={this.state.movies} />
               <Button

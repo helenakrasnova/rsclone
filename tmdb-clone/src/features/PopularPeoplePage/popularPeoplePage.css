@@ -57,11 +57,11 @@
   margin-top: 0;
   text-overflow: ellipsis;
 }
-
+.personPopular-popularFor-text{
+   width: 100%;
+   text-overflow: ellipsis;
+   overflow: hidden;
+}
 .more-people {
   margin-top: 30px;
-}
-.personPopular-popularFor_movie{
-  display: inline;
-  text-overflow: ellipsis;
 }

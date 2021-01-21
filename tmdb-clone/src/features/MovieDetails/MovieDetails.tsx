@@ -4,7 +4,7 @@ import MovieDetailsService from './../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from './../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
-import { Icon, Button, Embed, Table, Header, Image, Modal } from 'semantic-ui-react';
+import { Icon, Button, Embed, Table, Header, Image, Modal, Popup, Rating } from 'semantic-ui-react';
 
 type MovieDetailsProps = {
   id: string
@@ -65,7 +65,9 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       <>
         <div
           className="movie-bg"
-          style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/original${this.state.backdrop_path})` }}>
+          style={{ background: this.state.backdrop_path?
+             `url(https://www.themoviedb.org/t/p/original${this.state.backdrop_path})`:
+             'grey' }}>
           <div className="movie-bg__filter">
             <div className="movie_poster__column">
               <img
@@ -80,11 +82,14 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
             </div>
             <div className="movie_inform__column">
               <h2 className='movie-title'>{this.state.title}
-                <span className="movie-year"> ({this.state.release_date?.substr(0, 4)})</span>
+                <span className="movie-year">{this.state.release_date ? ` (${this.state.release_date?.substr(0, 4)})` : ''}</span>
                 <div className="facts">
-                  <span className="release-date">{this.state.release_date}</span>
-                  <span>{this.state.genres?.map((genre) => <span key={genre.id}> <Icon name='circle outline' size='small' /> {genre.name}  </span>)}</span>
-                  <span> <Icon name='circle outline' size='small' /> {this.state.runtime}min</span>
+                  <span className="release-date">{this.state.release_date} <Icon color='red' name='circle outline' size='small' /></span>
+                  <span>
+                    {this.state.genres?.map((genre) => <span key={genre.id}> {genre.name} <Icon color='red' name='circle outline' size='small' />  </span>)}</span>
+                  <span>
+                    {this.state.runtime ? `${this.state.runtime} min` : ''}
+                  </span>
                 </div>
               </h2>
 
@@ -96,31 +101,49 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         this.state.vote_average >= 7 ? '#21d07a' :
                           this.state.vote_average >= 4 ? '#d2d531' :
                             this.state.vote_average > 0 ? '#cb215b' : '#666666'
-                    }}>{this.state.vote_average * 10}
-                      <span className="percent">%</span>
+                    }}>{this.state.vote_average !== 0 ? `${this.state.vote_average * 10}%` : 'NR'}
+                      {/* <span className="percent">%</span> */}
                     </div>
                     <span>User <br /> Score</span>
                   </div>
                   {/* <Button color='red' circular icon='heart' /> */}
                   <Icon name='heart' color='red' link size='large' className='movie_inform-like' />
                   <Icon name="bookmark" link color='red' size='large' className='movie_inform-mark' />
-                  <Icon name="star" link color='red' size='large' className='movie_inform-star' />
-
-                  <Modal
-                    closeIcon={true}
+                  <Popup
+                    flowing
+                    hoverable
+                    position='bottom center'
                     trigger={
-                      <Button compact={true} color='youtube'>
-                        <Icon name='youtube play' />
+                      <Icon
+                      name="star"
+                      link
+                      color='yellow'
+                      size='large'
+                      className='movie_inform-star'
+                       />
+                    }>
+                    <Popup.Content>
+                      <Rating icon='star' defaultRating={0} maxRating={10} />
+                    </Popup.Content>
+                  </Popup>
+                  {this.state.videos?.results[0] ?
+                    <Modal
+                      closeIcon={true}
+                      trigger={
+                        <Button compact={true} color='youtube'>
+                          <Icon name='youtube play' />
                             Play trailer
                       </Button>}>
-                    <Modal.Content>
-                      <Embed
-                        key={this.state.videos?.results[0].id}
-                        id={this.state.videos?.results[0].key}
-                        placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
-                        source='youtube' />
-                    </Modal.Content>
-                  </Modal>
+                      <Modal.Content>
+                        <Embed
+                          key={this.state.videos?.results[0].id}
+                          id={this.state.videos?.results[0].key}
+                          placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
+                          source='youtube' />
+                      </Modal.Content>
+                    </Modal> : ''
+                  }
+
                 </div>
               </div>
 
@@ -162,12 +185,12 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                     <div
                       className="review-user__avatar"
                       style={{
-                        backgroundImage:review.author_details.avatar_path?
-                        `url(${this.getUserImageUrl(review.author_details.avatar_path)})`:
-                        `url(${defaultMovie})`
-                          // `url(https://www.themoviedb.org/t/p/w185${review.author_details.avatar_path})` ||
-                          // `url(${review.author_details.avatar_path?.slice(1)})` ||
-                          // `url(${defaultMovie})`
+                        backgroundImage: review.author_details.avatar_path ?
+                          `url(${this.getUserImageUrl(review.author_details.avatar_path)})` :
+                          `url(${defaultMovie})`
+                        // `url(https://www.themoviedb.org/t/p/w185${review.author_details.avatar_path})` ||
+                        // `url(${review.author_details.avatar_path?.slice(1)})` ||
+                        // `url(${defaultMovie})`
                       }}></div>
                     <div>A review by <strong>{review.author_details.username}</strong></div>
                     <div>Written by <strong>{review.author_details.username}</strong> on {review.created_at}</div>
@@ -179,30 +202,31 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
             <h3>Media</h3>
             {(this.state.videos?.results && this.state.videos?.results.length > 0) ? <section className="trailers">
               <Embed
-                key={this.state.videos?.results[0].id}
                 id={this.state.videos?.results[0].key}
+                key={this.state.videos?.results[0].id}
                 placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
                 source='youtube' />
             </section> : `We don't have any trailers for this movie`}
 
             <h3>Recommendations</h3>
-            <section className="movieRecommendations">
-              {this.state.recommendations?.map((recommendation) => (
-                <div className="recommendation" key={recommendation.id}>
-                  <Link to={`/movies/${recommendation.id}`}>
-                    <div
-                      className='recommendation-inform'
-                      style={{
-                        backgroundImage: recommendation.poster_path ?
-                          `url(https://www.themoviedb.org/t/p/w342${recommendation.poster_path})` :
-                          `url(${defaultMovie})`
-                      }}>
-                    </div>
-                    <div className="movieInform-name">{recommendation.title}</div>
-                    <div className="movieInform-character" >{recommendation.vote_average * 10}%</div>
-                  </Link>
-                </div>))}
-            </section>
+            {(this.state.recommendations && this.state.recommendations?.length > 0) ?
+              <section className="movieRecommendations">
+                {this.state.recommendations?.map((recommendation) => (
+                  <div className="recommendation" key={recommendation.id}>
+                    <Link to={`/movies/${recommendation.id}`}>
+                      <div
+                        className='recommendation-inform'
+                        style={{
+                          backgroundImage: recommendation.poster_path ?
+                            `url(https://www.themoviedb.org/t/p/w342${recommendation.poster_path})` :
+                            `url(${defaultMovie})`
+                        }}>
+                      </div>
+                      <div className="movieInform-name">{recommendation.title}</div>
+                      <div className="movieInform-character" >{recommendation.vote_average * 10}%</div>
+                    </Link>
+                  </div>))}
+              </section> : `We don't have any recommendations for this movie`}
           </div>
           <div className="grey__column">
             <section className="split-column">
@@ -216,11 +240,11 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               </p>
               <p>
                 <strong>Budget </strong><br />
-               ${this.state.budget}
+                {this.state.budget !== 0 ? '$' + this.state.budget : '-'}
               </p>
               <p>
                 <strong>Revenue </strong><br />
-                ${this.state.revenue}
+                {this.state.revenue !== 0 ? '$' + this.state.revenue : '-'}
               </p>
               <p>
                 <strong>Keywords </strong><br />
@@ -232,15 +256,6 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
             </section>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
       </>
     )
   }

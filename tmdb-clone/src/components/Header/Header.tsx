@@ -29,9 +29,9 @@ class Header extends Component<HeaderProps, HeaderState> {
   }
 
 
-  async componentDidMount() {
-    await this.updateSearchResults();
-  }
+  // async componentDidMount() {
+  //   await this.updateSearchResults();
+  // }
 
   updateSearchResults = async () => {
     let searchingResults = await this.searchService.findSearchResults(this.state.searchingValue);

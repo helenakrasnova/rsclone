@@ -4,6 +4,7 @@ import PopularPeopleService from './../../services/PopularPeopleService';
 import { Grid, Button } from 'semantic-ui-react';
 import { PopularPeoplePageDto } from './../../models/PopularPeople/PopularPeoplePageResponseDto';
 import { Link } from 'react-router-dom';
+import defaultMovie from './../../assets/img/glyphicons-basic-38-picture-grey.svg'
 type PopularPeoplePageProps = {
 
 }
@@ -51,26 +52,31 @@ class PopularPeoplePage extends Component<PopularPeoplePageProps, PopularPeopleP
       <React.Fragment>
         <h3 className="personPopular-heading">Popular people</h3>
         <div className="personPopular-container">
-            {this.state.persons.map((person) => (
-              <Link to={`/person/${person.id}`}>
-                <div key={person.id} className="personPopular-card">
-                  <div
-                    className="personPopular-image"
-                    style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w300${person.profile_path})` }}
-                  ></div>
-                  <div className="personPopular-inform">
-                    <div className="personPopular-name">{person.name}</div>
-                    <div className="personPopular-popularFor">{person.known_for.map((movie) => (<span>{movie.title}</span>))}</div>
-                  </div>
+          {this.state.persons.map((person) => (
+            <Link to={`/person/${person.id}`}>
+              <div key={person.id} className="personPopular-card">
+                <div
+                  className="personPopular-image"
+                  style={{
+                    backgroundImage: person.profile_path ?
+                      `url(https://www.themoviedb.org/t/p/w300${person.profile_path})` :
+                      `url(${defaultMovie})`
+                  }}
+                ></div>
+                <div className="personPopular-inform">
+                  <div className="personPopular-name">{person.name}</div>
+                  <div className="personPopular-popularFor">
+                    <p className="personPopular-popularFor-text">{person.known_for.map((movie) => (movie.title? movie.title: movie.name)).join(', ')}</p></div>
                 </div>
-              </Link>
-            ))}
-            <Button
-              className='more-people'
-              secondary
-              fluid
-              onClick={this.handleLoadMoreClicked}
-            >More popular people</Button>
+              </div>
+            </Link>
+          ))}
+          <Button
+            className='more-people'
+            secondary
+            fluid
+            onClick={this.handleLoadMoreClicked}
+          >More popular people</Button>
         </div>
       </React.Fragment>
     )

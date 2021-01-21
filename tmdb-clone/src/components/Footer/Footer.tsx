@@ -1,8 +1,11 @@
 import React from "react";
 import './footer.css';
 import logoFooter from '../../assets/img/logo-footer.svg';
+import rsLogo from '../../assets/img/rs_school_js.svg';
+import gitHubLogo from '../../assets/img/GitHub-Mark-64px.png';
 // import { Link } from "react-router-dom";
 // import { withRouter } from "react-router";
+import { Icon, Image } from 'semantic-ui-react';
 
 export default function Footer() {
 
@@ -49,7 +52,18 @@ export default function Footer() {
             <li><a href="https://www.themoviedb.org/privacy-policy">Privacy Policy</a></li>
           </ul>
         </div>
+        <Image src={rsLogo}
+          as='a'
+          size='tiny'
+          href='https://rs.school/js/'
+          />
+           <Image src={gitHubLogo}
+          as='a'
+          size='mini'
+          href='https://rs.school/js/'
+          />
       </div>
+
     </footer>
   );
 }

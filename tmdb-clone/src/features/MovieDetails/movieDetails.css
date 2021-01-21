@@ -116,7 +116,7 @@
 .movie_inform-vote {
   display: flex;
   flex-direction: row;
-  width: 40%;
+  width: 50%;
   justify-content: space-between;
   align-items: center;
 }
@@ -132,8 +132,8 @@
   font-weight: bold;
   color: #000;
   font-size: 15px;
-  text-overflow: unset;
-  word-break: break-all;
+  max-height: 50px;
+  overflow: hidden;
   width: 138px;
 }
 
@@ -170,10 +170,11 @@
 }
 
 .person-image-container {
-  height: 185px;
+  height: 175px;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center center;
+  background-size: cover;
 }
 
 .white__column {

@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: 5.5rem;
+  bottom: 6rem;
   left: 2rem;
 }
 
@@ -72,7 +72,7 @@
 }
 .movieCard-like{
   top: 25px;
-  right: 25px;
+  left: 185px;
 }
 .movieCard-watchList:hover, .movieCard-like:hover{
   cursor: pointer;

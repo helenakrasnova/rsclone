@@ -8,9 +8,6 @@ import { PersonCreditsResponseDto } from './../models/PersonDetails/Dtos/PersonC
 import { PersonImagesResponseDto } from '../models/PersonDetails/Dtos/PersonImagesResponseDto';
 
 class PersonPageService extends TmdbBaseService {
-  constructor() {
-    super();
-  }
   public getPerson = async (id: string): Promise<PersonDetailsViewModel> => {
     let personDetails = await this.getPersonDetails(id);
     let personDetailsItems = await Promise.all([
@@ -46,9 +43,12 @@ class PersonPageService extends TmdbBaseService {
       cast: detailsResponse.data.cast.map((item) => ({
         id: item.id,
         title: item.title,
+        poster_path: item.poster_path,
         release_date: item.release_date,
         vote_average: item.vote_average,
         character: item.character,
+        popularity: item.popularity,
+        vote_count: item.vote_count
       })),
       crew: detailsResponse.data.crew.map((item) => ({
         id: item.id,
@@ -57,6 +57,12 @@ class PersonPageService extends TmdbBaseService {
         vote_average: item.vote_average,
       })),
     }
+    let knownFor = [...result.cast];
+    knownFor.sort((a, b) => b.vote_count - a.vote_count);
+    result.knownFor = knownFor.slice(0,8);
+    result.cast.forEach((item) => item.release_date = item.release_date ? item.release_date : '3000-1-1');
+    result.cast.sort((a, b) => new Date(b.release_date).getFullYear() - new Date(a.release_date).getFullYear());
+
     return result;
   }
 
