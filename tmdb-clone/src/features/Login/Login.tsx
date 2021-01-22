@@ -1,14 +1,19 @@
 import React, { Component, RefObject } from "react";
 import './login.css';
 import AuthenticationService from './../../services/AuthenticationService';
+import { RouteComponentProps } from 'react-router-dom';
+import { Form, Button, Checkbox } from "semantic-ui-react";
 type LoginProps = {
 
 }
-class Login extends Component<{}, {}> {
+// type LoginState = {
+//   loginError: boolean;
+// }
+class Login extends Component<RouteComponentProps<LoginProps>, {}> {
   userNameInput: RefObject<HTMLInputElement>;
   passwordInput: RefObject<HTMLInputElement>;
   authService: AuthenticationService;
-  constructor(props: LoginProps) {
+  constructor(props: RouteComponentProps<LoginProps>) {
     super(props);
     this.userNameInput = React.createRef();
     this.passwordInput = React.createRef();
@@ -22,11 +27,11 @@ class Login extends Component<{}, {}> {
     let username = this.userNameInput?.current?.value;
     let password = this.passwordInput?.current?.value;
     if (username && password) {
-      await this.authService.login(username, password);
+      let loginResult = await this.authService.login(username, password);
+      if (loginResult) {
+        this.props.history.push('/');
+      }
     }
-    // if (result) {
-    //   this.props.history.push('/');
-    // }
     // else {
     //   this.setState({
     //     loginError: true
@@ -36,30 +41,32 @@ class Login extends Component<{}, {}> {
   render = () => {
     return (
       <>
-        <form
-          className="transparent"
-          onSubmit={this.handleFormSubmit}>
-          <div className="formFilter">
-            <h3 className="formText"> provide your credentials</h3>
-            <div className="form-inner">
-              <label htmlFor="username">UserName</label>
-              <input
-                type="text"
-                className="userName"
-                ref={this.userNameInput} />
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                className="password"
-                ref={this.passwordInput} />
-              <label htmlFor=""></label>
-              <input
-                type="submit"
-                value="log-in" />
-              {/* {this.state.loginError ? <div className="login-error">invalid username or password</div> : ''} */}
+        <div className="login-wrapper">
+          <div className="login-content__wrapper">
+            <div className="login-wrapper">
+              <h2 className='login-header'>Login to your account</h2>
+               <Form onSubmit={this.handleFormSubmit}>
+                <Form.Field
+                  icon='user'
+                  iconPosition='left'>
+                  <label className="login-text">Username</label>
+                  <input ref={this.userNameInput} placeholder='Username' />
+                </Form.Field>
+                <Form.Field>
+                  <label className="login-text">Password</label>
+                  <input ref={this.passwordInput} type='password' placeholder='Password' />
+                </Form.Field>
+                <Button type='submit' color="blue">Login</Button>
+              </Form>
+
             </div>
           </div>
-        </form>
+        </div>
+
+        {/* {this.state.loginError ? <div className="login-error">invalid username or password</div> : ''} */}
+        {/* </div>
+          </div>
+        </form> */}
       </>
     );
   }

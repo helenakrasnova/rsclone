@@ -2,7 +2,7 @@
   height: 570px;
   border-bottom: 1px solid black;
   background-position: right -200px top;
-  background-size: cover;
+  background-size: cover !important;
   background-repeat: no-repeat;
 }
 

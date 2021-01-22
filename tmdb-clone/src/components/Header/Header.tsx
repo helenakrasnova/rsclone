@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './header.css';
 import logo from '../../assets/img/logo.svg';
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 // import { withRouter } from "react-router";
-import { Icon, Search } from 'semantic-ui-react';
+import { Button, Icon, Popup, Search } from 'semantic-ui-react';
 import SearchService from './../../services/SearchService';
 import { SearchResponseDto } from '../../models/SearchResponseDto';
+import AuthenticationService from './../../services/AuthenticationService';
+import AccountService from './../../services/AccountService';
 
 type HeaderProps = {
 
@@ -16,18 +18,21 @@ type HeaderState = {
   results: SearchResponseDto | null;
 }
 
-class Header extends Component<HeaderProps, HeaderState> {
+class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
   searchService: SearchService;
-  constructor(props: HeaderProps) {
+  authenticationService: AuthenticationService;
+  accountService: AccountService;
+  constructor(props: RouteComponentProps<HeaderProps>) {
     super(props);
     this.state = {
       isSearchOn: false,
       searchingValue: '',
       results: null,
     }
+    this.authenticationService = new AuthenticationService();
+    this.accountService = new AccountService();
     this.searchService = new SearchService();
   }
-
 
   // async componentDidMount() {
   //   await this.updateSearchResults();
@@ -56,6 +61,57 @@ class Header extends Component<HeaderProps, HeaderState> {
 
   }
 
+  handleLogoutClicked = () => {
+    this.authenticationService.logOut();
+    this.props.history.push('/login');
+  }
+
+  handleRatingsClicked = () => {
+    const json = localStorage.getItem('accountDetailsKey');
+    if (json) {
+      const accountDetailsValue = JSON.parse(json);
+      const page = 1;
+      this.accountService.getRatings(accountDetailsValue.id, page);
+      this.props.history.push(`/u/${accountDetailsValue.username}/ratings`);
+    }
+  }
+
+  handleWatchlistClicked = () => {
+    const json = localStorage.getItem('accountDetailsKey');
+    if (json) {
+      const accountDetailsValue = JSON.parse(json);
+      const page = 1;
+      this.accountService.getWatchList(accountDetailsValue.id, page);
+      this.props.history.push(`/u/${accountDetailsValue.username}/watchlist`);
+    }
+  }
+
+  handleViewProfileClicked = () => {
+    const json = localStorage.getItem('accountDetailsKey');
+    if (json) {
+      const accountDetailsValue = JSON.parse(json);
+      this.props.history.push(`/u/${accountDetailsValue.username}`);
+    }
+  }
+
+  getInitials = () => {
+    const json = localStorage.getItem('accountDetailsKey');
+    if (json) {
+      const accountDetailsValue = JSON.parse(json);
+      let name = accountDetailsValue.name;
+      if (!name) {
+        let username = accountDetailsValue.username;
+        return `${username[0]}`;
+      }
+      let nameArray = name.join(' ');
+      if (nameArray.length === 2) {
+        return `${nameArray[0][0]}${nameArray[1][0]}`
+      } else {
+        return `${nameArray[0][0]}`;
+      }
+    }
+  }
+
   render = () => {
     return (
       <>
@@ -67,6 +123,41 @@ class Header extends Component<HeaderProps, HeaderState> {
               <Link to="/person"><span className="navigation-link">People</span></Link>
             </nav>
             <div className="nav-account">
+              {this.authenticationService.isAuthenticated() ?
+                <Popup
+                  on='click'
+                  position='bottom center'
+                  pinned
+                  style={{ backgroundColor: '#e0e1e2', }}
+                  trigger={
+                  <button className="header-userIcon">{this.getInitials()?.toUpperCase()}</button>
+                  }>
+                  <Popup.Content>
+                    <Button fluid link icon='user outline'
+                      onClick={this.handleViewProfileClicked}> View profile</Button>
+                  </Popup.Content>
+                  <Popup.Content>
+                    <Button fluid link icon='user outline'
+                      onClick={this.handleRatingsClicked}> Ratings</Button>
+                  </Popup.Content>
+                  <Popup.Content>
+                    <Button fluid link icon='user outline'
+                      onClick={this.handleWatchlistClicked}> Watchlist</Button>
+                  </Popup.Content>
+                  <Popup.Content>
+                    <Button fluid link disabled icon='user outline' > Favorite</Button>
+                  </Popup.Content>
+                  <Popup.Content>
+                    <Button fluid link icon='user outline' color='blue'
+                      onClick={this.handleLogoutClicked} >
+                      LogOut
+                      </Button>
+                  </Popup.Content>
+                </Popup>
+                :
+                <Link to="/login">
+                  <div className="navigation-link">Login</div>
+                </Link>}
               <div
                 onClick={this.handleSearchClicked}
                 className="header-search__button">
@@ -79,45 +170,43 @@ class Header extends Component<HeaderProps, HeaderState> {
             </div>
           </div>
         </div>
-        {this.state.isSearchOn ?
-          <Search
-            input={{ fluid: true }}
-            icon={
-              <Icon
-                name='close'
-                link
-                onClick={this.handleClearSearchClick}
-              />}
-            fluid={true}
-            // onResultSelect={(e, data) =>
-            //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
-            // }
-            onSearchChange={this.handleSearchChange}
-          // results={results}
-          // value={value}
-          /> : ''}
-        {/* <div className="App-header headerLogin">
-        {isAuthenticated ?
-          (<>
-            <div className="hello">
-              Hello, {authService.userName} !
-                        </div>
-            <button
-              className="logout"
-              onClick={() => {
-                authService.logOut();
-                props.history.push('/login');
-              }}>
-              logOut
-                        </button>
-          </>)
-          : (<Link to="/login">
-            <button className="login">login</button>
-          </Link>)}
-      </div> */}
+        <div>
+
+          {/* {this.authenticationService.isAuthenticated() ?
+            (<div>
+              <span className="hello">
+                Hello,  !</span>
+              <Button onClick={() => {
+                this.authenticationService.logOut();
+                this.props.history.push('/login');
+              }}>logOut</Button>
+            </div>)
+            : (<Link to="/login">
+              <button className="login">login</button>
+            </Link>)} */}
+
+          {this.state.isSearchOn ?
+            <Search
+              input={{ fluid: true }}
+              icon={
+                <Icon
+                  name='close'
+                  link
+                  onClick={this.handleClearSearchClick}
+                />}
+              fluid={true}
+              // onResultSelect={(e, data) =>
+              //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+              // }
+              onSearchChange={this.handleSearchChange}
+            // results={results}
+            // value={value}
+            /> : ''}
+
+        </div>
       </>
     );
   }
 
 }
-export default Header;
+export default withRouter(Header);

@@ -1,7 +1,6 @@
 import TmdbBaseService from './TmdbBaseService';
 import AuthenticationService from './AuthenticationService';
 import axios, { AxiosResponse } from 'axios';
-import { AccountDetailsResponseDto } from '../models/Account/AccountDetailsResponseDto';
 import { RatingResponseDto } from '../models/Account/RatingResponseDto';
 
 class AccountService extends TmdbBaseService {
@@ -30,11 +29,6 @@ class AccountService extends TmdbBaseService {
     }
   }
 
-  public getAccountDetails = async (): Promise<AccountDetailsResponseDto> => {
-    const url = this.getUrlWithSessionId('account');
-    let response: AxiosResponse<AccountDetailsResponseDto> = await axios.get<AccountDetailsResponseDto>(url);
-    return response.data;
-  }
 
   public getRatings = async (id: number, page: number): Promise<RatingResponseDto> => {
     let url = this.getUrlWithSessionId(`/account/${id}/rated/movies`);

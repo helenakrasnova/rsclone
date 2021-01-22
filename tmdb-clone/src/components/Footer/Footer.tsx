@@ -5,7 +5,7 @@ import rsLogo from '../../assets/img/rs_school_js.svg';
 import gitHubLogo from '../../assets/img/GitHub-Mark-64px.png';
 // import { Link } from "react-router-dom";
 // import { withRouter } from "react-router";
-import { Icon, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 
 export default function Footer() {
 
@@ -14,7 +14,7 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-content join">
           <img src={logoFooter} className="footer-logo" alt="footer logo" />
-          <a className="logged_in" href="/u/helena.trump">Hi helena.trump!</a>
+          <a className="logged_in" href="/">Hi helena.trump!</a>
         </div>
         <div className="footer-content">
           <h3 className="footer-heading">The Basics</h3>
@@ -60,7 +60,7 @@ export default function Footer() {
            <Image src={gitHubLogo}
           as='a'
           size='mini'
-          href='https://rs.school/js/'
+          href='https://github.com/helenakrasnova'
           />
       </div>
 

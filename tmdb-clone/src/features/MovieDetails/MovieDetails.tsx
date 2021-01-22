@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link, RouteChildrenProps, RouteComponentProps, RouteProps } from 'react-router-dom';
+import { Link, RouteComponentProps, RouteProps } from 'react-router-dom';
 import MovieDetailsService from './../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from './../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
-import { Icon, Button, Embed, Table, Header, Image, Modal, Popup, Rating } from 'semantic-ui-react';
+import { Icon, Button, Embed, Modal, Popup, Rating } from 'semantic-ui-react';
 
 type MovieDetailsProps = {
   id: string
@@ -110,9 +110,11 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                   <Icon name='heart' color='red' link size='large' className='movie_inform-like' />
                   <Icon name="bookmark" link color='red' size='large' className='movie_inform-mark' />
                   <Popup
-                    flowing
-                    hoverable
+                    // flowing
+                    // hoverable
+                    on='click'
                     position='bottom center'
+                    pinned
                     trigger={
                       <Icon
                       name="star"

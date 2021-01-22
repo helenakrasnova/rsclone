@@ -62,6 +62,15 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
     }
   }
 
+  getAge = (): number | null => {
+    if (this.state.birthday && this.state.deathday) {
+      return new Date(this.state.deathday).getFullYear() - new Date(this.state.birthday).getFullYear();
+    } else if (this.state.birthday && !this.state.deathday) {
+      return new Date().getFullYear() - new Date(this.state.birthday).getFullYear();
+    }
+    return null;
+  }
+
   render = () => {
     return (
       <>
@@ -113,10 +122,11 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
               <h4>Gender</h4>
               <div>{this.state.gender === 2 ? 'Male' : 'Female'}</div>
               <h4>Birthday</h4>
-              <div>{this.state.birthday}</div>
+              <div>{this.state.birthday} ({this.getAge() ? `${this.getAge()} years old` : ''})</div>
               <h4>Place of Birth</h4>
               <div>{this.state.place_of_birth}</div>
-              {this.state.deathday ? <h3>Deathday<div>{this.state.deathday}</div></h3> : <div></div>}
+              {this.state.deathday ? <h4>Deathday</h4> : ''}
+              {this.state.deathday ? <div>{this.state.deathday} ({this.getAge() ? `${this.getAge()} years old` : ''})</div> : ''}
               <h4>Also Known As</h4>
               {this.state.also_known_as?.map((item, index) => (<div key={index}>{item}</div>))}
             </section>
