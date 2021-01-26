@@ -5,6 +5,7 @@ import { Grid, Button } from 'semantic-ui-react';
 import { PopularPeoplePageDto } from './../../models/PopularPeople/PopularPeoplePageResponseDto';
 import { Link } from 'react-router-dom';
 import defaultMovie from './../../assets/img/glyphicons-basic-38-picture-grey.svg'
+import { posterUrl } from './../../configuration/configuration';
 type PopularPeoplePageProps = {
 
 }
@@ -59,7 +60,7 @@ class PopularPeoplePage extends Component<PopularPeoplePageProps, PopularPeopleP
                   className="personPopular-image"
                   style={{
                     backgroundImage: person.profile_path ?
-                      `url(https://www.themoviedb.org/t/p/w300${person.profile_path})` :
+                      `url(${posterUrl}/w300${person.profile_path})` :
                       `url(${defaultMovie})`
                   }}
                 ></div>

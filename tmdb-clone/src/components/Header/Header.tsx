@@ -1,21 +1,65 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
 import './header.css';
 import logo from '../../assets/img/logo.svg';
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 // import { withRouter } from "react-router";
-import { Button, Icon, Popup, Search } from 'semantic-ui-react';
+import { Button, Icon, Popup, Search, SearchProps, SearchResultData } from 'semantic-ui-react';
 import SearchService from './../../services/SearchService';
-import { SearchResponseDto } from '../../models/SearchResponseDto';
+import { SearchResult } from '../../models/SearchResponseDto';
 import AuthenticationService from './../../services/AuthenticationService';
 import AccountService from './../../services/AccountService';
+import { posterUrl } from './../../configuration/configuration';
+import defaultMovie from './../../assets/img/glyphicons-basic-38-picture-grey.svg';
 
 type HeaderProps = {
 
 }
+
 type HeaderState = {
   isSearchOn: boolean;
-  searchingValue: string;
-  results: SearchResponseDto | null;
+  searchState: SearchState;
+}
+
+type SearchResultModel = {
+  title: string;
+  description: string;
+  image: string;
+  id: number;
+  category?: string;
+}
+
+type SearchCategoryModel = {
+  name: string;
+  results: Array<SearchResultModel>;
+}
+
+type SearchModel = {
+  movies: SearchCategoryModel;
+  persons: SearchCategoryModel;
+}
+
+type SearchState = {
+  loading: boolean;
+  results?: SearchModel;
+  value?: string;
+}
+
+const initialState: HeaderState = {
+  isSearchOn: false,
+  searchState: {
+    loading: false,
+    results: {
+      movies: {
+        name: 'movies',
+        results: [],
+      },
+      persons: {
+        name: 'persons',
+        results: [],
+      }
+    },
+    value: '',
+  },
 }
 
 class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
@@ -24,25 +68,10 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
   accountService: AccountService;
   constructor(props: RouteComponentProps<HeaderProps>) {
     super(props);
-    this.state = {
-      isSearchOn: false,
-      searchingValue: '',
-      results: null,
-    }
+    this.state = initialState;
     this.authenticationService = new AuthenticationService();
     this.accountService = new AccountService();
     this.searchService = new SearchService();
-  }
-
-  // async componentDidMount() {
-  //   await this.updateSearchResults();
-  // }
-
-  updateSearchResults = async () => {
-    let searchingResults = await this.searchService.findSearchResults(this.state.searchingValue);
-    this.setState({
-      results: searchingResults,
-    });
   }
 
   handleSearchClicked = () => {
@@ -53,12 +82,59 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
 
   handleClearSearchClick = () => {
     this.setState({
-      searchingValue: '',
+      searchState: {
+        value: '',
+        loading: false,
+      }
     });
   }
 
-  handleSearchChange = () => {
-
+  handleSearchChange = async (event: React.MouseEvent<HTMLElement>, data: SearchProps) => {
+    this.setState({
+      searchState: {
+        loading: true,
+        value: data.value,
+      }
+    });
+    if (data.value) {
+      const searchResult = await this.searchService.findSearchResults(data.value);
+      const moviesResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'movie').map((item: SearchResult) => {
+        let model: SearchResultModel = {
+          description: item.overview,
+          title: item.title,
+          image: item.poster_path ? `${posterUrl}/w92${item.poster_path}` : defaultMovie,
+          id: item.id,
+          category: 'movies'
+        }
+        return model;
+      });
+      const personsResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'person').map((item: SearchResult) => {
+        let model: SearchResultModel = {
+          description: item.known_for_department,
+          title: item.name,
+          image: item.profile_path ? `${posterUrl}/w185${item.profile_path}` : defaultMovie,
+          id: item.id,
+          category: 'person'
+        }
+        return model;
+      });
+      this.setState({
+        searchState: {
+          loading: false,
+          results: {
+            movies: {
+              name: 'movies',
+              results: moviesResult,
+            },
+            persons: {
+              name: 'persons',
+              results: personsResult,
+            }
+          },
+          value: data.value,
+        },
+      });
+    }
   }
 
   handleLogoutClicked = () => {
@@ -94,7 +170,7 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
     }
   }
 
-  getInitials = () => {
+  getInitials = (): string | undefined => {
     const json = localStorage.getItem('accountDetailsKey');
     if (json) {
       const accountDetailsValue = JSON.parse(json);
@@ -112,10 +188,15 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
     }
   }
 
+  handleSearchResultClicked = (event: React.MouseEvent<HTMLDivElement>, data: SearchResultData) => {
+    this.setState(initialState);
+    this.props.history.push(`/${data.result.category}/${data.result.id}`);
+  }
+
   render = () => {
     return (
       <>
-        <div className="header" >
+        <div className="header-component" >
           <div className="header-container">
             <nav className="navigation">
               <img src={logo} className="header-logo" alt="logo" />
@@ -123,17 +204,17 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
               <Link to="/person"><span className="navigation-link">People</span></Link>
             </nav>
             <div className="nav-account">
-              {this.authenticationService.isAuthenticated() ?
+              {AuthenticationService.isAuthenticated() ?
                 <Popup
                   on='click'
                   position='bottom center'
                   pinned
                   style={{ backgroundColor: '#e0e1e2', }}
                   trigger={
-                  <button className="header-userIcon">{this.getInitials()?.toUpperCase()}</button>
+                    <button className="header-userIcon">{this.getInitials()?.toUpperCase()}</button>
                   }>
                   <Popup.Content>
-                    <Button fluid link icon='user outline'
+                    <Button fluid link disabled icon='user outline'
                       onClick={this.handleViewProfileClicked}> View profile</Button>
                   </Popup.Content>
                   <Popup.Content>
@@ -170,24 +251,12 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
             </div>
           </div>
         </div>
-        <div>
-
-          {/* {this.authenticationService.isAuthenticated() ?
-            (<div>
-              <span className="hello">
-                Hello,  !</span>
-              <Button onClick={() => {
-                this.authenticationService.logOut();
-                this.props.history.push('/login');
-              }}>logOut</Button>
-            </div>)
-            : (<Link to="/login">
-              <button className="login">login</button>
-            </Link>)} */}
-
+        <div >
           {this.state.isSearchOn ?
             <Search
+              category
               input={{ fluid: true }}
+              value={this.state.searchState.value}
               icon={
                 <Icon
                   name='close'
@@ -195,14 +264,13 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
                   onClick={this.handleClearSearchClick}
                 />}
               fluid={true}
-              // onResultSelect={(e, data) =>
-              //   dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
-              // }
+              size='big'
+              onResultSelect={this.handleSearchResultClicked}
               onSearchChange={this.handleSearchChange}
-            // results={results}
-            // value={value}
+              results={this.state.searchState.results}
+              loading={this.state.searchState.loading}
+              showNoResults
             /> : ''}
-
         </div>
       </>
     );

@@ -4,7 +4,10 @@ import MovieDetailsService from './../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from './../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
-import { Icon, Button, Embed, Modal, Popup, Rating } from 'semantic-ui-react';
+import { Icon, Button, Embed, Modal, Popup, Rating, RatingProps } from 'semantic-ui-react';
+import AccountService from './../../services/AccountService';
+import AuthenticationService from '../../services/AuthenticationService';
+import { posterUrl } from './../../configuration/configuration';
 
 type MovieDetailsProps = {
   id: string
@@ -14,23 +17,26 @@ type MovieDetailsProps = {
 // }
 class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, MovieDetailsViewModel> {
   movieDetailsService: MovieDetailsService;
+  accountService: AccountService;
+  authenticationService: AuthenticationService;
   id: string;
   constructor(props: RouteComponentProps<MovieDetailsProps>) {
     super(props);
     this.id = props.match.params.id;
     this.movieDetailsService = new MovieDetailsService();
+    this.accountService = new AccountService();
+    this.authenticationService = new AuthenticationService();
     this.state = {
       vote_average: 0
     }
   }
 
   componentDidMount = async () => {
-    this.updatePage(this.id);
+   await this.updatePage(this.id);
   }
 
   async componentDidUpdate(prevProps: any) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-
       await this.updatePage(this.props.match.params.id);
     }
   }
@@ -44,7 +50,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     if (!url) {
       return null;
     } else if (!url.includes('http')) {
-      return `https://www.themoviedb.org/t/p/w154${url}`;
+      return `${posterUrl}/w154${url}`;
     }
     return url;
   }
@@ -57,7 +63,20 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     } else if (url.includes('gravatar')) {
       return url.slice(1);
     }
-    return `https://www.themoviedb.org/t/p/w185${url}`;
+    return `${posterUrl}/w185${url}`;
+  }
+
+  handleRatingMovieClicked = (event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => {
+    if (data.rating) {
+      this.accountService.rateMovie(this.id, data.rating as number);
+    }
+  }
+
+  handleToWatchListClicked = () => {
+    const accountId = this.authenticationService.getCurrentAccountDetails()?.id;
+    if (accountId) {
+      // this.accountService.addOrRemoveToWatchList(accountId, this.id, !markAsAdd);
+    }
   }
 
   render = () => {
@@ -65,13 +84,15 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       <>
         <div
           className="movie-bg"
-          style={{ background: this.state.backdrop_path?
-             `url(https://www.themoviedb.org/t/p/original${this.state.backdrop_path})`:
-             'grey' }}>
+          style={{
+            background: this.state.backdrop_path ?
+              `url(${posterUrl}/original${this.state.backdrop_path})` :
+              'grey'
+          }}>
           <div className="movie-bg__filter">
             <div className="movie_poster__column">
               <img
-                src={`https://www.themoviedb.org/t/p/w342${this.state.poster_path}`}
+                src={`${posterUrl}/w342${this.state.poster_path}`}
                 alt="movie poster"
                 className="movie-poster"
                 onError={(e: any) => {
@@ -108,7 +129,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                   </div>
                   {/* <Button color='red' circular icon='heart' /> */}
                   <Icon name='heart' color='red' link size='large' className='movie_inform-like' />
-                  <Icon name="bookmark" link color='red' size='large' className='movie_inform-mark' />
+                  <Icon
+                    name="bookmark"
+                    link
+                    color='red'
+                    onClick={this.handleToWatchListClicked}
+                    size='large'
+                    className='movie_inform-mark' />
                   <Popup
                     // flowing
                     // hoverable
@@ -117,15 +144,20 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                     pinned
                     trigger={
                       <Icon
-                      name="star"
-                      link
-                      color='yellow'
-                      size='large'
-                      className='movie_inform-star'
-                       />
+                        name="star"
+                        link
+                        color='yellow'
+                        size='large'
+                        className='movie_inform-star'
+                      />
                     }>
                     <Popup.Content>
-                      <Rating icon='star' defaultRating={0} maxRating={10} />
+                      {AuthenticationService.isAuthenticated() ?
+                        <Rating
+                          onRate={this.handleRatingMovieClicked}
+                          icon='star'
+                          defaultRating={0}
+                          maxRating={10} /> : 'Login to rate this movie'}
                     </Popup.Content>
                   </Popup>
                   {this.state.videos?.results[0] ?
@@ -140,12 +172,10 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         <Embed
                           key={this.state.videos?.results[0].id}
                           id={this.state.videos?.results[0].key}
-                          placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
+                          placeholder={`${posterUrl}/original${this.state.backdrop_path}`}
                           source='youtube' />
                       </Modal.Content>
-                    </Modal> : ''
-                  }
-
+                    </Modal> : ''}
                 </div>
               </div>
 
@@ -190,9 +220,6 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         backgroundImage: review.author_details.avatar_path ?
                           `url(${this.getUserImageUrl(review.author_details.avatar_path)})` :
                           `url(${defaultMovie})`
-                        // `url(https://www.themoviedb.org/t/p/w185${review.author_details.avatar_path})` ||
-                        // `url(${review.author_details.avatar_path?.slice(1)})` ||
-                        // `url(${defaultMovie})`
                       }}></div>
                     <div>A review by <strong>{review.author_details.username}</strong></div>
                     <div>Written by <strong>{review.author_details.username}</strong> on {review.created_at}</div>
@@ -206,7 +233,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               <Embed
                 id={this.state.videos?.results[0].key}
                 key={this.state.videos?.results[0].id}
-                placeholder={`https://www.themoviedb.org/t/p/original${this.state.backdrop_path}`}
+                placeholder={`${posterUrl}/original${this.state.backdrop_path}`}
                 source='youtube' />
             </section> : `We don't have any trailers for this movie`}
 
@@ -220,7 +247,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         className='recommendation-inform'
                         style={{
                           backgroundImage: recommendation.poster_path ?
-                            `url(https://www.themoviedb.org/t/p/w342${recommendation.poster_path})` :
+                            `url(${posterUrl}/w342${recommendation.poster_path})` :
                             `url(${defaultMovie})`
                         }}>
                       </div>

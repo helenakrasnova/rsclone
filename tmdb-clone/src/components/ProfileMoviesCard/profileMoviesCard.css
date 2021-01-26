@@ -1,0 +1,85 @@
+.profileMovies-container {
+  width: 100%;
+  display: flex;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  border: 1px solid rgba(227, 227, 227, 1);
+  background-color: #fff;
+  margin: 20px 0;
+}
+
+.profileMovies-voting {
+  width: 34px;
+  height: 34px;
+  border-radius: 75%;
+  background-color: #081c22;
+  color: #e5e7e8;
+  border: 2px solid;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.profileMovies-poster {
+  height: 200px;
+}
+
+.profileMovies-description {
+  width: 100%;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: #000;
+}
+
+.profileMovies-content {
+  display: flex;
+}
+
+.profileMovies-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileMovies-release {
+  white-space: nowrap;
+  color: #999;
+  font-size: 1.1em;
+}
+
+.profileMovies-heading {
+  font-size: 1.2em;
+  margin-bottom: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.profileMovies-rating {
+  border-color: #01d277;
+  background-color: #01d277;
+  color: #fff;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: static;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: 0.1s linear;
+}

@@ -29,16 +29,15 @@ class AccountService extends TmdbBaseService {
     }
   }
 
-
   public getRatings = async (id: number, page: number): Promise<RatingResponseDto> => {
-    let url = this.getUrlWithSessionId(`/account/${id}/rated/movies`);
+    let url = this.getUrlWithSessionId(`account/${id}/rated/movies`);
     url += `&page=${page}`;
     const response: AxiosResponse<RatingResponseDto> = await axios.get<RatingResponseDto>(url);
     return response.data;
   }
 
   public addOrRemoveToWatchList = async (accountId: number, movieId: number, markAsAdd : boolean): Promise<void> => {
-    let url = this.getUrlWithSessionId(`/account/${accountId}/watchlist`);
+    let url = this.getUrlWithSessionId(`account/${accountId}/watchlist`);
     let requestBody: object = {
       media_type: 'movie',
       media_id: movieId,
@@ -57,7 +56,7 @@ class AccountService extends TmdbBaseService {
   }
 
   public getWatchList = async (id: number, page: number): Promise<RatingResponseDto> => {
-    let url = this.getUrlWithSessionId(`/account/${id}/watchlist/movies`);
+    let url = this.getUrlWithSessionId(`account/${id}/watchlist/movies`);
     url += `&page=${page}`;
     const response: AxiosResponse<RatingResponseDto> = await axios.get<RatingResponseDto>(url);
     return response.data;

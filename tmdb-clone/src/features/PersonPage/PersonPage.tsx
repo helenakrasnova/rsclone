@@ -6,6 +6,7 @@ import { PersonDetailsViewModel } from './../../models/PersonDetails/ViewModels/
 import { Link } from 'react-router-dom';
 import defaultMovie from './../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import { Table, Icon, Button, Header, Image, Modal } from 'semantic-ui-react';
+import { posterUrl } from './../../configuration/configuration';
 
 type PersonPageProps = {
   id: string
@@ -26,7 +27,17 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
   }
 
   componentDidMount = async () => {
-    const person = await this.personPageService.getPerson(this.id);
+   await this.updatePage(this.id);
+  }
+
+   async componentDidUpdate(prevProps: any) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      await this.updatePage(this.props.match.params.id);
+    }
+  }
+
+  updatePage = async (id: string) => {
+    const person = await this.personPageService.getPerson(id);
     this.setState(person);
   }
 
@@ -86,7 +97,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
                 <section
                   style={{
                     backgroundImage: this.state.profile_path ?
-                      `url(https://www.themoviedb.org/t/p/w342${this.state.profile_path})` :
+                      `url(${posterUrl}/w342${this.state.profile_path})` :
                       `url(${defaultMovie})`
                   }}
                   className="personInform-poster">
@@ -108,7 +119,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
                   size='medium'
                   centered
                   src={
-                    `https://www.themoviedb.org/t/p/w300${this.state.images?.profiles[this.state.imageCount ?
+                    `${posterUrl}/w300${this.state.images?.profiles[this.state.imageCount ?
                       this.state.imageCount :
                       0]?.file_path}`}
                 />
@@ -157,7 +168,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonD
                         className='knownFor-image-container'
                         style={{
                           backgroundImage: movie.poster_path ?
-                            `url(https://www.themoviedb.org/t/p/w154${movie.poster_path})` :
+                            `url(${posterUrl}/w154${movie.poster_path})` :
                             `url(${defaultMovie})`
                         }}>
                       </div>

@@ -37,8 +37,9 @@ class AuthenticationService extends TmdbBaseService {
     }
   }
 
-  public isAuthenticated = (): boolean => {
-    if (this.getCurrentAccountDetails() && this.getCurrentSessionId()) {
+  public static isAuthenticated = (): boolean => {
+    const sessionId = localStorage.getItem('sessionId');
+    if (sessionId) {
       return true;
     }
     return false;

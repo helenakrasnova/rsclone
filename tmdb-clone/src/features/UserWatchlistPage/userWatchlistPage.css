@@ -1,0 +1,10 @@
+.account-wrapper {
+  width: 100%;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column-reverse;
+}

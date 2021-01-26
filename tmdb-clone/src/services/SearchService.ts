@@ -5,14 +5,11 @@ import { PopularPeoplePageResponseDto } from '../models/PopularPeople/PopularPeo
 import { PopularPeoplePageRequestDto } from './../models/PopularPeople/PopularPeoplePageRequestDto';
 import { SearchResponseDto } from '../models/SearchResponseDto';
 import { SearchRequestDto } from './../models/SearchRequestDto';
+import { SearchResult } from './../models/SearchResponseDto';
 
 class SearchService extends TmdbBaseService {
 
-  constructor() {
-    super();
-  }
-
-  findSearchResults = async (querySearch : string): Promise<SearchResponseDto> => {
+  public findSearchResults = async (querySearch: string): Promise<SearchResponseDto> => {
     let url: string = this.addApiKey(`${this.baseUrl}/search/multi`);
     const request: SearchRequestDto | null = this.createRequest(querySearch);
     if (request) {
@@ -20,10 +17,12 @@ class SearchService extends TmdbBaseService {
       url += `&${requestString}`;
     }
     let response: AxiosResponse<SearchResponseDto> = await axios.get<SearchResponseDto>(url);
+    response.data.results = response.data.results.filter((item: SearchResult) =>
+    item.media_type === 'movie' || item.media_type === 'person');
     return response.data;
   }
 
-  createRequest = (querySearch: string): SearchRequestDto => {
+  private createRequest = (querySearch: string): SearchRequestDto => {
     const request: SearchRequestDto = {
       query: querySearch,
       page: 1,
