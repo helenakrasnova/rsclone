@@ -51,10 +51,12 @@ class UserWatchlistPage extends Component<RouteComponentProps<UserWatchlistProps
       <>
         <div className="account-wrapper">
           <h3>Your watchlist</h3>
+          <div className="account-movie-list">
           {this.state.results.map((movie) =>
             <ProfileMoviesCard
               movie={movie} />
           )}
+          </div>
         </div>
 
       </>

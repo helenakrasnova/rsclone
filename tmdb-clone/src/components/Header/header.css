@@ -70,4 +70,10 @@
   .header-logo {
     height: 15px;
   }
+  .header-userIcon{
+    margin-right: 5px;
+  }
+  .navigation-link{
+    padding: 4px;
+  }
 }

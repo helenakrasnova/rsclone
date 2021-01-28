@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import DiscoverMoviesService from './../../services/DiscoverMoviesService';
 import { MovieDiscoverDto } from './../../models/MovieDiscoverDto';
-// import SearchMovies from './SearchMovies';
-// import MoviesOrdering from './MoviesOrdering';
 import MoviesList from './MoviesList/MoviesList';
 import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
 import SearchMovies, { SearchMoviesState } from './SearchMovies/SearchMovies';
@@ -86,35 +84,27 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
 
   render = () => {
     return (
-      <>
-        <div className="container">
-          <Grid largeScreen={2} widescreen={1}>
-            <Grid.Column mobile={16} tablet={4} computer={4}>
-              <MoviesOrdering
-                onOrderChanged={this.handleOrderChanged}
-                selectedValue={this.state.orderBy}
-              // onSortByChanged={this.handleSortByChanged}
-              // onSortOrderChanged={this.handleSortOrderChanged}
-              />
-              <SearchMovies
-                onSearchClicked={this.handleSearchClicked}
-                initialFilter={this.state.filter}
-              />
-            </Grid.Column>
-            <Grid.Column mobile={16} tablet={12} computer={12}>
-              <MoviesList
-                movies={this.state.movies} />
-              <Button
-                className='load-more'
-                secondary
-                fluid
-                onClick={this.handleLoadMoreClicked}
-              >Load more</Button>
-            </Grid.Column>
-
-          </Grid>
+      <div className="container">
+        <div className="moviesList-toggle">
+          <MoviesOrdering
+            onOrderChanged={this.handleOrderChanged}
+            selectedValue={this.state.orderBy} />
+          <SearchMovies
+            onSearchClicked={this.handleSearchClicked}
+            initialFilter={this.state.filter} />
         </div>
-      </>
+        <div className="moviesList-list">
+          <MoviesList
+            movies={this.state.movies} />
+          <Button
+            className='load-more'
+            secondary
+            fluid
+            onClick={this.handleLoadMoreClicked}>
+            Load more
+            </Button>
+        </div>
+      </div>
     );
   }
 }

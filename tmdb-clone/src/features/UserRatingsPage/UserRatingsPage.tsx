@@ -49,9 +49,11 @@ class UserRatingsPage extends Component<RouteComponentProps<UserRatingsProps>, U
       <>
         <div className="account-wrapper">
           <h3>Your ratings</h3>
-          {this.state.results.map((movie) =>
-            <ProfileMoviesCard movie={movie} />
-          )}
+          <div className="account-movie-list">
+            {this.state.results.map((movie) =>
+              <ProfileMoviesCard movie={movie} />
+            )}
+          </div>
         </div>
       </>
     );

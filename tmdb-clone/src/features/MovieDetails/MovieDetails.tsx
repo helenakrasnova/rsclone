@@ -32,7 +32,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
   }
 
   componentDidMount = async () => {
-   await this.updatePage(this.id);
+    await this.updatePage(this.id);
   }
 
   async componentDidUpdate(prevProps: any) {
@@ -80,19 +80,20 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
   }
 
   render = () => {
+    const dateFormatter = new Intl.DateTimeFormat("ru");
+    const moneyFormatter = new Intl.NumberFormat("en", {
+      maximumSignificantDigits: 3
+    });
     return (
-      <>
-        <div
-          className="movie-bg"
+      <div className="movieDetails-container">
+        <div className="movie-bg"
           style={{
             background: this.state.backdrop_path ?
-              `url(${posterUrl}/original${this.state.backdrop_path})` :
-              'grey'
+              `url(${posterUrl}/original${this.state.backdrop_path})` : 'grey'
           }}>
           <div className="movie-bg__filter">
             <div className="movie_poster__column">
-              <img
-                src={`${posterUrl}/w342${this.state.poster_path}`}
+              <img src={`${posterUrl}/w342${this.state.poster_path}`}
                 alt="movie poster"
                 className="movie-poster"
                 onError={(e: any) => {
@@ -105,10 +106,17 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               <h2 className='movie-title'>{this.state.title}
                 <span className="movie-year">{this.state.release_date ? ` (${this.state.release_date?.substr(0, 4)})` : ''}</span>
                 <div className="facts">
-                  <span className="release-date">{this.state.release_date} <Icon color='red' name='circle outline' size='small' /></span>
+                  <span className="release-date">
+                    {this.state.release_date ? dateFormatter.format(new Date(this.state.release_date)) : ''}
+                  </span>
                   <span>
-                    {this.state.genres?.map((genre) => <span key={genre.id}> {genre.name} <Icon color='red' name='circle outline' size='small' />  </span>)}</span>
+                    {this.state.genres?.map((genre) => <span key={genre.id}>
+                      <Icon color='red' name='circle outline' size='small' />
+                      {genre.name}
+                    </span>)}
+                  </span>
                   <span>
+                    <Icon color='red' name='circle outline' size='small' />
                     {this.state.runtime ? `${this.state.runtime} min` : ''}
                   </span>
                 </div>
@@ -123,51 +131,56 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                           this.state.vote_average >= 4 ? '#d2d531' :
                             this.state.vote_average > 0 ? '#cb215b' : '#666666'
                     }}>{this.state.vote_average !== 0 ? `${this.state.vote_average * 10}%` : 'NR'}
-                      {/* <span className="percent">%</span> */}
                     </div>
                     <span>User <br /> Score</span>
                   </div>
-                  {/* <Button color='red' circular icon='heart' /> */}
-                  <Icon name='heart' color='red' link size='large' className='movie_inform-like' />
-                  <Icon
-                    name="bookmark"
-                    link
-                    color='red'
-                    onClick={this.handleToWatchListClicked}
-                    size='large'
-                    className='movie_inform-mark' />
-                  <Popup
-                    // flowing
-                    // hoverable
-                    on='click'
-                    position='bottom center'
-                    pinned
-                    trigger={
-                      <Icon
-                        name="star"
-                        link
-                        color='yellow'
-                        size='large'
-                        className='movie_inform-star'
-                      />
-                    }>
-                    <Popup.Content>
-                      {AuthenticationService.isAuthenticated() ?
-                        <Rating
-                          onRate={this.handleRatingMovieClicked}
+                  <div className="movie_inform-buttons">
+                    <Button
+                      color='red'
+                      circular
+                      icon='heart'
+                      // onClick={}
+                      size='large'
+                      className='movie_inform-like' />
+                    <Button
+                      color='blue'
+                      circular
+                      icon='bookmark'
+                      onClick={this.handleToWatchListClicked}
+                      size='large'
+                      className='movie_inform-mark' />
+                    <Popup
+                      on='click'
+                      position='bottom center'
+                      pinned
+                      trigger={
+                        <Button
+                          color='yellow'
+                          circular
                           icon='star'
-                          defaultRating={0}
-                          maxRating={10} /> : 'Login to rate this movie'}
-                    </Popup.Content>
-                  </Popup>
+                          onClick={this.handleToWatchListClicked}
+                          size='large'
+                          className='movie_inform-star' />
+                      }>
+                      <Popup.Content>
+                        {AuthenticationService.isAuthenticated() ?
+                          <Rating
+                            onRate={this.handleRatingMovieClicked}
+                            icon='star'
+                            defaultRating={0}
+                            maxRating={10} /> : 'Login to rate this movie'}
+                      </Popup.Content>
+                    </Popup>
+                  </div>
                   {this.state.videos?.results[0] ?
                     <Modal
                       closeIcon={true}
                       trigger={
-                        <Button compact={true} color='youtube'>
+                        <Button className="movie_inform-youtube" compact={true} color='youtube'>
                           <Icon name='youtube play' />
                             Play trailer
-                      </Button>}>
+                        </Button>
+                      }>
                       <Modal.Content>
                         <Embed
                           key={this.state.videos?.results[0].id}
@@ -213,17 +226,24 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
             {(this.state.reviews?.results && this.state.reviews?.results.length > 0) ? <section>
               <div className="reviews-container">
                 {this.state.reviews?.results?.map((review) => (
-                  <div key={review.id}>
-                    <div
-                      className="review-user__avatar"
-                      style={{
-                        backgroundImage: review.author_details.avatar_path ?
-                          `url(${this.getUserImageUrl(review.author_details.avatar_path)})` :
-                          `url(${defaultMovie})`
-                      }}></div>
-                    <div>A review by <strong>{review.author_details.username}</strong></div>
-                    <div>Written by <strong>{review.author_details.username}</strong> on {review.created_at}</div>
-                    {review.content}
+                  <div className="review-user" key={review.id}>
+                    <div className="reviews-column-first">
+                      <img
+                        className="review-user__avatar"
+                        src={review.author_details.avatar_path ?
+                          `${this.getUserImageUrl(review.author_details.avatar_path)}` :
+                          `${defaultMovie}`
+                        } />
+                    </div>
+                    <div className="reviews-column-second">
+                      <div className="reviews-heading">
+                        <h3>A review by {review.author_details.username}</h3>
+                        <h5>Written by {review.author_details.username} on
+                      <> {review.created_at ? dateFormatter.format(new Date(review.created_at)) : '-'}</>
+                        </h5>
+                      </div>
+                      {review.content}
+                    </div>
                   </div>))}
               </div>
             </section> : `We don't have any reviews for this movie`}
@@ -269,23 +289,25 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               </p>
               <p>
                 <strong>Budget </strong><br />
-                {this.state.budget !== 0 ? '$' + this.state.budget : '-'}
+                {this.state.budget ? '$' + moneyFormatter.format(this.state.budget) : '-'}
               </p>
               <p>
                 <strong>Revenue </strong><br />
-                {this.state.revenue !== 0 ? '$' + this.state.revenue : '-'}
+                {this.state.revenue ? '$' + moneyFormatter.format(this.state.revenue) : '-'}
               </p>
               <p>
                 <strong>Keywords </strong><br />
-                {this.state?.keywords?.keywords.map((keyword) =>
-                  <Button compact size='mini'>
-                    {keyword.name}
-                  </Button>)}
+                <div className="movieDetails-keywords">
+                  {this.state?.keywords?.keywords.map((keyword) =>
+                    <Button compact size='mini'>
+                      {keyword.name}
+                    </Button>)}
+                </div>
               </p>
             </section>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }

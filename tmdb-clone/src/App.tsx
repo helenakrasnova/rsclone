@@ -36,8 +36,8 @@ function App() {
           <Route exact path="/u/:userId/" component={UserProfilePage} />
           {/* <Route path="*" component={NotFound} /> */}
         </Switch>
+        <Footer />
       </Router>
-      <Footer />
       {/* <Error /> */}
       {/* <TestTask/> */}
     </>

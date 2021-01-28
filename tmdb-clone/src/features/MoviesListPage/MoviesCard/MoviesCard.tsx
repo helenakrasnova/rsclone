@@ -10,10 +10,9 @@ type MoviesCardProps = {
 }
 export default function MoviesCard(props: MoviesCardProps) {
   const { movie } = props;
+  const formatter = new Intl.DateTimeFormat("ru");
   return (
     <>
-      <Icon name='heart' color='red' size='large' link  className='movieCard-like' />
-      <Icon name="bookmark" color='red' size='large' link className='movieCard-watchList' />
       <Link to={`/movies/${movie.id}`}>
         <div className="film-container" key={movie.id}>
           <img
@@ -30,13 +29,20 @@ export default function MoviesCard(props: MoviesCardProps) {
               movie.vote_average >= 7 ? '#21d07a' :
                 movie.vote_average >= 4 ? '#d2d531' :
                   movie.vote_average > 0 ? '#cb215b' : '#666666'
-          }}>{`${movie.vote_average * 10}`}
-            <span className="percent">%</span>
+          }}>
+            {movie.vote_average !== 0 ?
+              <>
+                {movie.vote_average * 10}
+                <span className="percent">%</span>
+              </> :
+              'NR'}
           </div>
+          <Icon name='heart' color='red' size='large' link className='movieCard-like' />
+          <Icon name="bookmark" color='blue' size='large' link className='movieCard-watchList' />
           <div className="film-heading">
-            {movie.title}
+            <div className="film-heading-title">{movie.title}</div>
             <div className="film-release">
-              {movie.release_date}
+              {formatter.format(new Date(movie.release_date))}
             </div>
           </div>
 

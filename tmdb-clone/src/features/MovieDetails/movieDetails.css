@@ -1,22 +1,44 @@
+.movieDetails-container {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
 .movie-bg {
   height: 570px;
   border-bottom: 1px solid black;
   background-position: right -200px top;
   background-size: cover !important;
   background-repeat: no-repeat;
+  width: 100%;
 }
 
 .movie-bg__filter {
   background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%);
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  /* flex-wrap: wrap; */
   align-items: center;
   flex-direction: row;
   width: 100%;
   height: inherit;
   color: #fff;
   padding: 30px 40px;
+}
+
+.movie_inform__column {
+  padding-left: 40px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 950px;
 }
 
 .movie-title {
@@ -49,16 +71,6 @@
   border-radius: 8px;
 }
 
-.movie_inform__column {
-  padding-left: 40px;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  max-width: 950px;
-}
-
 .movie_inform-voting {
   width: 60px;
   height: 60px;
@@ -77,12 +89,13 @@
   padding: 30px 40px;
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .movieActors {
   background-color: #fff;
   max-width: 960px;
-  width: calc(100vw - 80px - 260px);
+  width: 100%;
   display: flex;
   height: 292px;
   flex: 0 1 auto;
@@ -101,7 +114,13 @@
 
 .movie_inform-like:hover, .movie_inform-mark:hover, .movie_inform-star:hover {
   cursor: pointer;
-  filter: invert(100%);
+}
+
+.split-column {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .user-score {
@@ -111,14 +130,41 @@
   align-items: center;
   justify-content: space-between;
   font-size: 16px;
+  order: 1;
+}
+
+.movie_inform-buttons {
+  order: 2;
+}
+
+.movie_inform-youtube {
+  order: 3;
+}
+
+.movieDetails-keywords {
+  max-width: 260px;
 }
 
 .movie_inform-vote {
   display: flex;
   flex-direction: row;
-  width: 50%;
+  max-width: 460px;
   justify-content: space-between;
   align-items: center;
+}
+
+.review-user {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(227, 227, 227, 1);
+}
+
+.reviews-heading {
+  margin-bottom: 10px;
+}
+
+.reviews-column-first {
+  margin-right: 10px;
 }
 
 .list-scroller {
@@ -181,6 +227,9 @@
   max-width: 960px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  order: 2;
+  padding-top: 1em;
 }
 
 .grey__column {
@@ -188,7 +237,8 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 300px;
+  max-width: 100%;
+  order: 1;
 }
 
 .reviews-container {
@@ -222,7 +272,7 @@
 .movieRecommendations {
   background-color: #fff;
   max-width: 960px;
-  width: calc(100vw - 80px - 260px);
+  width: 100%;
   display: flex;
   height: 292px;
   flex: 0 1 auto;
@@ -232,10 +282,7 @@
 }
 
 .recommendation {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-right: 4px;
+  margin: 10px;
   border: 1px solid rgba(227, 227, 227, 1);
   padding-bottom: 10px;
   border-radius: 8px;
@@ -243,7 +290,6 @@
   min-width: 140px;
   width: 140px;
   background-color: #fff;
-  margin-right: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -253,4 +299,71 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+
+@media (min-width: 500px) and (max-width: 799px) {
+  .movie-bg {
+    height: 1140px;
+  }
+  .movie-bg__filter {
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .movie_inform__column {
+    padding: 0;
+  }
+}
+
+@media (max-width: 499px) {
+  .movie-bg {
+    height: 1000px;
+  }
+  .movie-bg__filter {
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 0;
+  }
+  .movie_inform__column {
+    padding: 10px;
+  }
+  .movie-title {
+    font-size: 25px;
+  }
+  .movie_inform-buttons {
+    order: 3;
+    width: 100%;
+    display: flex;
+    padding-top: 1em;
+    justify-content: space-evenly;
+  }
+  .movie_inform-vote {
+    flex-wrap: wrap;
+  }
+  .movie_inform-youtube {
+    order: 2;
+  }
+  .movie-content__wrapper {
+    padding: 10px;
+  }
+  .review-user {
+    flex-direction: column;
+    word-break: break-word;
+  }
+  .trailers {
+    padding: 0;
+  }
+}
+
+@media (min-width: 1300px) {
+  .white__column {
+    order: 1;
+  }
+  .grey__column {
+    order: 2;
+    max-width: 260px;
+  }
+  .split-column {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 }
