@@ -23,7 +23,7 @@ import UserProfilePage from './features/UserProfilePage/UserProfilePage';
 function App() {
   return (
     <>
-      <Router>
+      <Router basename="/rsclone">
         <Header />
         <Switch>
           <Route exact path="/" component={MoviesListPage} />
