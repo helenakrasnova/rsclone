@@ -6,6 +6,7 @@ import MoviesOrdering from './MoviesOrdering/MoviesOrdering';
 import SearchMovies, { SearchMoviesState } from './SearchMovies/SearchMovies';
 import { Button, Grid } from 'semantic-ui-react';
 import './moviesListPage.css';
+import Preloader from './../../components/Preloader/Preloader';
 
 type MoviesListPageProps = {
 
@@ -16,6 +17,7 @@ type MoviesListPageState = {
   filter: SearchMoviesState;
   orderBy: string;
   page: number;
+  loading: boolean;
 }
 class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>{
   discoverMoviesService: DiscoverMoviesService;
@@ -44,6 +46,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
       },
       orderBy: 'popularity.desc',
       page: 1,
+      loading: false,
     };
   }
 
@@ -52,14 +55,18 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
   }
 
   updateMovies = async (filter: SearchMoviesState) => {
+    this.setState({
+      loading: true,
+    });
     let searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter, this.state.orderBy, this.state.page);
     this.setState({
       movies: searchingMovies.results,
       total: searchingMovies.total_results,
       filter: filter,
       page: 1,
+      loading: false,
     });
-  }
+    }
 
   handleSearchClicked = async (filter: SearchMoviesState) => {
     await this.updateMovies(filter);
@@ -83,29 +90,34 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
   }
 
   render = () => {
-    return (
-      <div className="container">
-        <div className="moviesList-toggle">
-          <MoviesOrdering
-            onOrderChanged={this.handleOrderChanged}
-            selectedValue={this.state.orderBy} />
-          <SearchMovies
-            onSearchClicked={this.handleSearchClicked}
-            initialFilter={this.state.filter} />
-        </div>
-        <div className="moviesList-list">
-          <MoviesList
-            movies={this.state.movies} />
-          <Button
-            className='load-more'
-            secondary
-            fluid
-            onClick={this.handleLoadMoreClicked}>
-            Load more
+    if (this.state.loading === true) {
+      return (<Preloader />)
+    }
+    else {
+      return (
+        <div className="container">
+          <div className="moviesList-toggle">
+            <MoviesOrdering
+              onOrderChanged={this.handleOrderChanged}
+              selectedValue={this.state.orderBy} />
+            <SearchMovies
+              onSearchClicked={this.handleSearchClicked}
+              initialFilter={this.state.filter} />
+          </div>
+          <div className="moviesList-list">
+            <MoviesList
+              movies={this.state.movies} />
+            <Button
+              className='load-more'
+              secondary
+              fluid
+              onClick={this.handleLoadMoreClicked}>
+              Load more
             </Button>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 export default MoviesListPage;

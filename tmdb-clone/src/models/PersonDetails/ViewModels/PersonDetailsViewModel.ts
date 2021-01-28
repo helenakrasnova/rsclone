@@ -15,5 +15,4 @@ export interface PersonDetailsViewModel {
   credits?: PersonCreditsViewModel;
   images?: PersonImagesResponseDto;
   imdb_id?: string;
-  imageCount?:number;
 }
