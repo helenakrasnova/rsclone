@@ -12,6 +12,7 @@ type ProfileMoviesCardProps = {
 
 export default function ProfileMoviesCard(props: ProfileMoviesCardProps) {
   const { movie } = props;
+  const dateFormatter = new Intl.DateTimeFormat("ru");
   return (
     <>
       {/* <Icon name='heart' color='red' size='large' link className='movieCard-like' />
@@ -39,7 +40,8 @@ export default function ProfileMoviesCard(props: ProfileMoviesCardProps) {
               </div>
               <div className="profileMovies-title">
                 <div className="profileMovies-heading">{movie.title}</div>
-                <div className="profileMovies-release">{movie.release_date}</div>
+                <div className="profileMovies-release">
+                  {movie.release_date ? dateFormatter.format(new Date(movie.release_date)) : ''}</div>
               </div>
             </div>
             <div className="profileMovies-overview">
