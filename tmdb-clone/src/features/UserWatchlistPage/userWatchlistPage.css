@@ -1,10 +1,20 @@
 .account-wrapper {
   width: 100%;
-  padding: 20px 40px;
-  max-width: 1400px;
+  padding: 1.43rem 2.86rem;
+  max-width: 100rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+
 }
 
 .account-movie-list {
   display: flex;
   flex-direction: column-reverse;
 }
+
+@media (max-width: 499px) {
+  .account-wrapper{
+    padding: 0.71rem;
+  }
+}
+

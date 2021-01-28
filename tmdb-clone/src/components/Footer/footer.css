@@ -1,14 +1,14 @@
 .footer {
   width: 100%;
   background-color: #032541;
-  margin-top: 30px;
-  padding: 80px 0;
+  margin-top: 2.15rem;
+  padding: 5.7rem 0;
   display: flex;
   justify-content: center;
 }
 
 .footer-container {
-  max-width: 825px;
+  max-width: 59rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: repeat(1, 1fr);
@@ -16,13 +16,13 @@
 
 .footer-content {
   margin: 1em 0;
-  width: 152px;
+  width: 10.85rem;
   display: flex;
   flex-direction: column;
 }
 
 .footer-logo {
-  height: 94px;
+  height: 6.7rem;
   margin: 1em 0;
 }
 
@@ -36,7 +36,7 @@
   white-space: normal;
   border: 2px solid #fff;
   border-radius: 5px;
-  padding: 8px 16px;
+  padding: 0.57rem 1.14rem;
   transition: linear .1s;
 }
 
@@ -61,7 +61,7 @@
 
 .footer-list ul li {
   line-height: 1.6em;
-  max-width: 260px;
+  max-width: 18.6rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,9 +79,9 @@
 
 .join {
   justify-content: space-between;
-  width: 176px;
+  width: 12.6rem;
   align-items: flex-end;
-  margin-right: 40px;
+  margin-right: 0.714rem;
 }
 
 .rs {

@@ -42,7 +42,7 @@ export default function ProfileMoviesCard(props: ProfileMoviesCardProps) {
                 <div className="profileMovies-release">{movie.release_date}</div>
               </div>
             </div>
-            <div>
+            <div className="profileMovies-overview">
               {movie.overview}
             </div>
             <div className="profileMovies-release">

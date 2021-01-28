@@ -3,7 +3,7 @@ import './footer.css';
 import logoFooter from '../../assets/img/logo-footer.svg';
 import rsLogo from '../../assets/img/rs_school_js.svg';
 import gitHubLogo from '../../assets/img/GitHub-Mark-64px.png';
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 // import { withRouter } from "react-router";
 import { Image } from 'semantic-ui-react';
 import AuthenticationService from './../../services/AuthenticationService';

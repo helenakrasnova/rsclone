@@ -1,6 +1,6 @@
 .header-component {
   width: 100%;
-  height: 64px;
+  height: 4.57rem;
   background-color: #032541;
   display: flex;
   align-items: center;
@@ -17,21 +17,21 @@
 .navigation-link {
   color: #fff;
   font-weight: bold;
-  font-size: 16px;
-  padding: 8px;
+  font-size: 1.14rem;
+  padding: 0.57rem;
 }
 
 .header-container {
-  height: 40px;
+  height: 2.86rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 40px;
+  padding: 0px 2.86rem;
   width: 100%;
 }
 
 .header-logo {
-  height: 20px;
+  height: 1.43rem;
 }
 
 .nav-account {
@@ -41,8 +41,8 @@
 }
 
 .header-userIcon {
-  width: 32px;
-  height: 32px;
+  width: 2.285rem;
+  height: 2.285rem;
   text-align: center;
   text-transform: uppercase;
   border-radius: 50%;
@@ -54,7 +54,7 @@
   justify-content: center;
   border: none;
   background-color: rgba(128, 91, 231, 1);
-  margin-right: 30px;
+  margin-right: 2.14rem;
   cursor: pointer;
 }
 
@@ -65,15 +65,15 @@
 
 @media screen and (max-width:400px) {
   .header-container {
-    padding: 0px 10px;
+    padding: 0px 0.714rem;
   }
   .header-logo {
-    height: 15px;
+    height: 1.07rem;
   }
   .header-userIcon{
-    margin-right: 5px;
+    margin-right: 0.36rem;
   }
   .navigation-link{
-    padding: 4px;
+    padding: 0.286rem;
   }
 }

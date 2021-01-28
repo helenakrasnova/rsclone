@@ -27,7 +27,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     this.accountService = new AccountService();
     this.authenticationService = new AuthenticationService();
     this.state = {
-      vote_average: 0
+      vote_average: 0,
     }
   }
 

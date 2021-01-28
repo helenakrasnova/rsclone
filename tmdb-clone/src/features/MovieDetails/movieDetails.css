@@ -6,13 +6,13 @@
   flex-wrap: wrap;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 1400px;
+  max-width: 100rem;
 }
 
 .movie-bg {
-  height: 570px;
+  height: 40.7rem;
   border-bottom: 1px solid black;
-  background-position: right -200px top;
+  background-position: right -14.3rem top;
   background-size: cover !important;
   background-repeat: no-repeat;
   width: 100%;
@@ -22,38 +22,37 @@
   background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%);
   display: flex;
   justify-content: flex-start;
-  /* flex-wrap: wrap; */
   align-items: center;
   flex-direction: row;
   width: 100%;
   height: inherit;
   color: #fff;
-  padding: 30px 40px;
+  padding: 2.14rem 2.86rem;
 }
 
 .movie_inform__column {
-  padding-left: 40px;
-  height: 450px;
+  padding-left: 2.86rem;
+  height: 32.14rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  max-width: 950px;
+  max-width: 67.86rem;
 }
 
 .movie-title {
-  font-size: 35px;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
 .facts {
-  font-size: 16px;
+  font-size: 1.14rem;
   font-weight: normal;
 }
 
 .actions {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 1.43rem;
 }
 
 .movie-year {
@@ -62,23 +61,23 @@
 }
 
 .overview {
-  font-size: 16px;
+  font-size: 1.14rem;
 }
 
 .movie-poster {
-  width: 300px;
-  height: 450px;
-  border-radius: 8px;
+  width: 21.43rem;
+  height: 32.14rem;
+  border-radius: 0.57rem;
 }
 
 .movie_inform-voting {
-  width: 60px;
-  height: 60px;
+  width: 4.29rem;
+  height: 4.29rem;
   border-radius: 75%;
   background-color: #081c22;
   color: #e5e7e8;
   border: 5px solid;
-  font-size: 20px;
+  font-size: 1.43rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +85,7 @@
 }
 
 .movie-content__wrapper {
-  padding: 30px 40px;
+  padding: 2.14rem 2.86rem;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -94,12 +93,12 @@
 
 .movieActors {
   background-color: #fff;
-  max-width: 960px;
+  max-width: 68.57rem;
   width: 100%;
   display: flex;
-  height: 292px;
+  height: 20.86rem;
   flex: 0 1 auto;
-  padding-right: 30px;
+  padding-right: 2.14rem;
   overflow-y: hidden;
   overflow-x: scroll;
   color: #000;
@@ -109,7 +108,7 @@
   list-style-type: none;
   list-style-position: inside;
   width: 100%;
-  height: 292px;
+  height: 20.86rem;
 }
 
 .movie_inform-like:hover, .movie_inform-mark:hover, .movie_inform-star:hover {
@@ -126,10 +125,10 @@
 .user-score {
   display: flex;
   flex-direction: row;
-  width: 110px;
+  width: 7.86rem;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 1.14rem;
   order: 1;
 }
 
@@ -142,13 +141,13 @@
 }
 
 .movieDetails-keywords {
-  max-width: 260px;
+  max-width: 18.6rem;
 }
 
 .movie_inform-vote {
   display: flex;
   flex-direction: row;
-  max-width: 460px;
+  max-width: 32.86rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -160,33 +159,33 @@
 }
 
 .reviews-heading {
-  margin-bottom: 10px;
+  margin-bottom: 0.71rem;
 }
 
 .reviews-column-first {
-  margin-right: 10px;
+  margin-right: 0.71rem;
 }
 
 .list-scroller {
   display: flex;
   flex-direction: row;
-  height: 292px;
+  height: 20.86rem;
 }
 
 .movieInform-name {
-  padding: 10px 10px 0 10px;
+  padding: 0.71rem 0.71rem 0 0.71rem;
   font-weight: bold;
   color: #000;
-  font-size: 15px;
-  max-height: 50px;
+  font-size: 1.07rem;
+  max-height: 3.57rem;
   overflow: hidden;
-  width: 138px;
+  width: 9.86rem;
 }
 
 .movieInform-character {
-  padding: 0px 10px;
+  padding: 0px 0.71rem;
   color: #000;
-  font-size: 12px;
+  font-size: 0.86rem;
 }
 
 .tagline {
@@ -200,23 +199,23 @@
 }
 
 .person-card {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
+  margin-top: 0.71rem;
+  margin-bottom:  0.71rem;
+  margin-left:  0.71rem;
   margin-right: 4px;
   border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom: 10px;
+  padding-bottom:  0.71rem;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 140px;
-  width: 140px;
+  min-width: 10rem;
+  width: 10rem;
   background-color: #fff;
-  margin-right: 10px;
+  margin-right:  0.71rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .person-image-container {
-  height: 175px;
+  height: 12.5rem;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center center;
@@ -224,7 +223,7 @@
 }
 
 .white__column {
-  max-width: 960px;
+  max-width: 68.6rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -243,19 +242,19 @@
 
 .reviews-container {
   width: 100%;
-  padding: 20px;
+  padding: 1.43rem;
   border: 1px solid rgba(227, 227, 227, 1);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  height: 220px;
-  padding: 20px;
+  height: 15.7rem;
+  padding: 1.43rem;
   overflow-y: scroll;
 }
 
 .review-user__avatar {
-  width: 64px;
-  height: 64px;
+  width: 4.57rem;
+  height: 4.57rem;
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center center;
@@ -265,49 +264,62 @@
 .trailers {
   width: 100%;
   display: block;
-  padding: 30px 0;
+  padding: 2.14rem 0;
   border-top: 1px solid #d7d7d7;
 }
 
 .movieRecommendations {
   background-color: #fff;
-  max-width: 960px;
+  max-width: 68.6rem;
   width: 100%;
   display: flex;
-  height: 292px;
+  height: 20.86rem;
   flex: 0 1 auto;
-  padding-right: 30px;
+  padding-right: 2.14rem;
   overflow-y: hidden;
   overflow-x: scroll;
 }
 
 .recommendation {
-  margin: 10px;
+  margin: 0.71rem;
   border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom: 10px;
+  padding-bottom:  0.71rem;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 140px;
-  width: 140px;
+  min-width: 10rem;
+  width: 10rem;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .recommendation-inform {
-  height: 185px;
+  height: 13.2rem;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
 }
 
+@media (min-width: 1300px) {
+  .white__column {
+    order: 1;
+  }
+  .grey__column {
+    order: 2;
+    max-width: 18.57rem;
+  }
+  .split-column {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+
 @media (min-width: 500px) and (max-width: 799px) {
   .movie-bg {
-    height: 1140px;
+    height: initial;
   }
   .movie-bg__filter {
     flex-direction: column;
-    justify-content: space-evenly;
   }
   .movie_inform__column {
     padding: 0;
@@ -316,7 +328,7 @@
 
 @media (max-width: 499px) {
   .movie-bg {
-    height: 1000px;
+    height: 71.43rem;
   }
   .movie-bg__filter {
     flex-direction: column;
@@ -324,10 +336,10 @@
     padding: 0;
   }
   .movie_inform__column {
-    padding: 10px;
+    padding: 0.71rem;
   }
   .movie-title {
-    font-size: 25px;
+    font-size: 1.79rem;
   }
   .movie_inform-buttons {
     order: 3;
@@ -343,7 +355,7 @@
     order: 2;
   }
   .movie-content__wrapper {
-    padding: 10px;
+    padding: 0.71rem;
   }
   .review-user {
     flex-direction: column;
@@ -351,19 +363,5 @@
   }
   .trailers {
     padding: 0;
-  }
-}
-
-@media (min-width: 1300px) {
-  .white__column {
-    order: 1;
-  }
-  .grey__column {
-    order: 2;
-    max-width: 260px;
-  }
-  .split-column {
-    flex-direction: column;
-    justify-content: flex-start;
   }
 }
