@@ -9,3 +9,8 @@ export interface MovieCastViewModel {
   known_for_department?: string;
   job?: string;
 }
+
+export interface CastAndCrewViewModel{
+  cast :MovieCastViewModel[];
+  crew :MovieCastViewModel[];
+}

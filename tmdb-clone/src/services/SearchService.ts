@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import TmdbBaseService from './TmdbBaseService';
 import queryString from 'query-string';
-import { PopularPeoplePageResponseDto } from '../models/PopularPeople/PopularPeoplePageResponseDto';
-import { PopularPeoplePageRequestDto } from './../models/PopularPeople/PopularPeoplePageRequestDto';
 import { SearchResponseDto } from '../models/SearchResponseDto';
 import { SearchRequestDto } from './../models/SearchRequestDto';
 import { SearchResult } from './../models/SearchResponseDto';
@@ -29,7 +27,6 @@ class SearchService extends TmdbBaseService {
     }
     return request;
   }
-
 }
 
 export default SearchService;

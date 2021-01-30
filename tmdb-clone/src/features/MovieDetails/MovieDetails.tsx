@@ -9,7 +9,8 @@ import AccountService from './../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
 import { posterUrl } from './../../configuration/configuration';
 import Preloader from './../../components/Preloader/Preloader';
-import { RatingDto } from './../../models/Account/RatingResponseDto';
+import { stringify } from 'query-string';
+const ColorThief = require('colorthief').default;
 
 type MovieDetailsProps = {
   id: string
@@ -23,6 +24,7 @@ type MovieDetailsState = {
   watchListActive: boolean;
   favoriteActive: boolean;
   favoriteMovie?: RatingViewModel | null;
+  filterColor: string;
 }
 
 type RatingViewModel = {
@@ -34,6 +36,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
   movieDetailsService: MovieDetailsService;
   accountService: AccountService;
   authenticationService: AuthenticationService;
+  colorThief: any;
   id: string;
   constructor(props: RouteComponentProps<MovieDetailsProps>) {
     super(props);
@@ -41,13 +44,15 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     this.movieDetailsService = new MovieDetailsService();
     this.accountService = new AccountService();
     this.authenticationService = new AuthenticationService();
+    this.colorThief = new ColorThief();
     this.state = {
       model: {
         vote_average: 0,
       },
-      loading: false,
+      loading: true,
       watchListActive: false,
-      favoriteActive: false
+      favoriteActive: false,
+      filterColor: '',
     }
   }
 
@@ -66,9 +71,10 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       loading: true,
     });
     const movie = await this.movieDetailsService.getMovie(id);
-    let watchListMovie: RatingViewModel | null = await this.getMyMovieWarchlist(movie);
+    let watchListMovie: RatingViewModel | null = await this.getMyMovieWatchList(movie);
     let favoriteMovie: RatingViewModel | null = await this.getMyMovieFavorite(movie);
     let ratedMovie: RatingViewModel | null = await this.getMyMovieRating(movie);
+
     this.setState({
       ratedMovie: ratedMovie,
       model: movie,
@@ -76,6 +82,15 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       watchListMovie: watchListMovie,
       favoriteMovie: favoriteMovie,
     });
+
+    if (movie.poster_path) {
+      this.getPrimaryColor(`${posterUrl}/w342${movie.poster_path}`, (color: number[]) => {
+        this.setState({
+          filterColor: color.join(',')
+        });
+      });
+    }
+
   }
 
   getPosterUrl = (url: string): string | null => {
@@ -105,17 +120,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
   }
 
   handleToWatchListClicked = () => {
-    const watchListActive = !this.state.watchListActive
+    const watchListActive = !this.state.watchListActive;
     this.setState({
       watchListActive: watchListActive,
-    })
+    });
     const accountId = this.authenticationService.getCurrentAccountDetails()?.id;
     if (accountId) {
-      if (this.state.watchListMovie) {
-        this.accountService.addOrRemoveToFavorites(accountId, +this.id, false);
-      } else {
-        this.accountService.addOrRemoveToFavorites(accountId, +this.id, true);
-      }
+      this.accountService.addOrRemoveToWatchList(accountId, +this.id, watchListActive);
     }
   }
 
@@ -126,11 +137,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     })
     const accountId = this.authenticationService.getCurrentAccountDetails()?.id;
     if (accountId) {
-      if (this.state.favoriteMovie) {
-        this.accountService.addOrRemoveToFavorites(accountId, +this.id, false);
-      } else {
-        this.accountService.addOrRemoveToFavorites(accountId, +this.id, true);
-      }
+      this.accountService.addOrRemoveToFavorites(accountId, +this.id, favoriteActive);
     }
   }
 
@@ -150,7 +157,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     return ratedMovie;
   }
 
-  private async getMyMovieWarchlist(movie: MovieDetailsViewModel) {
+  private async getMyMovieWatchList(movie: MovieDetailsViewModel) {
     const account = this.authenticationService.getCurrentAccountDetails();
     let watchListMovie: RatingViewModel | null = null;
     if (AuthenticationService.isAuthenticated() && account) {
@@ -186,11 +193,22 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     return favoriteMovie;
   }
 
+  getPrimaryColor = (imageUrl: string, callback: Function): void => {
+    let img = document.createElement('img');
+    img.src = imageUrl;
+    img.crossOrigin = 'Anonymous';
+    img.addEventListener('load', () => {
+      const result = this.colorThief.getColor(img);
+      callback(result);
+    });
+  }
+
   render = () => {
     const dateFormatter = new Intl.DateTimeFormat("ru");
     const moneyFormatter = new Intl.NumberFormat("en", {
       maximumSignificantDigits: 3
     });
+
     if (this.state.loading === true) {
       return (<Preloader />)
     }
@@ -202,7 +220,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               background: this.state.model.backdrop_path ?
                 `url(${posterUrl}/original${this.state.model.backdrop_path})` : 'grey'
             }}>
-            <div className="movie-bg__filter">
+            <div className="movie-bg__filter"
+              style={{
+                backgroundImage: `linear-gradient(to right, rgba(${this.state.filterColor}, 1.00),
+                rgba(${this.state.filterColor},0.84) 100%`
+                //background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%);
+              }}
+            >
               <div className="movie_poster__column">
                 <img src={`${posterUrl}/w342${this.state.model.poster_path}`}
                   alt="movie poster"
@@ -246,25 +270,55 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                       <span>User <br /> Score</span>
                     </div>
                     <div className="movie_inform-buttons">
-                      <Button
-                        color='red'
-                        circular
-                        icon={this.state.favoriteActive ? 'heart' : 'heart outline'}
-                        toggle
-                        active={this.state.favoriteActive ? true : false}
-                        onClick={this.handleToFavoriteClicked}
-                        size='large'
-                        className='movie_inform-like' />
+                      <Popup
+                        on='click'
+                        position='bottom center'
+                        pinned
+                        trigger={
+                          <Button
+                            color='red'
+                            circular
+                            icon={this.state.favoriteActive && AuthenticationService.isAuthenticated() ? 'heart' : 'heart outline'}
+                            toggle={AuthenticationService.isAuthenticated() ? true : false}
+                            active={this.state.favoriteActive ? true : false}
+                            onClick={this.handleToFavoriteClicked}
+                            size='large'
+                            className='movie_inform-like' />
+                        }>
+                        <Popup.Content>
+                          {!AuthenticationService.isAuthenticated() ?
+                            'Login to add this movie to your favorite list' :
+                            this.state.favoriteActive ?
+                              'Successfully added' :
+                              'Successfully removed'
+                          }
+                        </Popup.Content>
+                      </Popup>
+                      <Popup
+                        on='click'
+                        position='bottom center'
+                        pinned
+                        trigger={
+                          <Button
+                            toggle={AuthenticationService.isAuthenticated() ? true : false}
+                            active={this.state.watchListActive ? true : false}
+                            color={'blue'}
+                            circular
+                            icon={this.state.watchListActive && AuthenticationService.isAuthenticated() ? 'bookmark' : 'bookmark outline'}
+                            onClick={this.handleToWatchListClicked}
+                            size='large'
+                            className='movie_inform-mark' />
+                        }>
+                        <Popup.Content>
+                          {!AuthenticationService.isAuthenticated() ?
+                            'Login to add this movie to your watchlist' :
+                            this.state.watchListActive ?
+                              'Successfully added' :
+                              'Successfully removed'
+                          }
+                        </Popup.Content>
+                      </Popup>
 
-                      <Button
-                        toggle
-                        active={this.state.watchListActive ? true : false}
-                        color={'blue'}
-                        circular
-                        icon={this.state.watchListActive ? 'bookmark' : 'bookmark outline'}
-                        onClick={this.handleToWatchListClicked}
-                        size='large'
-                        className='movie_inform-mark' />
                       <Popup
                         on='click'
                         position='bottom center'

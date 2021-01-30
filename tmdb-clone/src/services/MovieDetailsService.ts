@@ -2,13 +2,14 @@ import TmdbBaseService from './TmdbBaseService';
 import { MovieDetailsViewModel } from '../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import axios, { AxiosResponse } from 'axios';
 import { MovieDetailsResponseDto } from '../models/MovieDetails/Dtos/MovieDetailsResponseDto';
-import { MovieCastViewModel } from './../models/MovieDetails/ViewModels/MovieCastViewModel';
+import { CastAndCrewViewModel, MovieCastViewModel } from './../models/MovieDetails/ViewModels/MovieCastViewModel';
 import { MovieCastResponseDto } from './../models/MovieDetails/Dtos/MovieCastResponseDto';
 import { MovieReviewResponseDto } from './../models/MovieDetails/Dtos/MovieReviewResponseDto';
 import { MovieRecommendationsResponseDto } from '../models/MovieDetails/Dtos/MovieRecommendationsResponseDto';
 import { MovieRecommendationsViewModel } from './../models/MovieDetails/ViewModels/MovieRecommendationsViewModel';
 import { MovieKeywordsResponseDto } from '../models/MovieDetails/Dtos/MovieKeywordsResponseDto';
 import { MovieVideosResponseDto } from '../models/MovieDetails/Dtos/MovieVideosResponseDto';
+
 
 class MovieDetailsService extends TmdbBaseService {
   constructor() {
@@ -18,19 +19,18 @@ class MovieDetailsService extends TmdbBaseService {
   public getMovie = async (id: string): Promise<MovieDetailsViewModel> => {
     let movieDetails = await this.getDetails(id);
     let movieItems = await Promise.all([
-      this.getCast(id),
+      this.getCastAndCrew(id),
       this.getReviews(id),
       this.getRecommendations(id),
       this.getKeywords(id),
       this.getVideos(id),
-      this.getCrew(id),
     ]);
-    movieDetails.cast = movieItems[0];
+    movieDetails.cast = movieItems[0].cast;
     movieDetails.reviews = movieItems[1];
     movieDetails.recommendations = movieItems[2];
     movieDetails.keywords = movieItems[3];
     movieDetails.videos = movieItems[4];
-    movieDetails.crew = movieItems[5];
+    movieDetails.crew = movieItems[0].crew;
     return movieDetails;
   }
 
@@ -61,37 +61,34 @@ class MovieDetailsService extends TmdbBaseService {
     return result;
   }
 
-  private getCast = async (id: string): Promise<MovieCastViewModel[]> => {
+  private getCastAndCrew = async (id: string): Promise<CastAndCrewViewModel> => {
     const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}/credits`);
     const detailsResponse: AxiosResponse<MovieCastResponseDto> = await axios.get<MovieCastResponseDto>(url);
-    let result: Array<MovieCastViewModel> = detailsResponse.data.cast.map((item) => {
-      return {
-        id: item.id,
-        name: item.name,
-        profile_path: item.profile_path,
-        cast_id: item.cast_id,
-        character: item.character,
-        order: item.order,
-      }
-    });
-    return result;
-  }
+    const result: CastAndCrewViewModel = {
+      cast: detailsResponse.data.cast.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          profile_path: item.profile_path,
+          cast_id: item.cast_id,
+          character: item.character,
+          order: item.order,
+        }
+      }),
+      crew: detailsResponse.data.crew.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          profile_path: item.profile_path,
+          cast_id: item.cast_id,
+          character: item.character,
+          order: item.order,
+          job: item.job,
+          known_for_department: item.known_for_department,
+        }
+      })
+    }
 
-  private getCrew = async (id: string): Promise<MovieCastViewModel[]> => {
-    const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}/credits`);
-    const detailsResponse: AxiosResponse<MovieCastResponseDto> = await axios.get<MovieCastResponseDto>(url);
-    let result: Array<MovieCastViewModel> = detailsResponse.data.crew.map((item) => {
-      return {
-        id: item.id,
-        name: item.name,
-        profile_path: item.profile_path,
-        cast_id: item.cast_id,
-        character: item.character,
-        order: item.order,
-        job: item.job,
-        known_for_department: item.known_for_department,
-      }
-    });
     return result;
   }
 

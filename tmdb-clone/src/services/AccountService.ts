@@ -40,7 +40,7 @@ class AccountService extends TmdbBaseService {
       response = await axios.get<RatingResponseDto>(url);
       result = [...result, ...response.data.results];
       page += 1;
-    } while (response.data.results && response.data.results.length > 0);
+    } while (page <= response.data.total_pages);
     return result;
   }
 
@@ -54,7 +54,7 @@ class AccountService extends TmdbBaseService {
       response = await axios.get<RatingResponseDto>(url);
       result =[...result, ...response.data.results];
       page += 1;
-    } while (response.data.results && response.data.results.length > 0)
+    } while (page <= response.data.total_pages);
     return result;
   }
 
@@ -68,7 +68,7 @@ class AccountService extends TmdbBaseService {
       response = await axios.get<RatingResponseDto>(url);
       result =[...result, ...response.data.results];
       page += 1;
-    } while (response.data.results && response.data.results.length > 0)
+    } while (page <= response.data.total_pages);
     return result;
   }
 
