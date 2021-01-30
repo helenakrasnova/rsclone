@@ -12,7 +12,6 @@ type UserWatchlistProps = {
 }
 
 type UserWatchlistState = {
-  page: number;
   results: RatingDto[];
   loading: boolean;
 }
@@ -25,7 +24,6 @@ class UserWatchlistPage extends Component<RouteComponentProps<UserWatchlistProps
     this.accountService = new AccountService();
     this.authenticationService = new AuthenticationService();
     this.state = {
-      page: 1,
       results: [],
       loading: false,
     };
@@ -41,10 +39,9 @@ class UserWatchlistPage extends Component<RouteComponentProps<UserWatchlistProps
     })
     let accountId = this.authenticationService.getCurrentAccountDetails();
     if (accountId) {
-      let allRatings = await this.accountService.getWatchList(accountId.id, this.state.page);
+      let allRatings = await this.accountService.getWatchList(accountId.id);
       this.setState({
-        page: allRatings.page,
-        results: allRatings.results,
+        results: allRatings,
         loading: false,
       });
     }

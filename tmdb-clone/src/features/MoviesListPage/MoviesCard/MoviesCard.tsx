@@ -37,8 +37,6 @@ export default function MoviesCard(props: MoviesCardProps) {
               </> :
               'NR'}
           </div>
-          <Icon name='heart' color='red' size='large' link className='movieCard-like' />
-          <Icon name="bookmark" color='blue' size='large' link className='movieCard-watchList' />
           <div className="film-heading">
             <div className="film-heading-title">{movie.title}</div>
             <div className="film-release">

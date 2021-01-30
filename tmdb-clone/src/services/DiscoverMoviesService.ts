@@ -8,7 +8,8 @@ class DiscoverMoviesService extends TmdbBaseService {
   constructor() {
     super();
   }
-  findMovies = async (filter: SearchMoviesState | null, orderBy: string, page: number): Promise<DiscoverResponseDto> => {
+
+  public findMovies = async (filter: SearchMoviesState | null, orderBy: string, page: number): Promise<DiscoverResponseDto> => {
     let url: string = this.addApiKey(`${this.baseUrl}/discover/movie`);
     const request: DiscoverMoviesFilterRequestDto | null = this.createRequest(filter, orderBy, page);
     if (request) {
@@ -18,7 +19,8 @@ class DiscoverMoviesService extends TmdbBaseService {
     let response: AxiosResponse<DiscoverResponseDto> = await axios.get<DiscoverResponseDto>(url);
     return response.data;
   }
-  createRequest = (filter: SearchMoviesState | null, orderBy: string, page: number): DiscoverMoviesFilterRequestDto | null => {
+
+  private createRequest = (filter: SearchMoviesState | null, orderBy: string, page: number): DiscoverMoviesFilterRequestDto | null => {
     if (!filter) {
       return null;
     }
@@ -26,11 +28,12 @@ class DiscoverMoviesService extends TmdbBaseService {
       page: page,
       sort_by: orderBy,
       "release_date.gte": filter.releaseDateFrom,
-      "release_date.lte": filter.releaseDateFrom,
+      "release_date.lte": filter.releaseDateTo,
       with_release_type: Array.from(filter.releaseTypes).join('|'),
       region: filter.releaseCountry,
       with_genres: Array.from(filter.genres).join(','),
       certification: Array.from(filter.certification).join('|'),
+      'certification_country': filter.certification.values.length > 0 ? 'US' : null,
       with_original_language: filter.selectedLanguage,
       "vote_average.gte": filter.voteAverageMin,
       "vote_average.lte": filter.voteAverageMax,
@@ -41,4 +44,5 @@ class DiscoverMoviesService extends TmdbBaseService {
     return request;
   }
 }
+
 export default DiscoverMoviesService;

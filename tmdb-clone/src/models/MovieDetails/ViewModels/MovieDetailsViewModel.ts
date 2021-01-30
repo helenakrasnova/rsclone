@@ -25,6 +25,7 @@ export interface MovieDetailsViewModel {
   vote_average: number;
   vote_count?: number;
   cast?: Array<MovieCastViewModel>;
+  crew?: Array<MovieCastViewModel>;
   reviews?: MovieReviewResponseDto;
   recommendations?: MovieRecommendationsViewModel[];
   keywords?: MovieKeywordsResponseDto;

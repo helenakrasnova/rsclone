@@ -17,7 +17,7 @@ import PersonPage from './features/PersonPage/PersonPage';
 import PopularPeoplePage from './features/PopularPeoplePage';
 import UserWatchlistPage from './features/UserWatchlistPage';
 import UserRatingsPage from './features/UserRatingsPage';
-import UserProfilePage from './features/UserProfilePage/UserProfilePage';
+import UserFavoritesPage from './features/UserFavoritesPage/UserFavoritesPage';
 
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
           <Route exact path="/person/" component={PopularPeoplePage} />
           <Route exact path="/u/:userId/watchlist" component={UserWatchlistPage} />
           <Route exact path="/u/:userId/ratings" component={UserRatingsPage} />
-          <Route exact path="/u/:userId/" component={UserProfilePage} />
+          <Route exact path="/u/:userId/favorite" component={UserFavoritesPage} />
           {/* <Route path="*" component={NotFound} /> */}
         </Switch>
         <Footer />

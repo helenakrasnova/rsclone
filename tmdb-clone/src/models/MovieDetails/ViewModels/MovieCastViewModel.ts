@@ -6,4 +6,6 @@ export interface MovieCastViewModel {
   cast_id: number;
   character: string;
   order: number;
+  known_for_department?: string;
+  job?: string;
 }

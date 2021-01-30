@@ -9,14 +9,27 @@ import AccountService from './../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
 import { posterUrl } from './../../configuration/configuration';
 import Preloader from './../../components/Preloader/Preloader';
+import { RatingDto } from './../../models/Account/RatingResponseDto';
 
 type MovieDetailsProps = {
   id: string
 }
+
 type MovieDetailsState = {
   model: MovieDetailsViewModel;
   loading: boolean;
+  ratedMovie?: RatingViewModel | null;
+  watchListMovie?: RatingViewModel | null;
+  watchListActive: boolean;
+  favoriteActive: boolean;
+  favoriteMovie?: RatingViewModel | null;
 }
+
+type RatingViewModel = {
+  movieId: number;
+  rating?: number;
+}
+
 class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, MovieDetailsState> {
   movieDetailsService: MovieDetailsService;
   accountService: AccountService;
@@ -33,6 +46,8 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
         vote_average: 0,
       },
       loading: false,
+      watchListActive: false,
+      favoriteActive: false
     }
   }
 
@@ -51,9 +66,15 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       loading: true,
     });
     const movie = await this.movieDetailsService.getMovie(id);
+    let watchListMovie: RatingViewModel | null = await this.getMyMovieWarchlist(movie);
+    let favoriteMovie: RatingViewModel | null = await this.getMyMovieFavorite(movie);
+    let ratedMovie: RatingViewModel | null = await this.getMyMovieRating(movie);
     this.setState({
+      ratedMovie: ratedMovie,
       model: movie,
       loading: false,
+      watchListMovie: watchListMovie,
+      favoriteMovie: favoriteMovie,
     });
   }
 
@@ -84,10 +105,85 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
   }
 
   handleToWatchListClicked = () => {
+    const watchListActive = !this.state.watchListActive
+    this.setState({
+      watchListActive: watchListActive,
+    })
     const accountId = this.authenticationService.getCurrentAccountDetails()?.id;
     if (accountId) {
-      // this.accountService.addOrRemoveToWatchList(accountId, this.id, !markAsAdd);
+      if (this.state.watchListMovie) {
+        this.accountService.addOrRemoveToFavorites(accountId, +this.id, false);
+      } else {
+        this.accountService.addOrRemoveToFavorites(accountId, +this.id, true);
+      }
     }
+  }
+
+  handleToFavoriteClicked = () => {
+    const favoriteActive = !this.state.favoriteActive
+    this.setState({
+      favoriteActive: favoriteActive,
+    })
+    const accountId = this.authenticationService.getCurrentAccountDetails()?.id;
+    if (accountId) {
+      if (this.state.favoriteMovie) {
+        this.accountService.addOrRemoveToFavorites(accountId, +this.id, false);
+      } else {
+        this.accountService.addOrRemoveToFavorites(accountId, +this.id, true);
+      }
+    }
+  }
+
+  private async getMyMovieRating(movie: MovieDetailsViewModel) {
+    const account = this.authenticationService.getCurrentAccountDetails();
+    let ratedMovie: RatingViewModel | null = null;
+    if (AuthenticationService.isAuthenticated() && account) {
+      const ratingResponse = await this.accountService.getRatings(account.id);
+      const foundMovie = ratingResponse.find((item) => item.id === movie.id);
+      if (foundMovie) {
+        ratedMovie = {
+          movieId: foundMovie.id,
+          rating: foundMovie.rating,
+        };
+      }
+    }
+    return ratedMovie;
+  }
+
+  private async getMyMovieWarchlist(movie: MovieDetailsViewModel) {
+    const account = this.authenticationService.getCurrentAccountDetails();
+    let watchListMovie: RatingViewModel | null = null;
+    if (AuthenticationService.isAuthenticated() && account) {
+      const watchlistResponse = await this.accountService.getWatchList(account.id);
+      const foundMovie = watchlistResponse.find((item) => item.id === movie.id);
+      if (foundMovie) {
+        watchListMovie = {
+          movieId: foundMovie.id,
+        };
+        this.setState({
+          watchListActive: true,
+        })
+      }
+    }
+    return watchListMovie;
+  }
+
+  private async getMyMovieFavorite(movie: MovieDetailsViewModel) {
+    const account = this.authenticationService.getCurrentAccountDetails();
+    let favoriteMovie: RatingViewModel | null = null;
+    if (AuthenticationService.isAuthenticated() && account) {
+      const favoriteResponse = await this.accountService.getFavorites(account.id);
+      const foundMovie = favoriteResponse.find((item) => item.id === movie.id);
+      if (foundMovie) {
+        favoriteMovie = {
+          movieId: foundMovie.id,
+        };
+        this.setState({
+          favoriteActive: true,
+        })
+      }
+    }
+    return favoriteMovie;
   }
 
   render = () => {
@@ -153,14 +249,19 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                       <Button
                         color='red'
                         circular
-                        icon='heart'
-                        // onClick={}
+                        icon={this.state.favoriteActive ? 'heart' : 'heart outline'}
+                        toggle
+                        active={this.state.favoriteActive ? true : false}
+                        onClick={this.handleToFavoriteClicked}
                         size='large'
                         className='movie_inform-like' />
+
                       <Button
-                        color='blue'
+                        toggle
+                        active={this.state.watchListActive ? true : false}
+                        color={'blue'}
                         circular
-                        icon='bookmark'
+                        icon={this.state.watchListActive ? 'bookmark' : 'bookmark outline'}
                         onClick={this.handleToWatchListClicked}
                         size='large'
                         className='movie_inform-mark' />
@@ -173,7 +274,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                             color='yellow'
                             circular
                             icon='star'
-                            onClick={this.handleToWatchListClicked}
+                            // onClick={this.handleToWatchListClicked}
                             size='large'
                             className='movie_inform-star' />
                         }>
@@ -182,7 +283,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                             <Rating
                               onRate={this.handleRatingMovieClicked}
                               icon='star'
-                              defaultRating={0}
+                              defaultRating={this.state.ratedMovie?.rating}
                               maxRating={10} /> : 'Login to rate this movie'}
                         </Popup.Content>
                       </Popup>
@@ -217,14 +318,12 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
           </div>
           <div className="movie-content__wrapper">
             <div className="white__column">
-
               <h3>Top Billed Cast</h3>
               <section className="movieActors">
                 {this.state.model.cast?.map((person) => (
                   <div className="person-card" key={person.id}>
                     <Link to={`/person/${person.id}`}>
-                      <div
-                        className='person-image-container'
+                      <div className='person-image-container'
                         style={{
                           backgroundImage: `url(${this.getPosterUrl(person.profile_path) ?
                             this.getPosterUrl(person.profile_path) :
@@ -236,7 +335,22 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                     </Link>
                   </div>))}
               </section>
-
+              <section className="movieActors">
+                {this.state.model.crew?.map((person) => (
+                  <div className="person-card" key={person.id}>
+                    <Link to={`/person/${person.id}`}>
+                      <div className='person-image-container'
+                        style={{
+                          backgroundImage: `url(${this.getPosterUrl(person.profile_path) ?
+                            this.getPosterUrl(person.profile_path) :
+                            defaultMovie})`
+                        }}>
+                      </div>
+                      <div className="movieInform-name">{person.name}</div>
+                      <div className="movieInform-character">{person.job}</div>
+                    </Link>
+                  </div>))}
+              </section>
               <h3>Social</h3>
               {(this.state.model.reviews?.results && this.state.model.reviews?.results.length > 0) ? <section>
                 <div className="reviews-container">
@@ -261,7 +375,6 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                     </div>))}
                 </div>
               </section> : `We don't have any reviews for this movie`}
-
               <h3>Media</h3>
               {(this.state.model.videos?.results && this.state.model.videos?.results.length > 0) ? <section className="trailers">
                 <Embed
@@ -325,5 +438,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       );
     }
   }
+
+
 }
 export default MovieDetails;

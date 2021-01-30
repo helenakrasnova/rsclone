@@ -146,8 +146,7 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
     const json = localStorage.getItem('accountDetailsKey');
     if (json) {
       const accountDetailsValue = JSON.parse(json);
-      const page = 1;
-      this.accountService.getRatings(accountDetailsValue.id, page);
+      this.accountService.getRatings(accountDetailsValue.id);
       this.props.history.push(`/u/${accountDetailsValue.username}/ratings`);
     }
   }
@@ -156,19 +155,27 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
     const json = localStorage.getItem('accountDetailsKey');
     if (json) {
       const accountDetailsValue = JSON.parse(json);
-      const page = 1;
-      this.accountService.getWatchList(accountDetailsValue.id, page);
+      this.accountService.getWatchList(accountDetailsValue.id);
       this.props.history.push(`/u/${accountDetailsValue.username}/watchlist`);
     }
   }
 
-  handleViewProfileClicked = () => {
+  handleFavoriteClicked = () => {
     const json = localStorage.getItem('accountDetailsKey');
     if (json) {
       const accountDetailsValue = JSON.parse(json);
-      this.props.history.push(`/u/${accountDetailsValue.username}`);
+      this.accountService.getFavorites(accountDetailsValue.id);
+      this.props.history.push(`/u/${accountDetailsValue.username}/favorite`);
     }
   }
+
+  // handleViewProfileClicked = () => {
+  //   const json = localStorage.getItem('accountDetailsKey');
+  //   if (json) {
+  //     const accountDetailsValue = JSON.parse(json);
+  //     this.props.history.push(`/u/${accountDetailsValue.username}`);
+  //   }
+  // }
 
   getInitials = (): string | undefined => {
     const json = localStorage.getItem('accountDetailsKey');
@@ -214,22 +221,19 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
                     <button className="header-userIcon">{this.getInitials()?.toUpperCase()}</button>
                   }>
                   <Popup.Content>
-                    <Button fluid link disabled icon='user outline'
-                      onClick={this.handleViewProfileClicked}> View profile</Button>
-                  </Popup.Content>
-                  <Popup.Content>
-                    <Button fluid link icon='user outline'
+                    <Button fluid link
                       onClick={this.handleRatingsClicked}> Ratings</Button>
                   </Popup.Content>
                   <Popup.Content>
-                    <Button fluid link icon='user outline'
+                    <Button fluid link
                       onClick={this.handleWatchlistClicked}> Watchlist</Button>
                   </Popup.Content>
                   <Popup.Content>
-                    <Button fluid link disabled icon='user outline' > Favorite</Button>
+                    <Button fluid link
+                      onClick={this.handleFavoriteClicked} > Favorite</Button>
                   </Popup.Content>
                   <Popup.Content>
-                    <Button fluid link icon='user outline' color='blue'
+                    <Button fluid link  color='blue'
                       onClick={this.handleLogoutClicked} >
                       LogOut
                       </Button>

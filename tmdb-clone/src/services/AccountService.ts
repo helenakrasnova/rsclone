@@ -2,6 +2,7 @@ import TmdbBaseService from './TmdbBaseService';
 import AuthenticationService from './AuthenticationService';
 import axios, { AxiosResponse } from 'axios';
 import { RatingResponseDto } from '../models/Account/RatingResponseDto';
+import { RatingDto } from './../models/Account/RatingResponseDto';
 
 class AccountService extends TmdbBaseService {
   authenticationService: AuthenticationService;
@@ -29,19 +30,54 @@ class AccountService extends TmdbBaseService {
     }
   }
 
-  public getRatings = async (id: number, page: number): Promise<RatingResponseDto> => {
-    let url = this.getUrlWithSessionId(`account/${id}/rated/movies`);
-    url += `&page=${page}`;
-    const response: AxiosResponse<RatingResponseDto> = await axios.get<RatingResponseDto>(url);
-    return response.data;
+  public getRatings = async (id: number): Promise<RatingDto[]> => {
+    let page = 1;
+    let result: RatingDto[] = [];
+    let response: AxiosResponse<RatingResponseDto>;
+    do {
+      let url = this.getUrlWithSessionId(`account/${id}/rated/movies`);
+      url += `&page=${page}`;
+      response = await axios.get<RatingResponseDto>(url);
+      result = [...result, ...response.data.results];
+      page += 1;
+    } while (response.data.results && response.data.results.length > 0);
+    return result;
   }
 
-  public addOrRemoveToWatchList = async (accountId: number, movieId: number, markAsAdd : boolean): Promise<void> => {
+  public getWatchList = async (id: number): Promise<RatingDto[]> => {
+    let page = 1;
+    let result: RatingDto[] = [];
+    let response: AxiosResponse<RatingResponseDto>;
+    do {
+      let url = this.getUrlWithSessionId(`account/${id}/watchlist/movies`);
+      url += `&page=${page}`;
+      response = await axios.get<RatingResponseDto>(url);
+      result =[...result, ...response.data.results];
+      page += 1;
+    } while (response.data.results && response.data.results.length > 0)
+    return result;
+  }
+
+  public getFavorites = async (id: number): Promise<RatingDto[]> => {
+    let page = 1;
+    let result: RatingDto[] = [];
+    let response: AxiosResponse<RatingResponseDto>;
+    do {
+      let url = this.getUrlWithSessionId(`account/${id}/favorite/movies`);
+      url += `&page=${page}`;
+      response = await axios.get<RatingResponseDto>(url);
+      result =[...result, ...response.data.results];
+      page += 1;
+    } while (response.data.results && response.data.results.length > 0)
+    return result;
+  }
+
+  public addOrRemoveToWatchList = async (accountId: number, movieId: number, markAsAdd: boolean): Promise<void> => {
     let url = this.getUrlWithSessionId(`account/${accountId}/watchlist`);
     let requestBody: object = {
       media_type: 'movie',
       media_id: movieId,
-      watchlist: markAsAdd
+      watchlist: markAsAdd,
     }
     try {
       await axios.post(url, requestBody, {
@@ -55,11 +91,23 @@ class AccountService extends TmdbBaseService {
     }
   }
 
-  public getWatchList = async (id: number, page: number): Promise<RatingResponseDto> => {
-    let url = this.getUrlWithSessionId(`account/${id}/watchlist/movies`);
-    url += `&page=${page}`;
-    const response: AxiosResponse<RatingResponseDto> = await axios.get<RatingResponseDto>(url);
-    return response.data;
+  public addOrRemoveToFavorites = async (accountId: number, movieId: number, markAsAdd: boolean): Promise<void> => {
+    let url = this.getUrlWithSessionId(`account/${accountId}/favorite`);
+    let requestBody: object = {
+      media_type: 'movie',
+      media_id: movieId,
+      favorite: markAsAdd,
+    }
+    try {
+      await axios.post(url, requestBody, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   private getUrlWithSessionId = (path: string): string => {

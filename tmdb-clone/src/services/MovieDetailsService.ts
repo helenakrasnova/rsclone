@@ -22,13 +22,15 @@ class MovieDetailsService extends TmdbBaseService {
       this.getReviews(id),
       this.getRecommendations(id),
       this.getKeywords(id),
-      this.getVideos(id)
+      this.getVideos(id),
+      this.getCrew(id),
     ]);
     movieDetails.cast = movieItems[0];
     movieDetails.reviews = movieItems[1];
     movieDetails.recommendations = movieItems[2];
     movieDetails.keywords = movieItems[3];
     movieDetails.videos = movieItems[4];
+    movieDetails.crew = movieItems[5];
     return movieDetails;
   }
 
@@ -54,6 +56,7 @@ class MovieDetailsService extends TmdbBaseService {
       video: detailsResponse.data.video,
       vote_average: detailsResponse.data.vote_average,
       vote_count: detailsResponse.data.vote_count,
+
     }
     return result;
   }
@@ -69,7 +72,24 @@ class MovieDetailsService extends TmdbBaseService {
         cast_id: item.cast_id,
         character: item.character,
         order: item.order,
-        
+      }
+    });
+    return result;
+  }
+
+  private getCrew = async (id: string): Promise<MovieCastViewModel[]> => {
+    const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}/credits`);
+    const detailsResponse: AxiosResponse<MovieCastResponseDto> = await axios.get<MovieCastResponseDto>(url);
+    let result: Array<MovieCastViewModel> = detailsResponse.data.crew.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        profile_path: item.profile_path,
+        cast_id: item.cast_id,
+        character: item.character,
+        order: item.order,
+        job: item.job,
+        known_for_department: item.known_for_department,
       }
     });
     return result;
@@ -94,11 +114,13 @@ class MovieDetailsService extends TmdbBaseService {
     });
     return result;
   }
+
   private getKeywords = async (id: string): Promise<MovieKeywordsResponseDto> => {
     const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}/keywords`);
     const detailsResponse: AxiosResponse<MovieKeywordsResponseDto> = await axios.get<MovieKeywordsResponseDto>(url);
     return detailsResponse.data;
   }
+
   private getVideos = async (id: string): Promise<MovieVideosResponseDto> => {
     const url: string = this.addApiKey(`${this.baseUrl}/movie/${id}/videos`);
     const detailsResponse: AxiosResponse<MovieVideosResponseDto> = await axios.get<MovieVideosResponseDto>(url);

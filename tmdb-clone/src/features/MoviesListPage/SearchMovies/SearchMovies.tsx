@@ -27,10 +27,12 @@ export type SearchMoviesState = {
   releaseDateTo: string;
   genres: Set<string>;
 }
+
 type SearchMoviesProps = {
   onSearchClicked: (state: SearchMoviesState) => void;
   initialFilter: SearchMoviesState;
 }
+
 class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
   constructor(props: SearchMoviesProps) {
     super(props);
@@ -160,9 +162,9 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
               <p>Genres</p>
               {genres.map((genre) => (
                 <label className="checkbox-btn" key={genre.id}>
-                  <input
-                    type="checkbox"
+                  <input type="checkbox"
                     value={genre.id}
+                    checked={this.state.genres.has(genre.id.toString())}
                     onChange={this.handleGenreChanged} />
                   <span>{genre.name}</span>
                 </label>
@@ -233,6 +235,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                 From
                 <input type="date" id="from" name="from"
                   onChange={this.handleReleaseDateFrom}
+                  value ={this.state.releaseDateFrom}
                   min="1900-01-01" max="2099-12-31"
                 />
               </label>
@@ -240,6 +243,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                 To
                 <input type="date" id="to" name="to"
                   onChange={this.handleReleaseDateTo}
+                  value ={this.state.releaseDateTo}
                   min="1900-01-01" max="2099-12-31"
                 />
               </label>
@@ -255,6 +259,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                     type="checkbox"
                     data-id={item.certification}
                     value={item.certification}
+                    checked={this.state.certification.has(item.certification)}
                     onChange={this.handleCertificationChanged} />
                   <span>{item.certification}</span>
                 </label>
@@ -267,6 +272,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
               <p>Language</p>
               <Dropdown
                 placeholder='Select language'
+                value = {this.state.selectedLanguage as string}
                 fluid
                 selection
                 search
@@ -295,7 +301,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             <div className="accordion-userVotes">
               <p>Minimum User Votes</p>
               <Slider
-
+                value={this.state.voteCountMin}
                 min={0}
                 max={500}
                 step={50}

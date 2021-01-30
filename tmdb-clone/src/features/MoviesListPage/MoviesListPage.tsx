@@ -58,7 +58,7 @@ class MoviesListPage extends Component<MoviesListPageProps, MoviesListPageState>
     this.setState({
       loading: true,
     });
-    let searchingMovies = await this.discoverMoviesService.findMovies(this.state.filter, this.state.orderBy, this.state.page);
+    let searchingMovies = await this.discoverMoviesService.findMovies(filter, this.state.orderBy, this.state.page);
     this.setState({
       movies: searchingMovies.results,
       total: searchingMovies.total_results,

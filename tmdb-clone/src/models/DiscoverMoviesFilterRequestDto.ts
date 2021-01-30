@@ -15,5 +15,6 @@ export interface DiscoverMoviesFilterRequestDto {
   with_genres?: string;
   'with_runtime.gte'?: number;
   'with_runtime.lte'?: number;
+  'certification_country'? : string | null;
   with_original_language?: string | null;
 }

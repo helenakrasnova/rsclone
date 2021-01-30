@@ -1,5 +1,6 @@
 export interface MovieCastResponseDto {
-  cast: Array<MovieCastDto>
+  cast: Array<MovieCastDto>,
+  crew: Array<MovieCastDto>,
 }
 export interface MovieCastDto {
   adult: boolean;
@@ -14,4 +15,5 @@ export interface MovieCastDto {
   character: string;
   credit_id: string;
   order: number;
+  job?: string;
 }
