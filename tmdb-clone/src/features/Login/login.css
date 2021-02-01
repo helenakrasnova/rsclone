@@ -33,3 +33,7 @@
   font-size: 1.14rem;
   line-height: 1.5;
 }
+
+.login-error {
+  color: #d40242;
+}

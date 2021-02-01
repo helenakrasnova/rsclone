@@ -3,7 +3,7 @@ export interface Gravatar {
 }
 
 export interface Tmdb {
-  avatar_path?: any;
+  avatar_path?: string | null;
 }
 
 export interface Avatar {

@@ -63,24 +63,6 @@
   width: 90%;
 }
 
-.movieCard-watchList, .movieCard-like {
-  position: absolute;
-}
-
-.movieCard-watchList {
-  bottom: 4.1em;
-  left: 6.5em;
-}
-
-.movieCard-like {
-  bottom: 4.1em;
-  left: 8em;
-}
-
-.movieCard-watchList:hover, .movieCard-like:hover {
-  cursor: pointer;
-}
-
 .film-heading-title{
   max-height: 3.93rem;
   text-overflow: ellipsis;

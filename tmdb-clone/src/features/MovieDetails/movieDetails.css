@@ -12,14 +12,13 @@
 .movie-bg {
   height: 40.7rem;
   border-bottom: 1px solid black;
-  background-position: right -14.3rem top;
+  background-position: right -200px top !important;
   background-size: cover !important;
   background-repeat: no-repeat;
   width: 100%;
 }
 
 .movie-bg__filter {
-  background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -259,6 +258,9 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+.movieDetails-keyword{
+  display: block;
 }
 
 .trailers {

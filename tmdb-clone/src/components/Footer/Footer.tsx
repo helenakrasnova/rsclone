@@ -1,19 +1,13 @@
-import React from "react";
+import React from 'react';
 import './footer.css';
+import { withRouter } from 'react-router-dom';
+import { Image } from 'semantic-ui-react';
 import logoFooter from '../../assets/img/logo-footer.svg';
 import rsLogo from '../../assets/img/rs_school_js.svg';
 import gitHubLogo from '../../assets/img/GitHub-Mark-64px.png';
-import { RouteComponentProps, withRouter } from "react-router-dom";
-// import { withRouter } from "react-router";
-import { Image } from 'semantic-ui-react';
-import AuthenticationService from './../../services/AuthenticationService';
+import AuthenticationService from '../../services/AuthenticationService';
 
-
-type FooterProps = {
-
-}
-
-function Footer(props: RouteComponentProps<FooterProps>) {
+function Footer() {
   const authenticationService = new AuthenticationService();
   const username = authenticationService.getCurrentAccountDetails()?.username;
   return (
@@ -60,23 +54,23 @@ function Footer(props: RouteComponentProps<FooterProps>) {
             <li><a href="https://www.themoviedb.org/documentation/api/terms-of-use">API Terms of Use</a></li>
             <li><a href="https://www.themoviedb.org/privacy-policy">Privacy Policy</a></li>
             <li className="icons">
-              <Image src={rsLogo}
-                as='a'
-                className='rs'
-                size='mini'
-                href='https://rs.school/js/'
+              <Image
+                src={rsLogo}
+                as="a"
+                className="rs"
+                size="mini"
+                href="https://rs.school/js/"
               />
-              <Image src={gitHubLogo}
-                as='a'
-                size='mini'
-                href='https://github.com/helenakrasnova'
+              <Image
+                src={gitHubLogo}
+                as="a"
+                size="mini"
+                href="https://github.com/helenakrasnova"
               />
             </li>
           </ul>
         </div>
-
       </div>
-
     </footer>
   );
 }
