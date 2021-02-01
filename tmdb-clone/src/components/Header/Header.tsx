@@ -4,6 +4,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import {
   Button, Icon, Popup, Search, SearchProps, SearchResultData,
 } from 'semantic-ui-react';
+import { debounce, DebouncedFunc } from 'lodash';
 import logo from '../../assets/img/logo.svg';
 import SearchService from '../../services/SearchService';
 import { SearchResult } from '../../models/SearchResponseDto';
@@ -70,12 +71,17 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
 
   accountService: AccountService;
 
+  updateSearchResultDebounced: DebouncedFunc<(data: SearchProps) => Promise<void>>;
+
   constructor(props: RouteComponentProps<HeaderProps>) {
     super(props);
     this.state = initialState;
     this.authenticationService = new AuthenticationService();
     this.accountService = new AccountService();
     this.searchService = new SearchService();
+    this.updateSearchResultDebounced = debounce(async (data: SearchProps) => {
+      await this.updateSearchResult(data);
+    }, 400);
   }
 
   handleSearchClicked = () => {
@@ -100,45 +106,51 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
         value: data.value,
       },
     });
-    if (data.value) {
-      const searchResult = await this.searchService.findSearchResults(data.value);
-      const moviesResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'movie').map((item: SearchResult) => {
-        const model: SearchResultModel = {
-          description: item.overview,
-          title: item.title,
-          image: item.poster_path ? `${posterUrl}/w92${item.poster_path}` : defaultMovie,
-          id: item.id,
-          category: 'movies',
-        };
-        return model;
-      });
-      const personsResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'person').map((item: SearchResult) => {
-        const model: SearchResultModel = {
-          description: item.known_for_department,
-          title: item.name,
-          image: item.profile_path ? `${posterUrl}/w185${item.profile_path}` : defaultMovie,
-          id: item.id,
-          category: 'person',
-        };
-        return model;
-      });
-      this.setState({
-        searchState: {
-          loading: false,
-          results: {
-            movies: {
-              name: 'movies',
-              results: moviesResult,
-            },
-            persons: {
-              name: 'persons',
-              results: personsResult,
-            },
-          },
-          value: data.value,
-        },
-      });
+    await this.updateSearchResultDebounced(data);
+  };
+
+  updateSearchResult = async (data: SearchProps) => {
+    if (!data.value) {
+      return;
     }
+
+    const searchResult = await this.searchService.findSearchResults(data.value);
+    const moviesResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'movie').map((item: SearchResult) => {
+      const model: SearchResultModel = {
+        description: item.overview,
+        title: item.title,
+        image: item.poster_path ? `${posterUrl}/w92${item.poster_path}` : defaultMovie,
+        id: item.id,
+        category: 'movies',
+      };
+      return model;
+    });
+    const personsResult: SearchResultModel[] = searchResult.results.filter((item) => item.media_type === 'person').map((item: SearchResult) => {
+      const model: SearchResultModel = {
+        description: item.known_for_department,
+        title: item.name,
+        image: item.profile_path ? `${posterUrl}/w185${item.profile_path}` : defaultMovie,
+        id: item.id,
+        category: 'person',
+      };
+      return model;
+    });
+    this.setState({
+      searchState: {
+        loading: false,
+        results: {
+          movies: {
+            name: 'movies',
+            results: moviesResult,
+          },
+          persons: {
+            name: 'persons',
+            results: personsResult,
+          },
+        },
+        value: data.value,
+      },
+    });
   };
 
   handleLogoutClicked = () => {
@@ -204,7 +216,7 @@ class Header extends Component<RouteComponentProps<HeaderProps>, HeaderState> {
       <div className="header-component">
         <div className="header-container">
           <nav className="navigation">
-            <img src={logo} className="header-logo" alt="logo" />
+            <Link to="/"><img src={logo} className="header-logo" alt="logo" /></Link>
             <Link to="/"><span className="navigation-link">Movies</span></Link>
             <Link to="/person"><span className="navigation-link">People</span></Link>
           </nav>
