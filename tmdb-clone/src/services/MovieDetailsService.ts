@@ -82,6 +82,14 @@ class MovieDetailsService extends TmdbBaseService {
         known_for_department: item.known_for_department,
       })),
     };
+    const filteredCrew = [];
+    for (let i = 0; i < result.crew.length; i += 1) {
+      const existingCrew = filteredCrew.find((item) => item.id === result.crew[i].id);
+      if (!existingCrew) {
+        filteredCrew.push(result.crew[i]);
+      }
+    }
+    result.crew = filteredCrew;
     return result;
   };
 
