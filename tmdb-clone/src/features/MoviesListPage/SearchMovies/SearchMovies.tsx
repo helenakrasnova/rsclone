@@ -1,13 +1,15 @@
-import { Component } from "react";
-import { Accordion, AccordionTitleProps, Button, Checkbox, CheckboxProps, Dropdown, DropdownProps, Icon } from "semantic-ui-react";
+import React, { Component } from 'react';
+import {
+  Accordion, AccordionTitleProps, Button, Checkbox, CheckboxProps, Dropdown, DropdownProps, Icon,
+} from 'semantic-ui-react';
 import './searchMovies.css';
-import { genres } from './../../../configuration/genres';
-import { ReleaseTypes } from './../../../models/ReleaseTypes';
-import { countries } from './../../../configuration/countries';
-import { certification } from './../../../configuration/certification';
-import { CertificationModel } from './../../../models/CertificationModel';
-import { languages } from './../../../configuration/languages';
 import Slider, { Range } from 'rc-slider';
+import genres from '../../../configuration/genres';
+import ReleaseTypes from '../../../models/ReleaseTypes';
+import countries from '../../../configuration/countries';
+import certification from '../../../configuration/certification';
+import { CertificationModel } from '../../../models/CertificationModel';
+import languages from '../../../configuration/languages';
 import 'rc-slider/assets/index.css';
 
 export type SearchMoviesState = {
@@ -26,12 +28,12 @@ export type SearchMoviesState = {
   releaseDateFrom: string;
   releaseDateTo: string;
   genres: Set<string>;
-}
+};
 
 type SearchMoviesProps = {
   onSearchClicked: (state: SearchMoviesState) => void;
   initialFilter: SearchMoviesState;
-}
+};
 
 class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
   constructor(props: SearchMoviesProps) {
@@ -39,13 +41,14 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     this.state = props.initialFilter;
   }
 
-  handleAccordionClicked = (e: React.MouseEvent<HTMLDivElement>, titleProps: AccordionTitleProps) => {
+  handleAccordionClicked = (e: React.MouseEvent<HTMLDivElement>,
+    titleProps: AccordionTitleProps): void => {
     const { index } = titleProps;
     const newIndex = this.state.activeIndex === index ? -1 : index;
     this.setState({ activeIndex: newIndex });
-  }
+  };
 
-  handleGenreChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleGenreChanged = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const copyGenres = new Set(this.state.genres);
     if (event.target.checked) {
       copyGenres.add(event.target.value);
@@ -55,21 +58,24 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     this.setState({
       genres: copyGenres,
     });
-  }
+  };
 
-  handleAllReleasesChanged = (event: React.FormEvent<HTMLInputElement>) => {
+  handleAllReleasesChanged = (): void => {
     this.setState({
       isAllReleases: !this.state.isAllReleases,
     });
-  }
+  };
 
-  handleAllCountriesChanged = (event: React.FormEvent<HTMLInputElement>) => {
+  handleAllCountriesChanged = (): void => {
     this.setState({
       isAllCountries: !this.state.isAllCountries,
     });
-  }
+  };
 
-  handleReleaseTypeChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+  handleReleaseTypeChange = (
+    event: React.FormEvent<HTMLInputElement>,
+    data: CheckboxProps,
+  ): void => {
     const copyReleaseTypes = new Set(this.state.releaseTypes);
     if (data.checked) {
       copyReleaseTypes.add(data.value as number);
@@ -79,15 +85,15 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     this.setState({
       releaseTypes: copyReleaseTypes,
     });
-  }
+  };
 
-  handleCountryClicked = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+  handleCountryClicked = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
     this.setState({
       releaseCountry: data.value as string,
     });
-  }
+  };
 
-  handleCertificationChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleCertificationChanged = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const copyCertification = new Set(this.state.certification);
     if (event.target.checked) {
       copyCertification.add(event.target.value);
@@ -97,182 +103,198 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
     this.setState({
       certification: copyCertification,
     });
-  }
+  };
 
-  handleLanguageChanged = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+  handleLanguageChanged = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
     this.setState({
       selectedLanguage: data.value as string,
     });
-  }
+  };
 
-  handleUserScoreChanged = (values: number[]) => {
+  handleUserScoreChanged = (values: number[]): void => {
     this.setState({
       voteAverageMin: values[0],
       voteAverageMax: values[1],
     });
-  }
+  };
 
-  handleUserVotesChanged = (value: number) => {
+  handleUserVotesChanged = (value: number): void => {
     this.setState({
       voteCountMin: value,
     });
-  }
+  };
 
-  handleRuntimeChanged = (values: number[]) => {
+  handleRuntimeChanged = (values: number[]): void => {
     this.setState({
       movieDurationMin: values[0],
       movieDurationMax: values[1],
     });
-  }
+  };
 
-  handleSearchClicked = () => {
+  handleSearchClicked = (): void => {
     this.props.onSearchClicked(this.state);
-  }
+  };
 
-  handleReleaseDateFrom = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleReleaseDateFrom = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({
-      releaseDateFrom: event.target.value
+      releaseDateFrom: event.target.value,
     });
-  }
+  };
 
-  handleReleaseDateTo = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleReleaseDateTo = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({
-      releaseDateTo: event.target.value
+      releaseDateTo: event.target.value,
     });
-  }
+  };
 
   render = () => {
     const { activeIndex } = this.state;
     return (
-      <div className="searchMovies" >
-        <Accordion className={"accordion"}>
+      <div className="searchMovies">
+        <Accordion className="accordion">
           <Accordion.Title
-            className={"accordion-title"}
+            className="accordion-title"
             active={activeIndex === 1}
             index={1}
             onClick={this.handleAccordionClicked}
           >
             <div className="filters-heading">Filters</div>
-            <Icon name='dropdown' />
+            <Icon name="dropdown" />
           </Accordion.Title>
-          <Accordion.Content className={"accordion-content"}
+          <Accordion.Content
+            className="accordion-content"
             active={activeIndex === 1}
           >
             <div className="accordion-genres">
               <p>Genres</p>
               {genres.map((genre) => (
                 <label className="checkbox-btn" key={genre.id}>
-                  <input type="checkbox"
+                  <input
+                    type="checkbox"
                     value={genre.id}
                     checked={this.state.genres.has(genre.id.toString())}
-                    onChange={this.handleGenreChanged} />
+                    onChange={this.handleGenreChanged}
+                  />
                   <span>{genre.name}</span>
                 </label>
               ))}
             </div>
           </Accordion.Content>
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="releaseDates">
               <p>Release Dates</p>
-              <Checkbox label='Search all releases?' checked={this.state.isAllReleases} onChange={this.handleAllReleasesChanged} />
-              {!this.state.isAllReleases &&
-                <>
-                  <Checkbox
-                    label='Search all countries?'
-                    onChange={this.handleAllCountriesChanged}
-                    checked={this.state.isAllCountries}
-                  />
-                  {!this.state.isAllCountries &&
-                    <Dropdown
-                      placeholder='Select Country'
-                      fluid
-                      search
-                      selection
-                      value={this.state.releaseCountry as any}
-                      options={countries}
-                      onChange={this.handleCountryClicked}
+              <Checkbox label="Search all releases?" checked={this.state.isAllReleases} onChange={this.handleAllReleasesChanged} />
+              {!this.state.isAllReleases
+                && (
+                  <>
+                    <Checkbox
+                      label="Search all countries?"
+                      onChange={this.handleAllCountriesChanged}
+                      checked={this.state.isAllCountries}
                     />
-                  }
-                  <Checkbox
-                    label='Premiere'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.Premiere)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.Premiere}
-                  />
-                  <Checkbox
-                    label='Theatrical (limited)'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.Theatrical_limited)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.Theatrical_limited}
-                  />
-                  <Checkbox
-                    label='Theatrical'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.Theatrical)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.Theatrical}
-                  />
-                  <Checkbox
-                    label='Digital'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.Digital)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.Digital}
-                  />
-                  <Checkbox
-                    label='Physical'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.Physical)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.Physical}
-                  />
-                  <Checkbox
-                    label='TV'
-                    checked={this.state.releaseTypes.has(ReleaseTypes.TV)}
-                    onChange={this.handleReleaseTypeChange}
-                    value={ReleaseTypes.TV}
-                  />
-                </>
-              }
-              <label>
+                    {!this.state.isAllCountries
+                      && (
+                        <Dropdown
+                          placeholder="Select Country"
+                          fluid
+                          search
+                          selection
+                          value={this.state.releaseCountry as string}
+                          options={countries}
+                          onChange={this.handleCountryClicked}
+                        />
+                      )}
+                    <Checkbox
+                      label="Premiere"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.Premiere)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.Premiere}
+                    />
+                    <Checkbox
+                      label="Theatrical (limited)"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.Theatrical_limited)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.Theatrical_limited}
+                    />
+                    <Checkbox
+                      label="Theatrical"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.Theatrical)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.Theatrical}
+                    />
+                    <Checkbox
+                      label="Digital"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.Digital)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.Digital}
+                    />
+                    <Checkbox
+                      label="Physical"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.Physical)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.Physical}
+                    />
+                    <Checkbox
+                      label="TV"
+                      checked={this.state.releaseTypes.has(ReleaseTypes.TV)}
+                      onChange={this.handleReleaseTypeChange}
+                      value={ReleaseTypes.TV}
+                    />
+                  </>
+                )}
+              <label className="labelFor-date">
                 From
-                <input type="date" id="from" name="from"
+                <input
+                  type="date"
+                  id="from"
+                  name="from"
                   onChange={this.handleReleaseDateFrom}
-                  value ={this.state.releaseDateFrom}
-                  min="1900-01-01" max="2099-12-31"
+                  value={this.state.releaseDateFrom}
+                  min="1900-01-01"
+                  max="2099-12-31"
                 />
               </label>
-              <label>
+              <label className="labelFor-date">
                 To
-                <input type="date" id="to" name="to"
+                <input
+                  type="date"
+                  id="to"
+                  name="to"
                   onChange={this.handleReleaseDateTo}
-                  value ={this.state.releaseDateTo}
-                  min="1900-01-01" max="2099-12-31"
+                  value={this.state.releaseDateTo}
+                  min="1900-01-01"
+                  max="2099-12-31"
                 />
               </label>
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="accordion-certification">
               <p>Certification</p>
-              {certification.US.sort((a: CertificationModel, b: CertificationModel) => a.order - b.order).map((item: CertificationModel) => (
-                <label className="checkbox-btn" key={item.certification}>
-                  <input
-                    type="checkbox"
-                    data-id={item.certification}
-                    value={item.certification}
-                    checked={this.state.certification.has(item.certification)}
-                    onChange={this.handleCertificationChanged} />
-                  <span>{item.certification}</span>
-                </label>
-              ))}
+              {certification.US
+                .sort((a: CertificationModel, b: CertificationModel) => a.order - b.order)
+                .map((item: CertificationModel) => (
+                  <label className="checkbox-btn" key={item.certification}>
+                    <input
+                      type="checkbox"
+                      data-id={item.certification}
+                      value={item.certification}
+                      checked={this.state.certification.has(item.certification)}
+                      onChange={this.handleCertificationChanged}
+                    />
+                    <span>{item.certification}</span>
+                  </label>
+                ))}
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="accordion-language">
               <p>Language</p>
               <Dropdown
-                placeholder='Select language'
-                value = {this.state.selectedLanguage as string}
+                placeholder="Select language"
+                value={this.state.selectedLanguage as string}
                 fluid
                 selection
                 search
@@ -282,8 +304,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="accordion-userScore">
               <p>User Score</p>
               <Range
@@ -297,7 +318,7 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="accordion-userVotes">
               <p>Minimum User Votes</p>
               <Slider
@@ -306,11 +327,14 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                 max={500}
                 step={50}
                 onChange={this.handleUserVotesChanged}
-                marks={{ 0: 0, 100: 100, 200: 200, 300: 300, 400: 400, 500: 500 }} />
+                marks={{
+                  0: 0, 100: 100, 200: 200, 300: 300, 400: 400, 500: 500,
+                }}
+              />
             </div>
           </Accordion.Content>
 
-          <Accordion.Content active={activeIndex === 1} className={"accordion-content"}>
+          <Accordion.Content active={activeIndex === 1} className="accordion-content">
             <div className="accordion-runtime">
               <p>Runtime</p>
               <Range
@@ -319,7 +343,10 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
                 max={400}
                 step={15}
                 onChange={this.handleRuntimeChanged}
-                marks={{ 0: 0, 120: 120, 240: 240, 360: 360 }} />
+                marks={{
+                  0: 0, 120: 120, 240: 240, 360: 360,
+                }}
+              />
             </div>
           </Accordion.Content>
         </Accordion>
@@ -328,9 +355,12 @@ class SearchMovies extends Component<SearchMoviesProps, SearchMoviesState> {
           primary
           className="search-button"
           onClick={this.handleSearchClicked}
-        >Search</Button>
-      </div >
+        >
+          Search
+        </Button>
+      </div>
     );
-  }
+  };
 }
+
 export default SearchMovies;

@@ -1,24 +1,28 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import './userWatchlistPage.css';
-import AccountService from './../../services/AccountService';
-import AuthenticationService from './../../services/AuthenticationService';
 import { RouteComponentProps } from 'react-router-dom';
-import { RatingDto } from './../../models/Account/RatingResponseDto';
-import ProfileMoviesCard from "../../components/ProfileMoviesCard/ProfileMoviesCard";
-import Preloader from './../../components/Preloader/Preloader';
+import AccountService from '../../services/AccountService';
+import AuthenticationService from '../../services/AuthenticationService';
+import { RatingDto } from '../../models/Account/RatingResponseDto';
+import ProfileMoviesCard from '../../components/ProfileMoviesCard/ProfileMoviesCard';
+import Preloader from '../../components/Preloader/Preloader';
 
 type UserWatchlistProps = {
 
-}
+};
 
 type UserWatchlistState = {
   results: RatingDto[];
   loading: boolean;
-}
+};
 
-class UserWatchlistPage extends Component<RouteComponentProps<UserWatchlistProps>, UserWatchlistState> {
+class UserWatchlistPage extends Component<
+RouteComponentProps<UserWatchlistProps>,
+UserWatchlistState> {
   accountService: AccountService;
+
   authenticationService: AuthenticationService;
+
   constructor(props: RouteComponentProps<UserWatchlistProps>) {
     super(props);
     this.accountService = new AccountService();
@@ -36,37 +40,37 @@ class UserWatchlistPage extends Component<RouteComponentProps<UserWatchlistProps
   updateWatchlist = async () => {
     this.setState({
       loading: true,
-    })
-    let accountId = this.authenticationService.getCurrentAccountDetails();
+    });
+    const accountId = this.authenticationService.getCurrentAccountDetails();
     if (accountId) {
-      let allRatings = await this.accountService.getWatchList(accountId.id);
+      const allRatings = await this.accountService.getWatchList(accountId.id);
       this.setState({
         results: allRatings,
         loading: false,
       });
-    }
-    else {
+    } else {
       this.props.history.push('/login');
     }
-  }
+  };
 
   render = () => {
     if (this.state.loading === true) {
-      return (<Preloader />)
-    } else {
-      return (
-          <div className="account-wrapper">
-            <h3>Your watchlist</h3>
-            <div className="account-movie-list">
-              {this.state.results.map((movie) =>
-                <ProfileMoviesCard
-                  movie={movie} />
-              )}
-            </div>
-          </div>
-      );
+      return (<Preloader />);
     }
-  }
+    return (
+      <div className="account-wrapper">
+        <h3>Your watchlist</h3>
+        <div className="account-movie-list">
+          {this.state.results.map((movie) => (
+            <ProfileMoviesCard
+              movie={movie}
+              key={movie.id}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
 }
 
 export default UserWatchlistPage;

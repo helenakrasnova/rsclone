@@ -1,4 +1,4 @@
-import { MovieDiscoverDto } from "./MovieDiscoverDto";
+import { MovieDiscoverDto } from './MovieDiscoverDto';
 
 export interface DiscoverResponseDto {
   page: number;

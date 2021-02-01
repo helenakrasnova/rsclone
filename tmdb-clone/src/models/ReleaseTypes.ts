@@ -1,4 +1,4 @@
-export enum ReleaseTypes {
+enum ReleaseTypes {
   Premiere = 1,
   Theatrical_limited,
   Theatrical,
@@ -6,3 +6,5 @@ export enum ReleaseTypes {
   Physical,
   TV,
 }
+
+export default ReleaseTypes;

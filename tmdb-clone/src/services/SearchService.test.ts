@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
-import { SearchResponseDto } from '../models/SearchResponseDto';
+import axios from 'axios';
 import SearchService from './SearchService';
 
 jest.mock('axios');
@@ -29,15 +28,15 @@ describe('SearchService tests', () => {
         id: 555,
         media_type: 'movie',
       },
-    ]
+    ],
   };
   test('findSearchResults successful response only movies and person filtered', async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: searchResponseDto });
-    let actualResult = await searchService.findSearchResults('test');
+    const actualResult = await searchService.findSearchResults('test');
     expect(actualResult).toBeDefined();
     expect(actualResult.results.length).toBe(3);
-    expect(actualResult.results.find(item => item.id === 555)).toBeDefined();
-    expect(actualResult.results.find(item => item.id === 333)).toBeDefined();
-    expect(actualResult.results.find(item => item.id === 111)).toBeDefined();
-  })
-})
+    expect(actualResult.results.find((item) => item.id === 555)).toBeDefined();
+    expect(actualResult.results.find((item) => item.id === 333)).toBeDefined();
+    expect(actualResult.results.find((item) => item.id === 111)).toBeDefined();
+  });
+});

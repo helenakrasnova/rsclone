@@ -1,4 +1,3 @@
-
 export interface MovieCastViewModel {
   id: number;
   name: string;

@@ -1,9 +1,9 @@
-import { Genre } from "../Dtos/MovieDetailsResponseDto";
+import { Genre } from '../Dtos/MovieDetailsResponseDto';
 import { MovieCastViewModel } from './MovieCastViewModel';
-import { MovieReviewResponseDto } from './../Dtos/MovieReviewResponseDto';
-import { MovieRecommendationsViewModel } from "./MovieRecommendationsViewModel";
-import { MovieKeywordsResponseDto } from "../Dtos/MovieKeywordsResponseDto";
-import { MovieVideosResponseDto } from "../Dtos/MovieVideosResponseDto";
+import { MovieReviewResponseDto } from '../Dtos/MovieReviewResponseDto';
+import { MovieRecommendationsViewModel } from './MovieRecommendationsViewModel';
+import { MovieKeywordsResponseDto } from '../Dtos/MovieKeywordsResponseDto';
+import { MovieVideosResponseDto } from '../Dtos/MovieVideosResponseDto';
 
 export interface MovieDetailsViewModel {
   backdrop_path?: string;

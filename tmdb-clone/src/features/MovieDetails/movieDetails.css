@@ -19,7 +19,6 @@
 }
 
 .movie-bg__filter {
-  /* background-image: linear-gradient(to right, rgba(5.88%, 3.92%, 3.14%, 1.00), rgba(5.88%, 3.92%, 3.14%, 0.84) 100%); */
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -259,6 +258,9 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+.movieDetails-keyword{
+  display: block;
 }
 
 .trailers {

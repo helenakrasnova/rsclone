@@ -3,9 +3,9 @@ export interface PersonDetailsResponseDto {
   also_known_as: string[];
   biography: string;
   birthday: string;
-  deathday?: any;
+  deathday?: string | null;
   gender: number;
-  homepage?: any;
+  homepage?: string | null;
   id: number;
   imdb_id: string;
   known_for_department: string;

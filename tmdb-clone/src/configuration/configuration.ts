@@ -1,5 +1,6 @@
-import { DropDownViewModel } from './../models/DropDownViewModel';
-export const posterUrl: string = 'https://image.tmdb.org/t/p';
+import { DropDownViewModel } from '../models/DropDownViewModel';
+
+export const posterUrl = 'https://image.tmdb.org/t/p';
 
 export const sortOptions: DropDownViewModel[] = [
   {
