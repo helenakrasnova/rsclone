@@ -21,7 +21,7 @@ import NotFound from './components/NotFound';
 function App() {
   return (
     <>
-      <Router basename="/rsclone">
+      <Router>
         <Header />
         <Switch>
           <Route exact path="/" component={MoviesListPage} />

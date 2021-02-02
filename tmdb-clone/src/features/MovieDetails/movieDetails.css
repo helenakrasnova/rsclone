@@ -199,17 +199,17 @@
 
 .person-card {
   margin-top: 0.71rem;
-  margin-bottom:  0.71rem;
-  margin-left:  0.71rem;
+  margin-bottom: 0.71rem;
+  margin-left: 0.71rem;
   margin-right: 4px;
   border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom:  0.71rem;
+  padding-bottom: 0.71rem;
   border-radius: 8px;
   overflow: hidden;
   min-width: 10rem;
   width: 10rem;
   background-color: #fff;
-  margin-right:  0.71rem;
+  margin-right: 0.71rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -259,7 +259,8 @@
   background-position: center center;
   background-size: cover;
 }
-.movieDetails-keyword{
+
+.movieDetails-keyword {
   display: block;
 }
 
@@ -285,7 +286,7 @@
 .recommendation {
   margin: 0.71rem;
   border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom:  0.71rem;
+  padding-bottom: 0.71rem;
   border-radius: 8px;
   overflow: hidden;
   min-width: 10rem;
@@ -330,15 +331,17 @@
 
 @media (max-width: 499px) {
   .movie-bg {
-    height: 71.43rem;
+    height: 100%;
   }
   .movie-bg__filter {
     flex-direction: column;
     justify-content: space-evenly;
-    padding: 0;
+    padding: 1.5rem 0;
+    height: 100%;
   }
   .movie_inform__column {
     padding: 0.71rem;
+    height: initial;
   }
   .movie-title {
     font-size: 1.79rem;
