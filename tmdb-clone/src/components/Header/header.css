@@ -4,6 +4,7 @@
   background-color: #032541;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .navigation {
@@ -28,6 +29,7 @@
   justify-content: space-between;
   padding: 0px 2.86rem;
   width: 100%;
+  max-width: 100rem;
 }
 
 .header-logo {
