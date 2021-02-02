@@ -1,3 +1,5 @@
+import languages from '../configuration/languages';
+
 export default function getRatingColor(rating: number): string {
   let result = '';
   if (rating >= 7) {
@@ -17,4 +19,15 @@ export function fallbackImage(e: any, defaultValue: string) {
   if (e.target.src !== defaultValue) {
     e.target.src = defaultValue;
   }
+}
+
+export function getFullLanguage(lng: string): string {
+  let result = '-';
+  if (lng) {
+    const index = languages.findIndex((item) => item.value === lng);
+    if (index >= 0) {
+      result = languages[index].english_name;
+    }
+  }
+  return result;
 }
