@@ -11,7 +11,7 @@ import AccountService from '../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
 import { posterUrl } from '../../configuration/configuration';
 import Preloader from '../../components/Preloader/Preloader';
-import getRatingColor, { fallbackImage } from '../../common/utils';
+import getRatingColor, { fallbackImage, getFullLanguage } from '../../common/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ColorThief = require('colorthief').default;
@@ -527,7 +527,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               <p>
                 <b>Original Language </b>
                 <br />
-                {this.state.model.original_language}
+                {this.state.model.original_language ? getFullLanguage(this.state.model.original_language) : '-'}
               </p>
               <p>
                 <b>Budget </b>
