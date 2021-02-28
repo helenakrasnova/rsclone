@@ -59,6 +59,8 @@ class PersonPageService extends TmdbBaseService {
         title: item.title,
         release_date: item.release_date,
         vote_average: item.vote_average,
+        department: item.department,
+        job: item.job,
       })),
     };
     const knownFor = [...result.cast];
@@ -69,6 +71,21 @@ class PersonPageService extends TmdbBaseService {
     }
     result.cast.sort((a, b) => new Date(b.release_date)
       .getFullYear() - new Date(a.release_date).getFullYear());
+    for (let i = 0; i < result.crew.length; i += 1) {
+      result.crew[i].release_date = result.crew[i].release_date ? result.crew[i].release_date : '3000-1-1';
+    }
+    result.crew.sort((a, b) => new Date(b.release_date)
+      .getFullYear() - new Date(a.release_date).getFullYear());
+    const filteredCrew = [];
+    for (let i = 0; i < result.crew.length; i += 1) {
+      const existingCrew = filteredCrew.find((item) => item.id === result.crew[i].id);
+      if (!existingCrew) {
+        filteredCrew.push(result.crew[i]);
+      } else {
+        existingCrew.job = `${existingCrew.job}, ${result.crew[i].job}`;
+      }
+    }
+    result.crew = filteredCrew;
     return result;
   };
 

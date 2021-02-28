@@ -18,4 +18,6 @@ export interface CrewViewModel {
   title: string;
   release_date: string;
   vote_average: number;
+  department: string;
+  job: string;
 }

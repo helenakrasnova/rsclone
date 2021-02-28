@@ -39,6 +39,7 @@ class MovieDetailsService extends TmdbBaseService {
       budget: detailsResponse.data.budget,
       genres: detailsResponse.data.genres,
       homepage: detailsResponse.data.homepage,
+      imdb_id: detailsResponse.data.imdb_id,
       id: detailsResponse.data.id,
       original_language: detailsResponse.data.original_language,
       original_title: detailsResponse.data.original_title,
@@ -87,6 +88,8 @@ class MovieDetailsService extends TmdbBaseService {
       const existingCrew = filteredCrew.find((item) => item.id === result.crew[i].id);
       if (!existingCrew) {
         filteredCrew.push(result.crew[i]);
+      } else {
+        existingCrew.job = `${existingCrew.job}, ${result.crew[i].job}`;
       }
     }
     result.crew = filteredCrew;

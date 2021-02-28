@@ -11,6 +11,7 @@ export interface MovieDetailsViewModel {
   genres?: Genre[];
   homepage?: string;
   id?: number;
+  imdb_id?: string;
   original_language?: string;
   original_title?: string;
   overview?: string;

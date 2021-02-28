@@ -63,7 +63,13 @@ class Login extends Component<RouteComponentProps<LoginProps>, LoginState> {
               <input ref={this.passwordInput} type="password" placeholder="Password" />
             </Form.Field>
             <Button type="submit" color="blue">Login</Button>
+
+            <Button color="twitter">
+              <a className="login-link" href="https://www.themoviedb.org/signup">Register </a>
+            </Button>
+
           </Form>
+
           {this.state.loginError ? <h3 className="login-error">We could not validate your information. Want to try again?</h3> : ''}
         </div>
       </div>

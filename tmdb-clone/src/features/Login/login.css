@@ -37,3 +37,7 @@
 .login-error {
   color: #d40242;
 }
+
+.login-link, .login-link:hover {
+  color: white;
+}
