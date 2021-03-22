@@ -6,6 +6,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import MovieDetailsService from '../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from '../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
+import defaultPerson from '../../assets/img/defaultPerson.svg';
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import AccountService from '../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
@@ -214,6 +215,16 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     return result;
   };
 
+  private getTextColor = (rgbNumbers: string): any => {
+    const rgbArray = rgbNumbers.split(',');
+    if (rgbArray) {
+      if (+rgbArray[0] > 180 || +rgbArray[1] > 180 || +rgbArray[2] > 180) {
+        return '#000';
+      }
+    }
+    return '#fff';
+  };
+
   render = () => {
     const dateFormatter = new Intl.DateTimeFormat('ru');
     const moneyFormatter = new Intl.NumberFormat('en', {
@@ -238,6 +249,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
             style={{
               backgroundImage: `linear-gradient(to right, rgba(${this.state.filterColor}, 1.00),
                 rgba(${this.state.filterColor},0.84) 100%`,
+              color: this.getTextColor(this.state.filterColor),
             }}
           >
             <div className="movie_poster__column">
@@ -245,13 +257,16 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                 src={`${posterUrl}/w342${this.state.model.poster_path}`}
                 alt="movie poster"
                 className="movie-poster"
-                onError={(e) => fallbackImage(e, defaultMovie)}
+                onError={(e) => fallbackImage(e, defaultPerson)}
               />
             </div>
             <div className="movie_inform__column">
               <h2 className="movie-title">
                 {this.state.model.title}
                 <span className="movie-year">{this.state.model.release_date ? ` (${this.state.model.release_date?.substr(0, 4)})` : ''}</span>
+                <a href={`https://www.imdb.com/title/${this.state.model.imdb_id}`}>
+                  <Icon name="imdb" link size="small" />
+                </a>
                 <div className="facts">
                   <span className="release-date">
                     {this.state.model.release_date ? dateFormatter.format(new Date(this.state.model.release_date)) : ''}
@@ -408,7 +423,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                           style={{
                             backgroundImage: `url(${this.getPosterUrl(person.profile_path)
                               ? this.getPosterUrl(person.profile_path)
-                              : defaultMovie})`,
+                              : defaultPerson})`,
                           }}
                         />
                         <div className="movieInform-name">{person.name}</div>
@@ -431,7 +446,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                           style={{
                             backgroundImage: `url(${this.getPosterUrl(person.profile_path)
                               ? this.getPosterUrl(person.profile_path)
-                              : defaultMovie})`,
+                              : defaultPerson})`,
                           }}
                         />
                         <div className="movieInform-name">{person.name}</div>
@@ -455,7 +470,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                             className="review-user__avatar"
                             src={review.author_details.avatar_path
                               ? `${this.getUserImageUrl(review.author_details.avatar_path)}`
-                              : `${defaultMovie}`}
+                              : `${defaultPerson}`}
                           />
                         </div>
                         <div className="reviews-column-second">
@@ -469,6 +484,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                               {review.author_details.username}
                               {' '}
                               on
+                              {' '}
                               <>{review.created_at ? dateFormatter.format(new Date(review.created_at)) : '-'}</>
                             </h5>
                           </div>

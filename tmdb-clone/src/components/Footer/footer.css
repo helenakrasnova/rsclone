@@ -26,25 +26,6 @@
   margin: 1em 0;
 }
 
-.logged_in {
-  background-color: #fff;
-  color: #01b4e4;
-  font-size: 1.3em;
-  font-weight: bold;
-  display: inline-block;
-  word-wrap: break-word;
-  white-space: normal;
-  border: 2px solid #fff;
-  border-radius: 5px;
-  padding: 0.57rem 1.14rem;
-  transition: linear .1s;
-}
-
-.logged_in:hover {
-  color: #01b4e4;
-  cursor: pointer;
-}
-
 .footer-heading {
   font-weight: bold;
   font-size: 1.4em;

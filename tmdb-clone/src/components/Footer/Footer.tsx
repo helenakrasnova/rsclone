@@ -1,7 +1,7 @@
 import React from 'react';
 import './footer.css';
-import { withRouter } from 'react-router-dom';
-import { Image } from 'semantic-ui-react';
+import { Link, withRouter } from 'react-router-dom';
+import { Image, Button } from 'semantic-ui-react';
 import logoFooter from '../../assets/img/logo-footer.svg';
 import rsLogo from '../../assets/img/rs_school_js.svg';
 import gitHubLogo from '../../assets/img/GitHub-Mark-64px.png';
@@ -15,9 +15,9 @@ function Footer() {
       <div className="footer-container">
         <div className="footer-content join">
           <img src={logoFooter} className="footer-logo" alt="footer logo" />
-          <a className="logged_in" href={AuthenticationService.isAuthenticated() ? `/u/${username}/ratings` : '/login'}>
-            {AuthenticationService.isAuthenticated() ? `Hi, ${username}` : 'Join tmdb'}
-          </a>
+          <Link to={AuthenticationService.isAuthenticated() ? `/u/${username}/ratings` : '/login'}>
+            <Button color="blue">{AuthenticationService.isAuthenticated() ? `Hi, ${username}` : 'Join tmdb'}</Button>
+          </Link>
         </div>
         <div className="footer-content">
           <h3 className="footer-heading">The Basics</h3>
