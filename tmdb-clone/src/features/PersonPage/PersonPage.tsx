@@ -468,6 +468,43 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
                 </Table>
               </section>
             ) : ''}
+          {this.state?.model?.credits?.crew
+            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Sound') >= 0
+            ? (
+              <section className="personInform-credits">
+                <h3>Sound</h3>
+                <Table className="personInform-table">
+                  <Table.Body>
+                    {this.state.model.credits?.crew.filter((item) => item.department === 'Sound').map((item) => (
+                      <Table.Row key={item.id}>
+                        <Table.Cell width={1}>
+                          <Link to={`/movies/${item.id}`}>
+                            <span className="personInform-table">
+                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
+                            </span>
+                          </Link>
+                        </Table.Cell>
+                        <Table.Cell width={1}>
+                          <Link to={`/movies/${item.id}`}>
+                            <span className="personInform-table">
+                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
+                            </span>
+                          </Link>
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Link to={`/movies/${item.id}`}>
+                            <span className="personInform-table">
+                              <b>{item.title}</b>
+                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
+                            </span>
+                          </Link>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </section>
+            ) : ''}
         </div>
       </div>
     );
