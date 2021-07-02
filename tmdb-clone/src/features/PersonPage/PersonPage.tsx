@@ -9,6 +9,7 @@ import { PersonDetailsViewModel } from '../../models/PersonDetails/ViewModels/Pe
 import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import { posterUrl } from '../../configuration/configuration';
 import Preloader from '../../components/Preloader/Preloader';
+import defaultPerson from '../../assets/img/defaultPerson.svg';
 
 type PersonPageProps = {
   id: string;
@@ -107,35 +108,50 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
     return (
       <div className="personInform-container">
         <div className="personInform-firstColumn">
-          <Modal
-            size="mini"
-            closeIcon
-            style={{ textAlign: 'center' }}
-            trigger={(
-              <section
-                className="personInform-poster"
-                style={{
-                  backgroundImage: this.state.model.profile_path
-                    ? `url(${posterUrl}/w342${this.state.model.profile_path})`
-                    : `url(${defaultMovie})`,
-                }}
-              />
+          {this.state.model.profile_path ? (
+            <Modal
+              size="mini"
+              closeIcon
+              style={{ textAlign: 'center' }}
+              trigger={(
+                <section
+                  className="personInform-poster"
+                  style={{
+                    backgroundImage: this.state.model.profile_path
+                      ? `url(${posterUrl}/w342${this.state.model.profile_path})`
+                      : `url(${defaultPerson})`,
+                  }}
+                />
             )}
-          >
-            <Modal.Header>
-              <Icon onClick={this.onPrevImageClicked} link name="arrow left" />
-              {this.state.model.name}
-              <Icon onClick={this.onNextImageClicked} link name="arrow right" />
-            </Modal.Header>
-            <Modal.Content image>
-              <Image
-                size="medium"
-                centered
-                src={`${posterUrl}/w300${this.state.model.images?.profiles[this.state.imageCount
-                  ? this.state.imageCount : 0]?.file_path}`}
-              />
-            </Modal.Content>
-          </Modal>
+            >
+              <Modal.Header>
+                {this.state?.model?.images
+                && this.state?.model?.images?.profiles?.length > 1
+                  ? <Icon onClick={this.onPrevImageClicked} link name="arrow left" /> : ''}
+                {this.state.model.name}
+                {this.state?.model?.images
+                && this.state?.model?.images?.profiles?.length > 1
+                  ? <Icon onClick={this.onNextImageClicked} link name="arrow right" /> : ''}
+              </Modal.Header>
+              <Modal.Content image>
+                <Image
+                  size="medium"
+                  centered
+                  src={`${posterUrl}/w300${this.state.model.images?.profiles[this.state.imageCount
+                    ? this.state.imageCount : 0]?.file_path}`}
+                />
+              </Modal.Content>
+            </Modal>
+          ) : (
+            <section
+              className="personInform-poster"
+              style={{
+                backgroundImage: this.state.model.profile_path
+                  ? `url(${posterUrl}/w342${this.state.model.profile_path})`
+                  : `url(${defaultPerson})`,
+              }}
+            />
+          )}
 
           <h3>Personal Info</h3>
           <section className="posterInform-facts">
