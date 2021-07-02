@@ -524,7 +524,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         />
                         <div className="movieInform-name">{recommendation.title}</div>
                         <div className="movieInform-character">
-                          {recommendation.vote_average * 10}
+                          {Math.round(recommendation.vote_average * 10)}
                           %
                         </div>
                       </Link>
