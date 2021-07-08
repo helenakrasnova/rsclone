@@ -1,0 +1,120 @@
+.checkbox-btn {
+  display: inline-block;
+  margin: 0 5px 0 0;
+  user-select: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-btn input[type=checkbox] {
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+
+.checkbox-btn span {
+  display: inline-flex;
+  border: 1px solid #9e9e9e;
+  border-radius: 1rem;
+  padding: 4px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  margin: 1px;
+}
+
+/* Checked */
+
+.checkbox-btn input[type=checkbox]:checked+span {
+  background: #01b4e4;
+  color: white;
+  border: 1px solid #01b4e4;
+}
+
+.checkbox-btn span:hover {
+  background: #01b4e4;
+  border: 1px solid #01b4e4;
+  color: white;
+  cursor: pointer;
+}
+
+/* Focus */
+
+.focused span {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+.releaseDates {
+  display: flex;
+  flex-direction: column;
+}
+
+::-webkit-calendar-picker-indicator {
+  color: transparent;
+  opacity: 1;
+  background: url(https://icon-library.com/images/calendar-icon-svg/calendar-icon-svg-15.jpg) no-repeat center;
+  background-size: contain;
+}
+
+.ui.accordion {
+  margin-bottom: 3rem;
+}
+
+.accordion {
+  width: 18.57rem;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: .28571429rem;
+}
+
+.accordion-title {
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+  border-top-left-radius: .28571429rem;
+  border-top-right-radius: .28571429rem;
+  border-bottom: 1px solid #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.filters-heading {
+  padding-left: 1rem;
+}
+
+.accordion-content {
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.accordion-genres, .releaseDates, .accordion-certification, .accordion-language, .accordion-userScore, .accordion-userVotes {
+  padding: 1rem 1.143rem;
+}
+
+.accordion-runtime {
+  padding: 1rem 1.143rem 2.5rem 1.143rem;
+}
+
+.searchMovies {
+  width: 18.57rem;
+}
+
+#from, #to {
+  border: 1px solid rgba(33, 37, 41, 0.15);
+  padding: .375rem .75rem;
+  height: calc(0.75rem + 1.5em);
+  margin: 10px 0 0 0;
+}
+
+.labelFor-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#from:focus, #to:focus {
+  outline: none;
+}

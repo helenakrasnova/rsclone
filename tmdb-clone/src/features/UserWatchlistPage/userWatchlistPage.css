@@ -1,0 +1,20 @@
+.account-wrapper {
+  width: 100%;
+  padding: 1.43rem 2.86rem;
+  max-width: 100rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+
+}
+
+.account-movie-list {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+@media (max-width: 499px) {
+  .account-wrapper{
+    padding: 0.71rem;
+  }
+}
+

@@ -1,0 +1,67 @@
+.personPopular-heading {
+  padding: 0 2.86rem;
+}
+
+.personPopular-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 0 2.86rem 2.14rem 2.86rem;
+}
+
+.personPopular-card {
+  margin: 1.07rem 0;
+  color: #000;
+  width: 16.79rem;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(227, 227, 227, 1);
+}
+
+.personPopular-image {
+  height: 16.79rem;
+  width: 16.79rem;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.personPopular-inform {
+  padding: 8px 0.71rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.personPopular-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0;
+  width: 100%;
+  line-height: 1.2em;
+}
+
+.personPopular-popularFor {
+  font-size: 0.9em;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  display: flex;
+ /* flex-direction: column; */
+  margin-top: 0;
+  text-overflow: ellipsis;
+}
+.personPopular-popularFor-text{
+   width: 100%;
+   text-overflow: ellipsis;
+   overflow: hidden;
+}
+.more-people {
+  margin-top: 2.14rem;
+}

@@ -1,0 +1,118 @@
+.profileMovies-container {
+  width: 100%;
+  display: flex;
+  height: 14.29rem;
+  border-radius: 0.57rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  border: 1px solid rgba(227, 227, 227, 1);
+  background-color: #fff;
+  margin: 1.43rem 0;
+}
+
+.profileMovies-voting {
+  width: 2.43rem;
+  height: 2.43rem;
+  border-radius: 75%;
+  background-color: #081c22;
+  color: #e5e7e8;
+  border: 2px solid;
+  font-size: 0.93rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.71rem;
+}
+
+.profileMovies-poster {
+  height: 14.3rem;
+}
+
+.profileMovies-description {
+  width: 100%;
+  padding: 0.71rem 1.07rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: #000;
+}
+
+.profileMovies-content {
+  display: flex;
+}
+
+.profileMovies-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileMovies-release {
+  white-space: nowrap;
+  color: #999;
+  font-size: 1.1em;
+}
+
+.profileMovies-heading {
+  font-size: 1.2em;
+  margin-bottom: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.profileMovies-rating {
+  border-color: #01d277;
+  background-color: #01d277;
+  color: #fff;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: static;
+  width: 2.14rem;
+  height: 2.14rem;
+  border-radius: 50%;
+  margin-right: 0.57rem;
+  font-size: 1.14rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: 0.1s linear;
+}
+
+
+@media (min-width: 500px) and (max-width: 799px) {
+  .profileMovies-overview {
+    width: 100%;
+    padding-right: 0.36rem;
+    overflow-y: auto;
+    text-align: justify;
+    height: 6.86rem;
+  }
+}
+
+@media (max-width: 499px) {
+  .profileMovies-container {
+    align-items: center;
+    height: 10rem;
+    font-size: 0.8em;
+    margin: 0.71rem 0;
+  }
+  .profileMovies-poster {
+    height: 10rem;
+  }
+  .profileMovies-overview {
+    display: none;
+  }
+  .profileMovies-description {
+    padding: 0 0 0 0.36rem;
+    height: 100%;
+    justify-content: space-evenly;
+  }
+  .profileMovies-content {
+    flex-direction: column;
+  }
+}
