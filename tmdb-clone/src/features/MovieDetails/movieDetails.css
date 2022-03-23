@@ -110,7 +110,9 @@
   height: 20.86rem;
 }
 
-.movie_inform-like:hover, .movie_inform-mark:hover, .movie_inform-star:hover {
+.movie_inform-like:hover,
+.movie_inform-mark:hover,
+.movie_inform-star:hover {
   cursor: pointer;
 }
 
@@ -171,22 +173,6 @@
   height: 20.86rem;
 }
 
-.movieInform-name {
-  padding: 0.71rem 0.71rem 0 0.71rem;
-  font-weight: bold;
-  color: #000;
-  font-size: 1.07rem;
-  max-height: 3.57rem;
-  overflow: hidden;
-  width: 9.86rem;
-}
-
-.movieInform-character {
-  padding: 0px 0.71rem;
-  color: #000;
-  font-size: 0.86rem;
-}
-
 .tagline {
   margin-bottom: 0;
   font-size: 1.1em;
@@ -197,29 +183,7 @@
   margin: 0 0 8px 0;
 }
 
-.person-card {
-  margin-top: 0.71rem;
-  margin-bottom: 0.71rem;
-  margin-left: 0.71rem;
-  margin-right: 4px;
-  border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom: 0.71rem;
-  border-radius: 8px;
-  overflow: hidden;
-  min-width: 10rem;
-  width: 10rem;
-  background-color: #fff;
-  margin-right: 0.71rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-.person-image-container {
-  height: 12.5rem;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
 
 .white__column {
   max-width: 68.6rem;
@@ -281,26 +245,6 @@
   padding-right: 2.14rem;
   overflow-y: hidden;
   overflow-x: scroll;
-}
-
-.recommendation {
-  margin: 0.71rem;
-  border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom: 0.71rem;
-  border-radius: 8px;
-  overflow: hidden;
-  min-width: 10rem;
-  width: 10rem;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.recommendation-inform {
-  height: 13.2rem;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
 
 @media (min-width: 1300px) {

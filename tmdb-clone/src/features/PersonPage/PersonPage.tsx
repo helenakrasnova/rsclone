@@ -10,6 +10,7 @@ import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg'
 import { posterUrl } from '../../configuration/configuration';
 import Preloader from '../../components/Preloader/Preloader';
 import defaultPerson from '../../assets/img/defaultPerson.svg';
+import AccordionCard from '../../components/AccordionCard';
 
 type PersonPageProps = {
   id: string;
@@ -122,15 +123,15 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
                       : `url(${defaultPerson})`,
                   }}
                 />
-            )}
+              )}
             >
               <Modal.Header>
                 {this.state?.model?.images
-                && this.state?.model?.images?.profiles?.length > 1
+                  && this.state?.model?.images?.profiles?.length > 1
                   ? <Icon onClick={this.onPrevImageClicked} link name="arrow left" /> : ''}
                 {this.state.model.name}
                 {this.state?.model?.images
-                && this.state?.model?.images?.profiles?.length > 1
+                  && this.state?.model?.images?.profiles?.length > 1
                   ? <Icon onClick={this.onNextImageClicked} link name="arrow right" /> : ''}
               </Modal.Header>
               <Modal.Content image>
@@ -209,20 +210,12 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
             ? (
               <section className="personInform-knownFor">
                 {this.state.model.credits?.knownFor.map((movie) => (
-                  <div className="knownFor-card" key={movie.id}>
-                    <Link to={`/movies/${movie.id}`}>
-                      <div
-                        className="knownFor-image-container"
-                        style={{
-                          backgroundImage: movie.poster_path
-                            ? `url(${posterUrl}/w154${movie.poster_path})`
-                            : `url(${defaultMovie})`,
-                        }}
-                      />
-                      <div className="knownFor-name">{movie.title}</div>
-                      <div className="knownFor-character">{movie.vote_average > 0 ? `${movie.vote_average * 10}%` : 'NR'}</div>
-                    </Link>
-                  </div>
+                  <AccordionCard
+                    id={movie.id}
+                    poster_path={movie.poster_path}
+                    title={movie.title}
+                    key={movie.id}
+                  />
                 ))}
               </section>
             ) : 'We don\'t have any movies'}

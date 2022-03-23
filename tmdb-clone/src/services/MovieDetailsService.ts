@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import TmdbBaseService from './TmdbBaseService';
 import { MovieDetailsViewModel } from '../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import { MovieDetailsResponseDto } from '../models/MovieDetails/Dtos/MovieDetailsResponseDto';
-import { CastAndCrewViewModel } from '../models/MovieDetails/ViewModels/MovieCastViewModel';
+import { CastAndCrewViewModel, MovieCastViewModel } from '../models/MovieDetails/ViewModels/MovieCastViewModel';
 import { MovieCastResponseDto } from '../models/MovieDetails/Dtos/MovieCastResponseDto';
 import { MovieReviewResponseDto } from '../models/MovieDetails/Dtos/MovieReviewResponseDto';
 import { MovieRecommendationsResponseDto } from '../models/MovieDetails/Dtos/MovieRecommendationsResponseDto';
@@ -83,7 +83,7 @@ class MovieDetailsService extends TmdbBaseService {
         known_for_department: item.known_for_department,
       })),
     };
-    const filteredCrew = [];
+    const filteredCrew: MovieCastViewModel[] = [];
     for (let i = 0; i < result.crew.length; i += 1) {
       const existingCrew = filteredCrew.find((item) => item.id === result.crew[i].id);
       if (!existingCrew) {

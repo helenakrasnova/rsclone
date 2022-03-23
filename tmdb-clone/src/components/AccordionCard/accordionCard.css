@@ -1,0 +1,36 @@
+.accordionCard {
+  margin: 0.71rem;
+  margin-right: 4px;
+  border: 1px solid rgba(227, 227, 227, 1);
+  padding-bottom: 0.71rem;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 10rem;
+  width: 10rem;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.accordionCard-inform {
+  height: 12.5rem;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.accordionCard-name {
+  padding: 0.71rem 0.71rem 0 0.71rem;
+  font-weight: bold;
+  color: #000;
+  font-size: 1.07rem;
+  max-height: 3.57rem;
+  overflow: hidden;
+  width: 9.86rem;
+}
+
+.accordionCard-character {
+  padding: 0px 0.71rem;
+  color: #000;
+  font-size: 0.86rem;
+}
