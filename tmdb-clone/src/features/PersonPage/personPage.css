@@ -10,7 +10,7 @@
 
 .personInform-firstColumn {
   min-width: 21.43rem;
-  width:  21.43rem;
+  width: 21.43rem;
 }
 
 .personInform-secondColumn {
@@ -34,13 +34,13 @@
   background-position: center center;
   overflow: hidden;
   border-radius: 8px;
-  transition: all .25s linear;
+  transition: all 0.25s linear;
 }
 
 .personInform-poster:hover {
   cursor: pointer;
   filter: blur(5px) brightness(50%);
-  transition: all .25s linear;
+  transition: all 0.25s linear;
 }
 
 .personInform-title {
@@ -82,43 +82,6 @@
 .personInform-character {
   color: rgba(0, 0, 0, 0.5);
   font-weight: 400;
-}
-
-.knownFor-card {
-  margin: 0.71rem 4px 0.71rem 0.71rem;
-  border: 1px solid rgba(227, 227, 227, 1);
-  padding-bottom: 0.71rem;
-  border-radius: 8px;
-  overflow: hidden;
-  min-width: 10rem;
-  width: 10rem;
-  background-color: #fff;
-  margin-right: 0.71rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.knownFor-image-container {
-  height: 12.5rem;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
-.knownFor-name {
-  padding: 0.71rem 0.71rem 0 0.71rem;
-  font-weight: bold;
-  color: #000;
-  font-size: 1.07rem;
-  max-height: 3.57rem;
-  overflow: hidden;
-  width: 9.86rem;
-}
-
-.knownFor-character {
-  padding: 0px 0.71rem;
-  color: #000;
-  font-size: 0.86rem;
 }
 
 @media (min-width: 320px) and (max-width: 799px) {

@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import {
   Icon, Button, Embed, Modal, Popup, Rating, RatingProps,
 } from 'semantic-ui-react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import MovieDetailsService from '../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from '../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
 import defaultPerson from '../../assets/img/defaultPerson.svg';
-import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import AccountService from '../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
 import { posterUrl } from '../../configuration/configuration';
 import Preloader from '../../components/Preloader/Preloader';
 import getRatingColor, { fallbackImage, getFullLanguage } from '../../common/utils';
+import AccordionCard from '../../components/AccordionCard';
+import { getUserImageUrl } from '../../common/helpers';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ColorThief = require('colorthief').default;
@@ -76,26 +77,6 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
       await this.updatePage(this.props.match.params.id);
     }
   }
-
-  getPosterUrl = (url: string): string | null => {
-    if (!url) {
-      return null;
-    } if (!url.includes('http')) {
-      return `${posterUrl}/w154${url}`;
-    }
-    return url;
-  };
-
-  getUserImageUrl = (url: string): string | null => {
-    if (!url) {
-      return null;
-    } if (url.includes('tmdb')) {
-      return url;
-    } if (url.includes('gravatar')) {
-      return url.slice(1);
-    }
-    return `${posterUrl}/w185${url}`;
-  };
 
   private async getMyMovieRating(movie: MovieDetailsViewModel) {
     const account = this.authenticationService.getCurrentAccountDetails();
@@ -215,7 +196,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
     return result;
   };
 
-  private getTextColor = (rgbNumbers: string): any => {
+  private getTextColor = (rgbNumbers: string): string => {
     const rgbArray = rgbNumbers.split(',');
     if (rgbArray) {
       if (+rgbArray[0] > 180 || +rgbArray[1] > 180 || +rgbArray[2] > 180) {
@@ -269,13 +250,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                 </a>
                 <div className="facts">
                   <span className="release-date">
-                    {this.state.model.release_date ? dateFormatter.format(new Date(this.state.model.release_date)) : ''}
+                    {this.state.model.release_date && `${dateFormatter.format(new Date(this.state.model.release_date))} `}
                   </span>
                   <span>
                     {this.state.model.genres?.map((genre) => (
                       <span key={genre.id}>
                         <Icon color="red" name="circle outline" size="small" />
-                        {genre.name}
+                        {` ${genre.name} `}
                       </span>
                     ))}
                   </span>
@@ -295,13 +276,12 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         borderColor: getRatingColor(this.state.model.vote_average),
                       }}
                     >
-                      {this.state.model.vote_average !== 0 ? `${this.state.model.vote_average * 10}%` : 'NR'}
+                      {this.state.model.vote_average ? `${this.state.model.vote_average * 10}%` : 'NR'}
                     </div>
                     <span>
                       User
                       <br />
-                      {' '}
-                      Score
+                      {' Score'}
                     </span>
                   </div>
                   <div className="movie_inform-buttons">
@@ -376,7 +356,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                     </Popup>
                   </div>
                   {this.state.model.videos?.results[0]
-                    ? (
+                    && (
                       <Modal
                         closeIcon
                         trigger={(
@@ -395,17 +375,24 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                           />
                         </Modal.Content>
                       </Modal>
-                    ) : ''}
+                    )}
                 </div>
               </div>
               <div className="header_info">
                 <h3 className="tagline">{this.state.model.tagline}</h3>
-                <h3>  Overview</h3>
+                <h3>Overview</h3>
                 <div className="overview">
-                  {' '}
                   {this.state.model.overview}
                 </div>
               </div>
+              {/* {this.state.model.crew?
+              .filter((item) => item.job?.toLowerCase().includes('director'))?.map((person) => (
+                <>
+                  {person.name}
+                  -
+                  {person.job}
+                </>
+              ))} */}
             </div>
           </div>
         </div>
@@ -416,20 +403,12 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               ? (
                 <section className="movieActors">
                   {this.state.model.cast?.map((person) => (
-                    <div className="person-card" key={person.id}>
-                      <Link to={`/person/${person.id}`}>
-                        <div
-                          className="person-image-container"
-                          style={{
-                            backgroundImage: `url(${this.getPosterUrl(person.profile_path)
-                              ? this.getPosterUrl(person.profile_path)
-                              : defaultPerson})`,
-                          }}
-                        />
-                        <div className="movieInform-name">{person.name}</div>
-                        <div className="movieInform-character">{person.character}</div>
-                      </Link>
-                    </div>
+                    <AccordionCard
+                      id={person.id}
+                      name={person.name}
+                      character={person.character}
+                      profile_path={person.profile_path}
+                    />
                   ))}
                 </section>
               )
@@ -439,20 +418,12 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               ? (
                 <section className="movieActors">
                   {this.state.model.crew?.map((person) => (
-                    <div className="person-card" key={`${person.id}${person.job}`}>
-                      <Link to={`/person/${person.id}`}>
-                        <div
-                          className="person-image-container"
-                          style={{
-                            backgroundImage: `url(${this.getPosterUrl(person.profile_path)
-                              ? this.getPosterUrl(person.profile_path)
-                              : defaultPerson})`,
-                          }}
-                        />
-                        <div className="movieInform-name">{person.name}</div>
-                        <div className="movieInform-character">{person.job}</div>
-                      </Link>
-                    </div>
+                    <AccordionCard
+                      id={`${person.id}${person.job}`}
+                      name={person.name}
+                      profile_path={person.profile_path}
+                      job={person.job}
+                    />
                   ))}
                 </section>
               )
@@ -469,23 +440,18 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                             alt="avatar"
                             className="review-user__avatar"
                             src={review.author_details.avatar_path
-                              ? `${this.getUserImageUrl(review.author_details.avatar_path)}`
+                              ? `${getUserImageUrl(review.author_details.avatar_path)}`
                               : `${defaultPerson}`}
                           />
                         </div>
                         <div className="reviews-column-second">
                           <div className="reviews-heading">
                             <h3>
-                              A review by
-                              {review.author_details.username}
+                              {`A review by ${review.author_details.username}`}
                             </h3>
                             <h5>
-                              Written by
-                              {review.author_details.username}
-                              {' '}
-                              on
-                              {' '}
-                              <>{review.created_at ? dateFormatter.format(new Date(review.created_at)) : '-'}</>
+                              {`Written by ${review.author_details.username} on `}
+                              {review.created_at ? dateFormatter.format(new Date(review.created_at)) : '-'}
                             </h5>
                           </div>
                           {review.content}
@@ -512,23 +478,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
               ? (
                 <section className="movieRecommendations">
                   {this.state.model.recommendations?.map((recommendation) => (
-                    <div className="recommendation" key={recommendation.id}>
-                      <Link to={`/movies/${recommendation.id}`}>
-                        <div
-                          className="recommendation-inform"
-                          style={{
-                            backgroundImage: recommendation.poster_path
-                              ? `url(${posterUrl}/w342${recommendation.poster_path})`
-                              : `url(${defaultMovie})`,
-                          }}
-                        />
-                        <div className="movieInform-name">{recommendation.title}</div>
-                        <div className="movieInform-character">
-                          {Math.round(recommendation.vote_average * 10)}
-                          %
-                        </div>
-                      </Link>
-                    </div>
+                    <AccordionCard
+                      id={recommendation.id}
+                      poster_path={recommendation.poster_path}
+                      title={recommendation.title}
+                      vote_average={recommendation.vote_average}
+                      key={recommendation.id}
+                    />
                   ))}
                 </section>
               ) : 'We don\'t have any recommendations for this movie'}

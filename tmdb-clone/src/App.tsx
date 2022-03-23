@@ -8,14 +8,14 @@ import {
 import MoviesListPage from './features/MoviesListPage';
 import Login from './features/Login';
 import 'semantic-ui-css/semantic.min.css';
-import MovieDetails from './features/MovieDetails/MovieDetails';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import MovieDetails from './features/MovieDetails';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import PersonPage from './features/PersonPage/PersonPage';
 import PopularPeoplePage from './features/PopularPeoplePage';
 import UserWatchlistPage from './features/UserWatchlistPage';
 import UserRatingsPage from './features/UserRatingsPage';
-import UserFavoritesPage from './features/UserFavoritesPage/UserFavoritesPage';
+import UserFavoritesPage from './features/UserFavoritesPage';
 import NotFound from './components/NotFound';
 
 function App() {
