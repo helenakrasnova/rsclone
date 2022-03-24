@@ -70,18 +70,9 @@
   font-weight: bold;
 }
 
-.personInform-table {
-  color: #000;
-}
-
 .personInform-credits {
   width: 100%;
   margin-top: 1.14rem;
-}
-
-.personInform-character {
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: 400;
 }
 
 @media (min-width: 320px) and (max-width: 799px) {

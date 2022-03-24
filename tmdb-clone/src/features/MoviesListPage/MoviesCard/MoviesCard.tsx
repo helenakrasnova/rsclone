@@ -37,7 +37,7 @@ export default function MoviesCard(props: MoviesCardProps) {
             ) : 'NR'}
         </div>
         <div className="film-heading">
-          <div className="film-heading-title">{movie.title}</div>
+          <span className="film-heading-title">{movie.title}</span>
           <div className="film-release">
             {formatter.format(new Date(movie.release_date))}
           </div>

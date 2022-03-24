@@ -6,11 +6,12 @@ import {
 import PersonPageService from '../../services/PersonPageService';
 import './personPage.css';
 import { PersonDetailsViewModel } from '../../models/PersonDetails/ViewModels/PersonDetailsViewModel';
-import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import { posterUrl } from '../../configuration/configuration';
 import Preloader from '../../components/Preloader/Preloader';
 import defaultPerson from '../../assets/img/defaultPerson.svg';
 import AccordionCard from '../../components/AccordionCard';
+import { getUserCrew } from '../../common/helpers';
+import PersonPageTableItem from '../../components/PersonPageTableItem';
 
 type PersonPageProps = {
   id: string;
@@ -60,7 +61,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
   };
 
   onNextImageClicked = (): void => {
-    if (this.state.model.images?.profiles === undefined || this.state.imageCount === undefined) {
+    if (!this.state.model.images?.profiles || !this.state.imageCount) {
       return;
     }
     const nextPage = this.state.imageCount + 1;
@@ -76,7 +77,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
   };
 
   onPrevImageClicked = (): void => {
-    if (this.state.model.images?.profiles === undefined || this.state.imageCount === undefined) {
+    if (!this.state.model.images?.profiles || !this.state.imageCount) {
       return;
     }
     if (this.state.imageCount === 0) {
@@ -96,13 +97,14 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
       return new Date(this.state.model.deathday).getFullYear()
         - new Date(this.state.model.birthday).getFullYear();
     } if (this.state.model.birthday && !this.state.model.deathday) {
-      return new Date().getFullYear() - new Date(this.state.model.birthday).getFullYear();
+      const ts = +new Date() - +new Date(this.state.model.birthday);
+      return new Date(ts).getFullYear() - 1970;
     }
     return null;
   };
 
   render = () => {
-    if (this.state.loading === true) {
+    if (this.state.loading) {
       return (<Preloader />);
     }
 
@@ -128,11 +130,11 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
               <Modal.Header>
                 {this.state?.model?.images
                   && this.state?.model?.images?.profiles?.length > 1
-                  ? <Icon onClick={this.onPrevImageClicked} link name="arrow left" /> : ''}
+                  && <Icon onClick={this.onPrevImageClicked} link name="arrow left" />}
                 {this.state.model.name}
                 {this.state?.model?.images
                   && this.state?.model?.images?.profiles?.length > 1
-                  ? <Icon onClick={this.onNextImageClicked} link name="arrow right" /> : ''}
+                  && <Icon onClick={this.onNextImageClicked} link name="arrow right" />}
               </Modal.Header>
               <Modal.Content image>
                 <Image
@@ -163,24 +165,22 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
               <div>{this.state.model.gender === 2 ? 'Male' : 'Female'}</div>
               <h4>Birthday</h4>
               <div>
-                {this.state.model.birthday}
-                {' '}
+                {`${this.state.model.birthday} `}
                 (
-                {this.getAge() ? `${this.getAge()} years old` : ''}
+                {this.getAge() && `${this.getAge()} years old`}
                 )
               </div>
               <h4>Place of Birth</h4>
               <div>{this.state.model.place_of_birth}</div>
-              {this.state.model.deathday ? <h4>Deathday</h4> : ''}
-              {this.state.model.deathday ? (
+              {this.state.model.deathday && <h4>Deathday</h4>}
+              {this.state.model.deathday && (
                 <div>
-                  {this.state.model.deathday}
-                  {' '}
+                  {`${this.state.model.deathday} `}
                   (
-                  {this.getAge() ? `${this.getAge()} years old` : ''}
+                  {this.getAge() && `${this.getAge()} years old`}
                   )
                 </div>
-              ) : ''}
+              )}
             </div>
             <div>
               <h4>Also Known As</h4>
@@ -198,7 +198,6 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
                 <Icon name="imdb" link size="small" />
               </a>
             </h1>
-            <h3>{this.state.model.known_for_department}</h3>
           </section>
           <section className="personInform-biography">
             <h3>Biography</h3>
@@ -220,300 +219,45 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
               </section>
             ) : 'We don\'t have any movies'}
 
-          <section className="personInform-credits">
-            <h3>As a Cast</h3>
-            <Table className="personInform-table">
-              <Table.Body>
-                {this.state.model.credits?.cast.map((item) => (
-                  <Table.Row key={item.id}>
-                    <Table.Cell width={1}>
-                      <Link to={`/movies/${item.id}`}>
-                        <span className="personInform-table">
-                          {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                        </span>
-                      </Link>
-                    </Table.Cell>
-                    <Table.Cell width={1}>
-                      <Link to={`/movies/${item.id}`}>
-                        <span className="personInform-table">
-                          {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                        </span>
-                      </Link>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Link to={`/movies/${item.id}`}>
-                        <span className="personInform-table">
-                          <b>{item.title}</b>
-                          <span className="personInform-character">{item.character ? ` as ${item.character}` : ''}</span>
-                        </span>
-                      </Link>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </section>
+          {this.state.model.credits?.cast?.length !== 0 && (
+            <section className="personInform-credits">
+              <h3>Acting</h3>
+              <Table className="personInform-table">
+                <Table.Body>
+                  {this.state.model.credits?.cast.map((item) => (
+                    <PersonPageTableItem
+                      key={item.id}
+                      id={item.id}
+                      release_date={item.release_date}
+                      vote_average={item.vote_average}
+                      title={item.title}
+                      character={item.character}
+                    />
+                  ))}
+                </Table.Body>
+              </Table>
+            </section>
+          )}
           {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Production') >= 0
-            ? (
+            && getUserCrew(this.state?.model?.credits?.crew).map((userCrew) => (
               <section className="personInform-credits">
-                <h3>Production</h3>
+                <h3>{userCrew.category}</h3>
                 <Table className="personInform-table">
                   <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Production').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
+                    {userCrew.list && userCrew.list.map((item) => (
+                      <PersonPageTableItem
+                        key={item.id}
+                        id={item.id}
+                        release_date={item.release_date}
+                        vote_average={item.vote_average}
+                        title={item.title}
+                        job={item.job}
+                      />
                     ))}
                   </Table.Body>
                 </Table>
               </section>
-            ) : ''}
-
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Directing') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Directing</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Directing').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
-
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Creator') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Creator</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Creator').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Writing') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Writing</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Writing').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Crew') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Crew</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Crew').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Editing') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Editing</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Editing').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
-          {this.state?.model?.credits?.crew
-            && this.state?.model?.credits?.crew?.findIndex((item) => item.department === 'Sound') >= 0
-            ? (
-              <section className="personInform-credits">
-                <h3>Sound</h3>
-                <Table className="personInform-table">
-                  <Table.Body>
-                    {this.state.model.credits?.crew.filter((item) => item.department === 'Sound').map((item) => (
-                      <Table.Row key={item.id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.release_date !== '3000-1-1' ? item.release_date?.slice(0, 4) : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={1}>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              {item.vote_average !== 0 ? `${item.vote_average * 10}%` : '—'}
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link to={`/movies/${item.id}`}>
-                            <span className="personInform-table">
-                              <b>{item.title}</b>
-                              <span className="personInform-character">{item.job ? ` as ${item.job}` : ''}</span>
-                            </span>
-                          </Link>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </section>
-            ) : ''}
+            ))}
         </div>
       </div>
     );
