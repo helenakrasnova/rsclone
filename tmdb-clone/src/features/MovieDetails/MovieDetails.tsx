@@ -277,7 +277,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         borderColor: getRatingColor(this.state.model.vote_average),
                       }}
                     >
-                      {this.state.model.vote_average ? `${this.state.model.vote_average * 10}%` : 'NR'}
+                      {this.state.model.vote_average ? `${Math.round(this.state.model.vote_average * 10)}%` : 'NR'}
                     </div>
                     <span>
                       User

@@ -22,7 +22,7 @@ export default function PersonPageTableItem(props: PersonPageTableItemProps) {
       </Table.Cell>
       <Table.Cell width={1}>
         <span className="personInform-table">
-          {props.vote_average > 0 ? `${props.vote_average * 10}%` : '—'}
+          {props.vote_average > 0 ? `${Math.round(props.vote_average * 10)}%` : '—'}
         </span>
       </Table.Cell>
       <Table.Cell>
