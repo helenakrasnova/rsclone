@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import MovieDetailsService from '../../services/MovieDetailsService';
 import { MovieDetailsViewModel } from '../../models/MovieDetails/ViewModels/MovieDetailsViewModel';
 import './movieDetails.css';
+import defaultMovie from '../../assets/img/glyphicons-basic-38-picture-grey.svg';
 import defaultPerson from '../../assets/img/defaultPerson.svg';
 import AccountService from '../../services/AccountService';
 import AuthenticationService from '../../services/AuthenticationService';
@@ -238,7 +239,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                 src={`${posterUrl}/w342${this.state.model.poster_path}`}
                 alt="movie poster"
                 className="movie-poster"
-                onError={(e) => fallbackImage(e, defaultPerson)}
+                onError={(e) => fallbackImage(e, defaultMovie)}
               />
             </div>
             <div className="movie_inform__column">
@@ -276,7 +277,7 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
                         borderColor: getRatingColor(this.state.model.vote_average),
                       }}
                     >
-                      {this.state.model.vote_average ? `${this.state.model.vote_average * 10}%` : 'NR'}
+                      {this.state.model.vote_average ? `${Math.round(this.state.model.vote_average * 10)}%` : 'NR'}
                     </div>
                     <span>
                       User
