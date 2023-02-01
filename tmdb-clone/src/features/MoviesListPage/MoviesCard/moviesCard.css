@@ -28,7 +28,7 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   height: 7rem;
   background-color: white;
 }
@@ -54,7 +54,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: 6.5em;
+  bottom: 8.5em;
   left: 1em;
 }
 
@@ -65,8 +65,7 @@
 }
 
 .film-heading-title {
-  max-height: 3.93rem;
-  text-overflow: ellipsis;
+  max-height: 4.5rem;
   overflow: hidden;
 }
 .film-heading-title:hover {
