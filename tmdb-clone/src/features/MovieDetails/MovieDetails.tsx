@@ -176,13 +176,13 @@ class MovieDetails extends Component<RouteComponentProps<MovieDetailsProps>, Mov
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   private getPrimaryColor = (imageUrl: string, callback: Function): void => {
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.crossOrigin = 'Anonymous';
-    img.addEventListener('load', () => {
+    const img = document.getElementsByClassName('movie-poster')[0] as HTMLImageElement;
+    img?.addEventListener('load', () => {
       const result = this.colorThief.getColor(img);
       callback(result);
     });
+    img.src = imageUrl;
+    img.crossOrigin = 'Anonymous';
   };
 
   private getPopupContent = (active: boolean): string => {

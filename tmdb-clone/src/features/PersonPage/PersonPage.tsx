@@ -61,7 +61,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
   };
 
   onNextImageClicked = (): void => {
-    if (!this.state.model.images?.profiles || !this.state.imageCount) {
+    if (!this.state.model.images?.profiles || this.state.imageCount === undefined) {
       return;
     }
     const nextPage = this.state.imageCount + 1;
@@ -77,7 +77,7 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
   };
 
   onPrevImageClicked = (): void => {
-    if (!this.state.model.images?.profiles || !this.state.imageCount) {
+    if (!this.state.model.images?.profiles || this.state.imageCount === undefined) {
       return;
     }
     if (this.state.imageCount === 0) {
@@ -130,11 +130,11 @@ class PersonPage extends Component<RouteComponentProps<PersonPageProps>, PersonP
               <Modal.Header>
                 {this.state?.model?.images
                   && this.state?.model?.images?.profiles?.length > 1
-                  && <Icon onClick={this.onPrevImageClicked} link name="arrow left" />}
+                  ? <Icon onClick={this.onPrevImageClicked} link name="arrow left" /> : ''}
                 {this.state.model.name}
                 {this.state?.model?.images
                   && this.state?.model?.images?.profiles?.length > 1
-                  && <Icon onClick={this.onNextImageClicked} link name="arrow right" />}
+                  ? <Icon onClick={this.onNextImageClicked} link name="arrow right" /> : ''}
               </Modal.Header>
               <Modal.Content image>
                 <Image
