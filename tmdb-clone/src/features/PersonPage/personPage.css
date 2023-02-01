@@ -1,0 +1,111 @@
+.personInform-container {
+  width: 100%;
+  display: flex;
+  padding: 2.14rem 2.86rem;
+  box-sizing: border-box;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  max-width: 100rem;
+}
+
+.personInform-firstColumn {
+  min-width: 21.43rem;
+  width: 21.43rem;
+}
+
+.personInform-secondColumn {
+  width: calc(100vw - 80px - 300px);
+  padding-right: 0;
+  padding-left: 2.14rem;
+  background-color: #fff;
+  max-width: 68.57rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  flex: 0 1 auto;
+}
+
+.personInform-poster {
+  display: block;
+  width: 21.43rem;
+  height: 32.14rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.25s linear;
+}
+
+.personInform-poster:hover {
+  cursor: pointer;
+  filter: blur(5px) brightness(50%);
+  transition: all 0.25s linear;
+}
+
+.personInform-title {
+  margin-bottom: 2.5rem;
+}
+
+.personInform-biographyText {
+  font-size: 1.1em;
+  line-height: 1.4em;
+}
+
+.personInform-knownFor {
+  width: 100%;
+  background-color: #fff;
+  max-width: 68.57rem;
+  display: flex;
+  height: 20.86rem;
+  flex: 0 1 auto;
+  padding-right: 2.14rem;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  color: #000;
+}
+
+.personInform-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.personInform-credits {
+  width: 100%;
+  margin-top: 1.14rem;
+}
+
+@media (min-width: 320px) and (max-width: 799px) {
+  .personInform-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .personInform-firstColumn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .personInform-secondColumn {
+    width: 100%;
+    margin-top: 1.07rem;
+    padding: 0;
+  }
+  .posterInform-facts {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+  .personInform-name {
+    text-align: center;
+  }
+  .personInform-biographyText {
+    text-align: justify;
+  }
+}
+
+@media (max-width: 499px) {
+  .personInform-container {
+    padding: 1.43rem 0.71rem;
+  }
+}

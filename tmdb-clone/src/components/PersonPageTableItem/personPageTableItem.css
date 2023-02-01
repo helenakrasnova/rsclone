@@ -1,0 +1,11 @@
+.personInform-table,
+.personInform-title {
+  color: #000;
+}
+.personInform-character {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+}
+.personInform-title:hover {
+  color: #01b4e4;
+}

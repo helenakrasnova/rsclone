@@ -1,0 +1,73 @@
+.film-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 177px;
+  height: 365px;
+  border-radius: 8px;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  font-size: 16px;
+  color: black;
+  margin: 0 0 2.14rem 0;
+  position: relative;
+}
+
+.film-image {
+  width: 100%;
+  height: 237px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #dbdbdb;
+}
+
+.film-heading {
+  width: 90%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 7rem;
+  background-color: white;
+}
+
+.percent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  align-self: baseline;
+  padding-top: 4px;
+}
+
+.film-voting {
+  width: 2.43rem;
+  height: 2.43rem;
+  border-radius: 75%;
+  background-color: #081c22;
+  color: #e5e7e8;
+  border: 2px solid;
+  font-size: 0.93rem;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 8.5em;
+  left: 1em;
+}
+
+.film-release {
+  color: #b4b4b4;
+  font-weight: lighter;
+  width: 90%;
+}
+
+.film-heading-title {
+  max-height: 4.5rem;
+  overflow: hidden;
+}
+.film-heading-title:hover {
+  color: #01b4e4;
+}

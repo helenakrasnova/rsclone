@@ -1,0 +1,43 @@
+.login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.login-content__wrapper {
+  max-width: 100rem;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 2.14rem 2.86rem;
+}
+
+.login-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-header {
+  font-size: 1.5em;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.login-text {
+  color: #292b2c;
+  font-size: 1.14rem;
+  line-height: 1.5;
+}
+
+.login-error {
+  color: #d40242;
+}
+
+.login-link, .login-link:hover {
+  color: white;
+}

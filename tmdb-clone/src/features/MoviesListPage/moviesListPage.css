@@ -1,0 +1,14 @@
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 2.14rem 0rem;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.load-more {
+  margin: 0.71rem;
+}
